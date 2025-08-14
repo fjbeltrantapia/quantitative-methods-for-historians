@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>1.4. Textual information (counting words) – Quantitative Methods for Historians - HIKU8863</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-024ac060266fa5a17f3ddf9677394547.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Quantitative Methods for Historians - HIKU8863</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> <i class="bi bi-fa-home" role="img">
+</i> 
+<span class="menu-text">Overview</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../syllabus.html"> <i class="bi bi-fa-home" role="img">
+</i> 
+<span class="menu-text">Syllabus</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../instructions.html"> <i class="bi bi-fa-list-ul" role="img">
+</i> 
+<span class="menu-text">Instructions</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../get-r.html"> <i class="bi bi-fa-book" role="img">
+</i> 
+<span class="menu-text">Intro to R</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-case-studies" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="bi bi-fa-book" role="img">
+</i> 
+ <span class="menu-text">Case-studies</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-case-studies">    
+        <li>
+    <a class="dropdown-item" href="../backg-paisley.html">
+ <span class="dropdown-text">The Paisley Dataset</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../backg-speeches.html">
+ <span class="dropdown-text">The State of the Union Speeches</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../other-data.html"> 
+<span class="menu-text">Other sources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../further-readings.html"> 
+<span class="menu-text">Further readings</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">1.4. Textual information (counting words)</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>The script used in this session is included below. You can also downloaded it from <a href="desc_text.R" download="">here</a>.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># clear de "Global Environment"
+rm(list=ls()) 
+
+# set working directory
+setwd("/Volumes/francijb/Documents/FRAN/Teaching/QM-2024/session") 
+
+# Install packages
+# install.packages("tidyverse")
+# install.packages("tidytext")
+# install.packages("tokenizers")
+
+# Open packages that we will be using
+library(tidyverse)
+library(tidytext)
+
+# Importing the data
+data &lt;- read_csv("data/state_of_the_union_texts.csv")
+
+# Having a look at the data
+data
+print(data)
+print(data, n=20)
+print(data, n=Inf)
+View(data)
+
+# In case it was not a tibble, convert to the tidyverse's format for dataframes
+data &lt;- as_tibble(data)
+
+data %&gt;% 
+  count(President)
+
+data %&gt;%
+  count(Year) %&gt;% print(n = Inf)
+
+
+# Reporting a particular speech (number 4 in this case)
+data$Text[4] 
+  # will show the fourth line of the text column of the "data" dataframe
+
+
+
+#### n-grams (number of particular words in the texts)
+data &lt;- data %&gt;%
+  mutate(peace = str_count(Text, "[Pp]eace")) %&gt;%
+  mutate(war = str_count(Text, "[Ww]ar")) 
+
+# summary statistics
+data %&gt;%
+  summarize(obs = sum(!is.na(war)),
+            sum = sum(war),
+            mean = mean(war, na.rm = TRUE)) 
+
+data %&gt;%
+  group_by(Year) %&gt;%
+  summarize(sum = sum(war), 
+            mean = mean(war, na.rm = TRUE)) %&gt;%
+  ggplot(aes(x = Year, y = mean)) +
+  geom_line()
+
+data %&gt;%
+  filter(Year&gt;1790) %&gt;%
+  ggplot(aes(x = Year, y = war)) +
+  geom_line()
+
+data %&gt;%
+  filter(war&gt;150)
+
+# aggregate the data into periods
+data %&gt;%
+  mutate(period = case_when(
+    Year&lt;1914 ~ "Pre-1914",
+    Year&gt;=1914 &amp; Year&lt;=1945 ~ "World Wars",
+    Year&gt;1945 ~ "Post-1945")) %&gt;%
+  mutate(period = factor(period, 
+                         levels = c("Pre-1914", "World Wars", "Post-1945"),
+                         ordered = TRUE)) %&gt;%
+  group_by(period) %&gt;%
+  summarize(sum = sum(war), 
+            mean = mean(war, na.rm = TRUE)) 
+  
+    # factor ranks them (instead of alphabetically, as with strings)
+
+# Plots
+data %&gt;%
+  group_by(Year) %&gt;%
+  summarize(peace = sum(peace), war = sum(war)) %&gt;%
+  pivot_longer(c("peace", "war"), names_to = "word", values_to = "counts") %&gt;%
+  ggplot(aes(x = Year, y = counts, color = word)) +
+  geom_line()
+
+data %&gt;%
+  filter(Year&gt;1790) %&gt;%
+  pivot_longer(c("peace", "war"), names_to = "word", values_to = "counts") %&gt;%  
+  ggplot(aes(x = Year, y = counts, color = word)) +
+  geom_line()
+
+data %&gt;%
+  filter(Year&gt;1840 &amp; Year&lt;1855 &amp; war&gt;50)
+
+  # do it with "[Ww]omen"
+data &lt;- data %&gt;% mutate(women = str_count(Text, "[Ww]om[ae]n"))
+
+data %&gt;%
+  group_by(Year) %&gt;%
+  summarize(women = sum(women)) %&gt;%
+  ggplot(aes(x = Year, y = women)) +
+    geom_line()
+
+
+data %&gt;%
+  filter(Year&gt;1790) %&gt;%
+  ggplot(aes(x = Year, y = women)) +
+  geom_line()
+  # no need to group by year if you exclude the first year (with 2 speeches)
+
+
+
+#### Compute "word counts"
+
+# Counting all words or numbers that are separated by spaces on either side
+data &lt;- data %&gt;%
+  mutate(wc = str_count(Text, "[\\w]+"))
+  # [\\w]+ is a regular expression (regex or regexp)
+    # a sequence of characters that specifies a match pattern in text
+  # more on this here: https://regexr.com
+  # this other handy tool provides a quick references to regular expressions 
+    # and also allows testing them: https://regex101.com
+
+# Graph it
+data %&gt;%
+  ggplot(aes(x = Year, y = wc)) + 
+  geom_point() + 
+  geom_line()
+# just line graph
+# we might add geom_point() to underscore that we have missing years
+
+data %&gt;% 
+  filter(Year&gt;1940 &amp; wc&gt;20000)
+
+data %&gt;% 
+  mutate(war_rel = war/wc) %&gt;%
+  mutate(war_rel2 = 1000*war/wc) %&gt;%
+  filter(Year&gt;1790) %&gt;%
+  ggplot(aes(x = Year, y = war_rel)) + 
+  geom_point() + 
+  geom_line()
+
+#### "tokenizing"  
+  # removes all of the punctuation, 
+  # splits the text into individual words, and 
+  # converts everything into lowercase characters
+
+data_token &lt;- data %&gt;%
+  unnest_tokens(output = words, input = Text)
+
+data_token # almost 1.8 million entries
+
+
+#### Top word frequencies (the most common words)
+data_token %&gt;%
+  count(words, sort = TRUE) %&gt;% 
+  print(n = 20) # "Inf" display all rows
+  # the most common words have no meaning
+
+#### stop words 
+  # words that are so common that we are not interested in them 
+  # already built within the tidy environment
+
+stop_words %&gt;% print(n = 25)
+  # note that the stop words are in the "word" column
+
+# Exclude stop_words from the tokens
+data_token_stop &lt;- data_token %&gt;%
+  anti_join(stop_words, by = c("words" = "word"))
+  # anti_join drops the words matching in both "datasets"
+  # "words" &amp; "word" are the names of the fields in each "dataset"
+
+data_token_stop %&gt;%
+  count(words, sort = TRUE) %&gt;% 
+  print(n = 20)
+
+# Create our own stop words (or add more to the existing list)
+stop_words
+my_stop_words &lt;- c("peace", "war")
+my_stop_words
+custom_stop_words &lt;- tibble(word = my_stop_words, lexicon = "my_customization")
+custom_stop_words
+stop_words_custom &lt;- rbind(stop_words, custom_stop_words)
+stop_words_custom
+tail(stop_words_custom) # view the end of the tibble, look like our words were added correctly
+
+data_token_stop # reduce to almost 700,000 entries
+
+# Graphing - Top word frequencies
+data_token_stop %&gt;%
+  count(words, sort=TRUE) %&gt;%
+  top_n(15) %&gt;%                     # selecting to show only top 15 words
+  mutate(words = reorder(words, n)) %&gt;%  # highest frequency words appear first
+  ggplot(aes(words, n)) +
+    geom_col() +
+    coord_flip()
+
+# Focusing on a particular period (1850-1900)
+data_token_stop %&gt;%
+  filter(Year &gt;1850 &amp; Year &lt; 1900) %&gt;%
+  count(words, sort=TRUE) %&gt;%
+  top_n(15) %&gt;%                     # selecting to show only top 15 words
+  mutate(words = reorder(words, n)) %&gt;%  # this will ensure that the highest frequency words appear to the left
+  ggplot(aes(words, n)) +
+  geom_col() +
+  coord_flip()
+
+# Comparing periods
+data_token_stop &lt;- data_token_stop %&gt;%
+  mutate(period = ifelse(Year &lt;= 1900, "19th c.", "20th c."))
+
+data_token_stop %&gt;%
+  group_by(period) %&gt;%
+  count(words, sort=TRUE) %&gt;%
+  mutate(proportion = n / sum(n) * 1000) %&gt;%  # word freq- per 1000 words instead of counts
+  slice_max(order_by=proportion, n = 15) %&gt;%  # selecting to show only top 15 words
+  mutate(words = reorder(words, desc(proportion))) %&gt;%  # this will ensure that the highest frequency words appear to the left
+  ggplot(aes(reorder_within(x = words, by = proportion, within = period), proportion, fill = period)) +    # reordering is a bit tricky, see                                                                                                     ?reorder_within()
+    geom_col() +
+    scale_x_reordered() +
+    scale_fill_manual(values = c("blue", "#56B4E9")) +
+    coord_flip() +
+    facet_wrap(~period, ncol = 2, scales = "free") +
+    xlab("Word")
+
+?ggplot
+
+# Focusing on particular words
+data_token_stop &lt;- data_token_stop %&gt;%
+  mutate(war = ifelse(words == "war", 1, 0))
+
+data_token %&gt;%
+  filter(Year&gt;=1900 &amp; Year&lt;2000) %&gt;%
+  mutate(women = ifelse(words == "women", 1, 0)) %&gt;%
+  count(women)
+
+# Evolution over time
+data_token_stop %&gt;%   
+  group_by(Year) %&gt;%
+  summarize(fr_war = mean(war, na.rm = TRUE)) %&gt;%
+  ggplot() +
+    geom_col(aes(x = Year, y = fr_war))
+
+
+# Stemming
+  # looking at the common root of similar words
+
+# install.packages(SnowballC)
+library(SnowballC)
+
+data_token_stop_stem &lt;- data_token_stop %&gt;%
+  mutate(word_stem = wordStem(words))
+data_token_stop_stem
+
+data_token_stop_stem %&gt;%
+  count(word_stem, sort=TRUE) %&gt;% 
+  print(n = 30)
+
+data_token_stop_stem %&gt;%
+  count(word_stem, sort=TRUE) %&gt;%
+  top_n(15) %&gt;%                     # selecting to show only top 15 words
+  mutate(word_stem = reorder(word_stem, n)) %&gt;%  # this will ensure that the highest frequency words appear to the left
+  ggplot(aes(word_stem, n)) +
+  geom_col() + coord_flip()
+
+
+# We could do the whole process simultaneously
+data_adj &lt;- data %&gt;%
+  unnest_tokens(output = words, input = Text) %&gt;%       # tokenize
+  anti_join(stop_words, by = c("words" = "word")) %&gt;%   # drop stop words
+  mutate(word_stem = wordStem(words))
+
+data_adj
+
+data_adj &lt;- data_adj %&gt;%
+  mutate(war = ifelse(words == "war", 1, 0)) %&gt;%
+  mutate(peace = ifelse(words == "peace", 1, 0))
+
+data_adj %&gt;%   
+  group_by(Year) %&gt;%
+  summarize(fr_war = mean(war, na.rm = TRUE),
+            fr_peace = mean(peace, na.rm = TRUE)) %&gt;%
+  ggplot(aes(x = Year)) +
+    geom_line(aes(y = fr_war), color = "red") +
+    geom_line(aes(y = fr_peace), color = "blue")
+
+
+#### n-grams: multiple-word tokens
+
+data_token2 &lt;- data %&gt;%
+  unnest_tokens(twogram, Text, token = "ngrams", n = 2)
+data_token2
+
+# in separate columns
+data_token2 &lt;- data_token2 %&gt;%
+  separate_wider_delim(cols = twogram, delim = " ", names = c("g1", "g2"))
+data_token2
+
+# identify words accompanying particular words
+women &lt;- data_token2 %&gt;%
+  filter(g1 == "women" | g2 == "women") %&gt;%
+  pivot_longer(g1:g2) %&gt;% # put both columns in the same one
+  select(!name) %&gt;% # drop the variable we are not using
+  rename(words = value) %&gt;% # rename the new column we created
+  filter(words!="women") %&gt;% # drop the word women (we are interested in those around)
+  anti_join(stop_words, by = c("words" = "word")) 
+
+women %&gt;%
+  count(words, sort=TRUE) %&gt;%
+  print(n = 25)
+
+women %&gt;% 
+  filter(words == "pregnant") %&gt;%
+  count(Year) 
+
+
+# Exercise: 
+  # think about a potential topic (word) 
+  # explore the words around it (2 in each side)
+
+
+# Further topics:
+  # TF-IDF Term frequency - Inverse document frequency
+  # POS (Part of Speech) - nouns, verbs, adjectives...
+  # Sentiment analysis
+  # Topic models
+  # Co-occurrence
+
+
+
+# check women / men
+
+data %&gt;%
+  mutate(women = str_count(Text, "[Ww]omen")) %&gt;%
+  summarize(women = sum(women)) # 300 
+
+data_token %&gt;%
+  mutate(women = if_else(words, "women")) %&gt;%
+  summarize(women = sum(women)) # 302 
+
+data_token2 %&gt;%
+  mutate(women = str_count(g2, "[Ww]omen")) %&gt;%
+  summarize(women = sum(women)) # 302 in either g1 and g2 </code></pre>
+</div>
+</div>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

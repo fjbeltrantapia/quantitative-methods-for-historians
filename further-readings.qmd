@@ -1,0 +1,15 @@
+---
+title: "Further reading"
+---
+
+For additional background on quantification in history, check the texts below: 
+
+- Graham, Shawn, Milligan, Ian, Weingart, Scott and Martin, Kim (2022), [The joys of big data for historians]((readings/graham-etal2022.pdf)), in *Exploring Big Historical Data. The Historians Macroscope* (World Scientific; 2nd Edition), pp. 1-34.
+
+- Fourie, Johan (2023), [Quantitative history and uncharted people](readings/fourie2023.pdf), in *Quantitative history and uncharted people. Case studies from the South African Past* (Bloomsbury), pp. 1-32.
+
+- Lemercier, Claire and Zalc, Claire (2021), [Back to the sources. Practicing and teaching quantitative history in the 2020s](readings/lemercier-zalc-2021.pdf), *Capitalism. A Journal of History and Economics*, vol. 2, no. 2, pp. 473-508.
+
+- Blaxill, Luke (2023), [Why do historians ignore digital analysis. Bring on the Luddites](readings/blaxill2023.pdf), *The Political Quarterly*, vol. 94, no. 2, pp. 279-289.
+
+- Jockers, Matthew L. (2013), [Macroanalysis. Foundation](readings/jockers2013.pdf), in *Macroanalysis. Digital Methods and Literary History* (University of Illinois Press), pp. 3-32.

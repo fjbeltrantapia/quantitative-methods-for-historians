@@ -1,0 +1,12 @@
+---
+title: "1.3. Comparing dimensions (bivariate statistics)"
+---
+
+The script used in this session is included below. You can also downloaded it from <a href="desc_bivar.R" download>here</a>.
+
+```{r}
+#| echo: false
+#| warning: false
+cat(readLines("desc_bivar.R"), sep = "\n")
+```
+

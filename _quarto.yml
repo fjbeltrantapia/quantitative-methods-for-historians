@@ -1,0 +1,75 @@
+project:
+  type: website
+  output-dir: docs
+  
+website:
+  title: "Quantitative Methods for Historians - HIKU8863"
+  
+  navbar:
+    type: inverse
+    right:
+    - text: "Overview"
+      icon: fa-home
+      href: index.qmd
+    - text: "Syllabus"
+      icon: fa-home
+      href: syllabus.qmd      
+    - text: "Instructions"
+      icon: fa-list-ul
+      href: instructions.qmd
+    - text: "Intro to R"
+      icon: fa-book
+      href: get-r.qmd      
+    - text: "Case-studies"
+      icon: fa-book
+      menu: 
+      - text: "The Paisley Dataset"
+        href: backg-paisley.qmd
+      - text: "The State of the Union Speeches"
+        href: backg-speeches.qmd
+    - text: "Other sources"
+      href: other-data.qmd
+    - text: "Further readings"
+      href: further-readings.qmd  
+  sidebar:
+    title: "Contents"
+    style: "docked"
+    # pinned: true
+    # collapse-level: 3
+    contents:
+      - text: "Contents"
+        file: index.qmd
+      - section: "1. Descriptive Statistics"
+        contents: 
+          - text: "1.1. Qualitative variables"
+            #file: r-scripts/desc_qual.qmd
+          - text: "1.2 Numerical variables" 
+            #file: r-scripts/desc_num.qmd
+          - text: "1.3 Bivariate statistics" 
+            #file: r-scripts/desc_bivar.qmd 
+          - text: "1.4 Textual information" 
+            #file: r-scripts/desc_text.qmd   
+          - text: "1.5 Mapping" 
+            #file: r-scripts/mapping.qmd             
+      - text: "2. Correlation and regression"
+        #file: r-scripts/corr_reg.qmd
+      - text: "3. Uncertainty"
+        #file: r-scripts/uncert.qmd
+      - section: "4. Regression analysis"
+        contents: 
+          - text: "4.1. Multiple regression"
+            #file: r-scripts/mult_reg.qmd
+          - text: "4.2 Challenges to regression" 
+            #file: r-scripts/chall_reg.qmd        
+      - text: "5. Advance textual analysis"
+        #file: r-scripts/text_advanced.qmd        
+bibliography: refs.bib
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+    fig-cap-location: margin
+    fig-align: center
+    linkcolor: $blue
