@@ -1,12 +1,14 @@
 ## Welcome to quantification in history!
 
-September 15-19, 2025 -- 09:15-16:00 -- Room L014
+September 15-19, 2025 -- 09:15-16:00 -- Room L014 ([Akrinn](https://maps.app.goo.gl/neGSMmi15nzrfNyr5), Kalvskinnet)
 
-[Francisco J. Beltrán Tapia](https://fjbeltrantapia.github.io)
+Instructor: [Francisco J. Beltrán Tapia](https://fjbeltrantapia.github.io)
 
 \vspace{1em}
 
-This course provides a practical introduction on how historians can use computational tools to learn about the past. 
+This course, offered by the [Faculty of Humanities](https://www.ntnu.edu/hf) at the [Norwegian University of Science and Technology](https://www.ntnu.edu), provides a practical introduction on how historians can use computational tools to learn about the past.
+
+## Description
 
 Digital access to historical records is now available on an unprecedent scale. Millions of newspapers, government documents, letters and diaries, among other sources, are only one click away and completely searchable. Similarly, complete population censuses, birth, death and marriage records, military and prisons registers, and other sources have been digitised and made available online.
 
