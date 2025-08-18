@@ -6,7 +6,7 @@ Below you can find a curated set of varied historical datasets that you can use 
 
 ## International data
 
-- [Hansard dataset](https://hansard.parliament.uk/about): UK Parliamentary speeches between 1806 and 1911 (over 1 million parliamentary speeches). This is a huge dataset that might be computationally too demanding on some machines. Find <a href="data/other-data/hansard/hansard_sample.csv" download>here</a> a random sample of 10,000 speeches. See @blaxill2020 and @guldi2023 for illustrations using this information.
+- [Hansard dataset](https://hansard.parliament.uk/about): UK Parliamentary speeches between 1806 and 1911 (over 1 million parliamentary speeches). This is a huge dataset that might be computationally too demanding on some machines. Find <a href="data/other-data/hansard_sample.csv" download>here</a> a random sample of 10,000 speeches. See @blaxill2020 and @guldi2023 for illustrations using this information.
 
 - Population censuses. [IPUMS International](https://international.ipums.org/international/) holds individual-level information from a variety of historical population censuses [@ruggles2025]. The same or even more extended datasets can be requested to the respective national agencies). 
 
@@ -26,7 +26,7 @@ Below you can find a curated set of varied historical datasets that you can use 
 
 - [London Lives](https://www.londonlives.org) [@ll]: 240,000 manuscripts from a wide range of primary sources between 1690 and 1800 that allow studying the ordinary life of Londoners (crime, poverty, illness, apprenticeship, work, politics, etc.). See also @hitchcock2020 (available [here](https://www.londonlives.org/book/)).
 
-- [Petitioning in Early Modern England](https://petitioning.history.ac.uk) [@waddell2022]. This dataset consists of 2,847 petitions filed in England between 1573 and 1799. As well as the text itself, it includes information on date, petitioners, topic, administrative responses, etc. The data is hosted in this [repository](https://zenodo.org/records/7027693).
+- [Petitioning in Early Modern England](https://petitioning.history.ac.uk) [@waddell2022]. This dataset consists of 2,847 petitions filed in England between 1573 and 1799. As well as the text itself, it includes information on date, petitioners, topic, administrative responses, etc. Petitions were a crucial mode of communication between the ‘rulers’ and the ‘ruled’, so they provide a vital source for illuminating the concerns of the people, from noblemen to paupers. The data is hosted in this [repository](https://zenodo.org/records/7027693).
 
 - [The Google Books Project](https://www.google.com/intl/en/googlebooks/about/index.html) has digitised millions of books published from the late 17th century onwards (coverage is uneven) and the [Google Books Ngram Viewer](https://books.google.com/ngrams/) allows counting the number of times that a particular term or terms appear in the corpus [@michel2011]. The R package [ngramr](https://github.com/seancarmody/ngramr) mimics the functionalities of  the latter but directly from within the R environment. It extracts data from the Google corpus and provides it in the form of an R dataframe, which can subsequently be treated with the tools you are familiar with. This corpus should be though used with caution. See @pechenick2015 and @schmidt2021 for its biases and limitations to study socio-cultural and linguistic evolution. 
 
