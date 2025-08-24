@@ -2,11 +2,11 @@
 title: "1.5. Mapping (spatial information)"
 ---
 
-The script used in this session is included below. You can also downloaded it from <a href="mapping.R" download>here</a>.
+The script used in this session is included below. You can also downloaded it from <a href="5_mapping.R" download>here</a>.
 
 ```{r}
 #| echo: false
 #| warning: false
-cat(readLines("mapping.R"), sep = "\n")
+cat(readLines("5_mapping.R"), sep = "\n")
 ```
 

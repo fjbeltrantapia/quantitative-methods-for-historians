@@ -169,7 +169,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>The script used in this session is included below. You can also downloaded it from <a href="desc_qual.R" download="">here</a>.</p>
+<p>The script used in this session is included below. You can also downloaded it from <a href="1_desc_qual.R" download="">here</a>.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>#### Quantification in History ####
@@ -203,9 +203,6 @@ setwd("/Volumes/francijb/Documents/FRAN/Teaching/QM_2024/session")
 
 ### Install packages (if needed; only once)
 # install.packages("tidyverse")
-# install.packages("knitr")
-# install.packages("xlsx")
-# install.packages("writexl")
 
     # R works using different tools that are contained
     # in different packages
@@ -214,11 +211,10 @@ setwd("/Volumes/francijb/Documents/FRAN/Teaching/QM_2024/session")
 
 ### Load the packages you need (you will need to do it every session)
 library(tidyverse)
-library(knitr)
 library(readxl)
 
 # Import data
-data &lt;- read_excel("data/paisley_data.xls")
+data &lt;- read_excel("data/paisley-data.xls")
   # notice that we are using a "relative path"  
   # if the data is in the working directory, you don't need the path (just the file name)
   # if the data is somewhere else (not within the project environment), you need to use the absolute path
@@ -245,10 +241,10 @@ tail(data) # the last observations
 
 tbl_vars(data) # list the variables (fields) in the dataset
 
-## We will be using the pipe (%&gt;%) though
+## We will be using the pipe (|&gt; or |&gt;) though
 
-data %&gt;%  
-  head(15)
+data |&gt;  
+  print(15)
 
 ## NO NEED TO LEARN THE COMMANDS BY HEART
   # copy and paste from the templates
@@ -271,66 +267,66 @@ data %&gt;%
 
   # number of males and females
 
-data %&gt;%  # returns a table
+data |&gt;  # returns a table
   count(sex)
   # the pipe (also |&gt;) meaning "and then"
   # it takes the output of a line of code and uses it as input to the next line
 
-data %&gt;%  # returns a table
+data |&gt;  # returns a table
   count(employed)
   # notice that is also reports the number of missing values
 
-data %&gt;%  # returns a table
-  count(occup) %&gt;%
+data |&gt;  # returns a table
+  count(occup) |&gt;
   print(n = 20) # display 20 rows
 
-data %&gt;%  # returns a table
-  count(occup) %&gt;%
+data |&gt;  # returns a table
+  count(occup) |&gt;
   print(n = Inf) # display all rows
 
-data %&gt;%  
+data |&gt;  
   count(occup, sort = TRUE) # present the data in order
                             # important to quickly identify the most important categories
 
 ## Absolute and relative frequencies
-data %&gt;% 
-  count(occup, sort = TRUE) %&gt;%              
+data |&gt; 
+  count(occup, sort = TRUE) |&gt;              
   mutate(proportion = n/sum(n))  # adding relative frequency 
 
-data %&gt;% 
-  count(occup, sort = TRUE) %&gt;%              
-  mutate(prop = n/sum(n)) %&gt;% # fractions
+data |&gt; 
+  count(occup, sort = TRUE) |&gt;              
+  mutate(prop = n/sum(n)) |&gt; # fractions
   mutate(perc = 100*n/sum(n)) # percentages 
 
 # or
-data %&gt;% 
-  group_by(sex) %&gt;%       # dimension we focus on
-  summarize(n = n()) %&gt;%  # reporting number of observations in each group
+data |&gt; 
+  group_by(sex) |&gt;       # dimension we focus on
+  summarize(n = n()) |&gt;  # reporting number of observations in each group
   mutate(rel_freq = n/sum(n)) # creating a new variable with the relative frequency 
 
   # notice that the code may look tricky but is easily replicable
   # with literacy
-data %&gt;% 
-  group_by(literacy) %&gt;%
-  summarize(n = n()) %&gt;%
+data |&gt; 
+  group_by(literacy) |&gt;
+  summarize(n = n()) |&gt;
   mutate(freq = n/sum(n))
 
 # Adding another row with the totals:
 library(janitor)
 
-data %&gt;%  
-  count(countryb, sort = TRUE) %&gt;%              
-  mutate(perc = 100*n/sum(n)) %&gt;%
-  adorn_totals("row") %&gt;%
+data |&gt;  
+  count(countryb, sort = TRUE) |&gt;              
+  mutate(perc = 100*n/sum(n)) |&gt;
+  adorn_totals("row") |&gt;
   as_tibble()
 
 
 
 ### Focusing on subsamples (smaller groups) 
   # filter()
-data %&gt;% 
-  filter(sex == "male") %&gt;%   
-  count(literacy, sort = TRUE) %&gt;%
+data |&gt; 
+  filter(sex == "male") |&gt;   
+  count(literacy, sort = TRUE) |&gt;
   mutate(prop = n/sum(n))
   
   # "filter" restricts the analysis to those observations fulfilling that condition
@@ -341,23 +337,23 @@ data %&gt;%
       # or: |
       # except: - 
 
-data %&gt;% 
-  filter(sex=="male" &amp; age&gt;=18 &amp; age&lt;=50) %&gt;%   
-  count(literacy, sort = TRUE) %&gt;%              
+data |&gt; 
+  filter(sex=="male" &amp; age&gt;=18 &amp; age&lt;=50) |&gt;   
+  count(literacy, sort = TRUE) |&gt;              
   mutate(prop = n/sum(n)) 
 
-data %&gt;% 
-  filter(countryb=="ireland" | countryb=="scotland") %&gt;%
-  filter(sex=="male" &amp; age&gt;=18 &amp; age&lt;=50) %&gt;%   
-  count(literacy, sort = TRUE) %&gt;%              
-  mutate(prop = n/sum(n)) %&gt;%
+data |&gt; 
+  filter(countryb=="ireland" | countryb=="scotland") |&gt;
+  filter(sex=="male" &amp; age&gt;=18 &amp; age&lt;=50) |&gt;   
+  count(literacy, sort = TRUE) |&gt;              
+  mutate(prop = n/sum(n)) |&gt;
   mutate(prop = round(prop, 2)) # reporting only up two decimals
 
 # This allows paying attention to what it is both common and rare
-data %&gt;% 
-  filter(countryb=="ireland" | countryb=="scotland") %&gt;%
-  filter(sex=="male" &amp; age&gt;=18 &amp; age&lt;=50) %&gt;%   
-  filter(literacy=="superior education") %&gt;%
+data |&gt; 
+  filter(countryb=="ireland" | countryb=="scotland") |&gt;
+  filter(sex=="male" &amp; age&gt;=18 &amp; age&lt;=50) |&gt;   
+  filter(literacy=="superior education") |&gt;
   select(year, forename, surname, age, born, countryb, reside, occup)
 
 
@@ -365,13 +361,14 @@ data %&gt;%
   # the output is not saved unless it is assigned to an object
   # which can then be exported (saved) into different formats later
 
-table1 &lt;- data %&gt;% 
-  filter(sex == "male") %&gt;%   
-  group_by(literacy) %&gt;%      
-  summarize(n = n()) %&gt;%
+table1 &lt;- data |&gt; 
+  filter(sex == "male") |&gt;   
+  group_by(literacy) |&gt;      
+  summarize(n = n()) |&gt;
   mutate(freq = n/sum(n)) 
 
 # Export the output (object) into excel 
+install.packages("writexl")
 library(writexl)
 
 write_xlsx(occ, "output/table1.xlsx")
@@ -380,7 +377,7 @@ write_xlsx(occ, "output/table1.xlsx")
 
 
 ###### Plotting frequencies (graph bar)
-  # ggplot
+  # ggplot (part of the tidyverse)
   # use "+" to add features to the graph
 
 # sex
@@ -389,34 +386,34 @@ ggplot(data = data) +
     # "aes" goes for aesthetics
 
   # or
-data %&gt;% 
+data |&gt; 
   ggplot() + 
     geom_bar(aes(x = sex))
 
 # literacy
-data %&gt;% 
+data |&gt; 
   ggplot() + 
     geom_bar(aes(x = literacy))
 
 # horizontal to facilitate reading the categories
-data %&gt;% 
+data |&gt; 
   ggplot() + 
     geom_bar(aes(x = literacy)) +
     coord_flip()
 
 # narrowing down the analysis  
-data %&gt;% 
-  filter(countryb == "scotland" | countryb == "ireland") %&gt;%
-  filter(sex == "male" &amp; age&gt;18) %&gt;%
+data |&gt; 
+  filter(countryb == "scotland" | countryb == "ireland") |&gt;
+  filter(sex == "male" &amp; age&gt;18) |&gt;
   ggplot() + 
     geom_bar(mapping = aes(x = literacy)) +
     coord_flip()
 
 
 # proportions (instead of counts)
-data %&gt;% 
-  count(literacy, sort = TRUE) %&gt;%              
-  mutate(prop = n/sum(n)) %&gt;%
+data |&gt; 
+  count(literacy, sort = TRUE) |&gt;              
+  mutate(prop = n/sum(n)) |&gt;
   ggplot(aes(x = literacy, y = prop)) + 
     geom_col() + # instead of geom_bar()
     coord_flip()
@@ -425,9 +422,9 @@ data %&gt;%
     # we explicitly indicate what we want to depict (prop in this case)
 
 # editing the graph
-g1 &lt;- data %&gt;% 
-  count(literacy, sort = TRUE) %&gt;%              
-  mutate(prop = n/sum(n)) %&gt;%
+g1 &lt;- data |&gt; 
+  count(literacy, sort = TRUE) |&gt;              
+  mutate(prop = n/sum(n)) |&gt;
   ggplot(mapping = aes(x = literacy, y = prop)) + 
     geom_col() + 
     coord_flip() + 
@@ -439,7 +436,7 @@ g1 &lt;- data %&gt;%
 
 g1  
 # save the graph
-g1 %&gt;%
+g1 |&gt;
   ggsave("output/lit.png", dpi = 320)
 
 ?ggsave
@@ -449,30 +446,29 @@ g1 %&gt;%
 ### Re-categorising qualitative information 
 # typos, aggregating categories, etc.
 
-data %&gt;%  
-  count(occup) %&gt;%              
+data |&gt;  
+  count(occup) |&gt;              
   mutate(prop = n/sum(n)) 
 
 # recoding
-data &lt;- data %&gt;%
-  mutate(occup_adj = recode(occup, 
+data &lt;- data |&gt;
+  mutate(occup_adj = recode(occup,
                             "blacksmith" = "black smith", 
-                            "block print" = "block printer")
-         )
+                            "block print" = "block printer"))
 
 View(data)
 
-data %&gt;% 
-  filter(occup_adj=="black smith" | occup_adj=="block printer") %&gt;%
+data |&gt; 
+  filter(occup_adj=="black smith" | occup_adj=="block printer") |&gt;
   select(occup, occup_adj)
 
-data %&gt;%  
+data |&gt;  
   count(literacy)
 
   # checking what we have done
 
 # another example with literacy: iliterate, read, write
-data &lt;- data %&gt;%
+data &lt;- data |&gt;
   mutate(lit_adj = recode(literacy, 
                           "superior education" = "write", 
                           "read well" = "read", 
@@ -485,55 +481,56 @@ data &lt;- data %&gt;%
   )
     # no need to recode "illiterate" because it is the same category
 
-data %&gt;% 
+data |&gt; 
   subset(select=c(forename, surname, literacy, lit_adj))
 
-data %&gt;%
+data |&gt;
   count(lit_adj)
 
 # removing leading and trailing spaces
-data &lt;- data %&gt;% 
+data &lt;- data |&gt; 
   mutate(occup_adj = str_trim(occup_adj))
 
-# ranking "qualitative" information
-data %&gt;%  
-  count(literacy) %&gt;%              
+# ranking "qualitative" information (ordinal variables)
+data |&gt;  
+  count(literacy) |&gt;              
   mutate(prop = n/sum(n)) 
   # listed in alphabetical order (not always informative enough)
 
 
 # factor variables: ranking categories
-data &lt;- data %&gt;% 
+data &lt;- data |&gt; 
   mutate(lit_rank = factor(literacy, 
                            levels = c("illiterate", 
                                       "read a little", 
                                       "read tolerably", 
-                                      "read well", "cannot write", 
+                                      "read well", 
+                                      "cannot write", 
                                       "read &amp; write a little", 
                                       "read &amp; write tolerably", 
                                       "read &amp; write well", 
                                       "superior education"), 
                            ordered = TRUE))
 
-data %&gt;%
+data |&gt;
   count(lit_rank)
   
   # or visually:
-data %&gt;% 
-  filter(!is.na(lit_rank)) %&gt;% # exclude missing values
+data |&gt; 
+  filter(!is.na(lit_rank)) |&gt; # exclude missing values
   ggplot() +
     geom_bar(aes(x = lit_rank)) +
     coord_flip()  
 
 # re-categorising more complicate patterns
 
-data %&gt;%
+data |&gt;
   count(marks)
 
 # install.packages("stringr")
 library(stringr)
 
-data &lt;- data %&gt;%
+data &lt;- data |&gt;
   mutate(marks_adj = case_when(
     str_detect(marks, "scar") ~ "scar",
     str_detect(marks, "cut") ~ "cut", 
@@ -546,19 +543,26 @@ data &lt;- data %&gt;%
     TRUE ~ "other"))
 
 # checking what you have done
-data %&gt;%
+data |&gt;
   select(marks, marks_adj)
 
-data %&gt;% 
+data |&gt; 
   count(marks_adj)
 
-data %&gt;% 
-  filter(marks_adj=="cut") %&gt;% 
-  count(marks) %&gt;% 
+data |&gt; 
+  filter(marks_adj=="cut") |&gt; 
+  count(marks) |&gt; 
   print(n = Inf)
 
+# the above matches the exact sequence of characters 
+  # defined within the quotation marks.
 
-# Regular expressions
+# Regular expressions - trick
+  # "^A" those starting with A
+  # "e$" those ending with e
+  # “cut|scar” would match both possibilities
+  # !str_detect(mark,"cut") -- all except those containing “cut”. T
+  # more when explaining "textual data"
 
 
 ##### Save the (modified) data ####

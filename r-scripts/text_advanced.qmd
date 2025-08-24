@@ -2,11 +2,11 @@
 title: "5. Advanced automated textual analysis"
 ---
 
-The script used in this session is included below. You can also downloaded it from <a href="text_advanced.R" download>here</a>.
+The script used in this session is included below. You can also downloaded it from <a href="9_text_advanced.R" download>here</a>.
 
 ```{r}
 #| echo: false
 #| warning: false
-cat(readLines("text_advanced.R"), sep = "\n")
+cat(readLines("9_text_advanced.R"), sep = "\n")
 ```
 

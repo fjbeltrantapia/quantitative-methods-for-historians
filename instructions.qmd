@@ -12,7 +12,7 @@ Below are the instructions to prepare the session in advance:
 
   * The [datasets]{.underline} we will be working with: [here](data/paisley-data.xlsx) and <a href="data/state-of-the-union-texts.csv" download>here</a>.
     
-  * The [R scripts]{.underline} containing the code to extract (some) information from them: <a href="paisley.R" download>here</a> and <a href="speeches.R" download>here</a>.
+  * The [R scripts]{.underline} containing the code to extract information from them (available in Blackboard).
   
 **4. Get familiar with R and RStudio** by opening **RStudio** and following the instructions in the [Intro to R](get-r.html) section.  
   
