@@ -6,7 +6,9 @@ The course revolves around three main themes:
 
 - Classic Statistics: Descriptive statistics, uncertainty, correlation and regression analysis.
 
-- Computational Text Analysis: Digital corpus management, word frequency & dictionary methods, text classification, topic models and sentiment analysis.
+- Computational Text Analysis: Digital corpus management, word frequency and dictionary methods, text classification, topic models and sentiment analysis.
 
 - Visualising spatial information using GIS (Geographic Information Systems) tools. 
+
+- Social Network Analysis: visualising social networks, global and local metrics and community detection.
 
