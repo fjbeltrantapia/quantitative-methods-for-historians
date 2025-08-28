@@ -196,139 +196,129 @@ data2 &lt;- read_rds("paisley_v2.rds")
 # Cross-tabulation / contingency table
 view(data)
 
-data %&gt;%
+data |&gt;
   count(employed)
 
-data %&gt;%  
+data |&gt;  
   count(sex, employed)
 
-data %&gt;%  
-  count(sex, employed) %&gt;%
+data |&gt;  
+  count(sex, employed) |&gt;
   pivot_wider(names_from = employed, values_from = n)
 
 
-table3 &lt;- data %&gt;%  
-  count(sex, employed) %&gt;%
-  pivot_wider(names_from = employed, values_from = n) %&gt;%
+data |&gt;  
+  count(sex, employed) |&gt;
+  pivot_wider(names_from = employed, values_from = n) |&gt;
   mutate(total = employed + unemployed,
          emp_perc = 100*employed/total,
-         unemp_perc = 100*unemployed/total) %&gt;%
-  mutate_if(is.numeric, round, 1) 
-
-table3 &lt;- table3 %&gt;%
+         unemp_perc = 100*unemployed/total) |&gt;
+  mutate_if(is.numeric, round, 1) |&gt;
   relocate(sex, employed, emp_perc, unemployed, unemp_perc, total)
 
-table3
+
+library(modelsummary) # ready-made solution
+data |&gt;
+  filter(!is.na(employed)) |
+  datasummary_crosstab(sex ~ employed, data = _)
 
 
 # Visualisation
 
-data %&gt;% 
-  filter(countryb == "scotland" &amp; age&gt;=16) %&gt;%  
-  ggplot(aes(x = literacy)) + 
+data |&gt; 
+  filter(countryb == "scotland" &amp; age&gt;=16) |&gt;  
+  ggplot(aes(x = lit_rank)) + 
     geom_bar() +
     coord_flip() +
     facet_wrap(~ sex, nrow = 1)
 
-data %&gt;% 
-  filter(countryb == "scotland" &amp; age&gt;=16) %&gt;%  
-  ggplot(mapping = aes(x = literacy, y = after_stat(prop), group = 1)) + 
+data |&gt; 
+  filter(countryb == "scotland" &amp; age&gt;=16) |&gt;  
+  ggplot(mapping = aes(x = lit_rank, y = after_stat(prop), group = sex)) + 
     geom_bar() +
     coord_flip() +
     facet_wrap(~ sex, nrow = 1)
 
-data %&gt;% 
-  filter(countryb == "scotland" &amp; age&gt;=16) %&gt;%
-  ggplot(aes(x = literacy, fill = sex)) + 
-  geom_bar(position = "dodge") +
+data |&gt; 
+  filter(countryb == "scotland" &amp; age&gt;=16 &amp; !is.na(lit_rank)) |&gt;
+  ggplot(aes(x = lit_rank, y = after_stat(prop), 
+             fill = sex, group = sex)) + 
+  geom_bar(position = "dodge2") +
   coord_flip()
 
 ?ggplot
 
 # 3 variables simultaneously
 
-data &lt;- data %&gt;% 
-  mutate(lit_rank = factor(literacy, 
-                           levels = c("illiterate", 
-                                      "read a little", 
-                                      "read tolerably", 
-                                      "read well", "cannot write", 
-                                      "read &amp; write a little", 
-                                      "read &amp; write tolerably", 
-                                      "read &amp; write well", 
-                                      "superior education"), 
-                           ordered = TRUE))
-
-data %&gt;% 
-  filter(countryb == "scotland" | countryb == "ireland") %&gt;%
-  ggplot(aes(x = lit_rank, fill = sex)) + 
-    geom_bar(position = "dodge2") +
-    coord_flip() +
-    facet_wrap(~ countryb, nrow = 1)
+data |&gt; 
+  filter(countryb == "scotland" &amp; age&gt;=16 &amp; !is.na(lit_rank)) |&gt;
+  ggplot(aes(x = lit_rank, y = after_stat(prop), 
+             fill = sex, group = sex)) + 
+  geom_bar(position = "dodge2") +
+  coord_flip() +
+  facet_wrap(~ countryb, nrow = 1)
 
 
 ### Comparing numerical variables by group
 
-# Means
+# Comaparing means (average)
 data
 
-data &lt;- data %&gt;%
-  mutate(feet = replace(feet, feet == 50, 5))
-
-data &lt;- data %&gt;%
-  mutate(height = 30.48*feet + 2.54*inches)
-
-data %&gt;%
+data |&gt;
   ggplot(aes(x = height)) + 
   geom_histogram()
 
-data %&gt;% filter(feet&gt;10) %&gt;% select(feet, inches)
 
 
-
-View(data)
-
-data %&gt;% 
-  filter(countryb=="ireland" | countryb=="scotland" | countryb=="england") %&gt;%
-  group_by(countryb) %&gt;%
+data |&gt; 
+  filter(countryb!="overseas") |&gt;
+  group_by(countryb) |&gt;
   summarize(
     obs = sum(!is.na(height)),
-    mean_height = mean(height, na.rm = TRUE)) 
+    mean_height = mean(height, na.rm = TRUE)) |&gt;
+  mutate(mean_height = round(mean_height, 1))
 
-# %&gt;% mutate_if(is.numeric, round, 3)
+# Visually (not very useful)
 
-# Distributions
+data |&gt; 
+  filter(countryb!="overseas") |&gt;
+  group_by(countryb) |&gt;
+  summarize(mean_height = mean(height, na.rm = TRUE)) |&gt;
+  ggplot(aes(x = countryb, y = mean_height)) + 
+  geom_point()
 
-data %&gt;%   
-  filter(countryb=="ireland" | countryb=="scotland" | countryb=="england") %&gt;%
+# Comparing distributions
+
+data |&gt;   
+  filter(countryb!="overseas") |&gt;
   ggplot(aes(x = height)) +
-  geom_histogram(binwidth = 1) +
+  geom_histogram(binwidth = 5) +
   facet_wrap(~ countryb, nrow = 1)
-# also very different sample sizes
+  # but very different sample sizes
 
-data %&gt;%   
-  filter(countryb=="ireland" | countryb=="scotland" | countryb=="england") %&gt;%
-  ggplot(mapping = aes(x = height, y = ..density..)) +
+data |&gt;   
+  filter(countryb!="overseas") |&gt;
+  ggplot(aes(x = height, y = after_stat(density))) +
   geom_histogram(binwidth = 1) +
   facet_wrap(~ countryb, nrow = 1)
-# difficult to eyeball differences between graphs
+  # difficult to eyeball differences between graphs
 
 # Overlapping histograms (kernel density graphs)
-data %&gt;%   
-  ggplot(aes(x = height, y = ..density..)) +
+data |&gt;   
+  ggplot(aes(x = height, y = after_stat(density))) +
   geom_histogram(binwidth = 5) +
   geom_density(kernel = "gaussian", color = "red", size = 1.5)
 
-data %&gt;%   
-  filter(countryb=="ireland" | countryb=="scotland" | countryb=="england") %&gt;%  
+data |&gt;   
+  filter(countryb!="overseas") |&gt;  
   ggplot(aes(x = height, colour = countryb)) +
   geom_density()
 
 # Boxplots
-# another way of comparing distributions
+  # another way of comparing distributions
 
-data %&gt;%   
-  filter(countryb=="ireland" | countryb=="scotland" | countryb=="england") %&gt;%  
+data |&gt;   
+  filter(countryb!="overseas") |&gt;  
   ggplot(aes(x = countryb, y = height)) +
   geom_boxplot()
 
@@ -339,8 +329,8 @@ data %&gt;%
 # reflect observations falling within 1.5 the interquartile range
 # the black dots refer to the extreme values that all outside that range 
 
-data %&gt;%   
-  filter(countryb=="ireland" | countryb=="scotland" | countryb=="england") %&gt;%  
+data |&gt;   
+  filter(countryb!="overseas") |&gt;  
   ggplot(aes(x = countryb, y = height)) +
   geom_boxplot() +
   geom_jitter(alpha = 0.2, width=0.10, height=0.05)
@@ -348,50 +338,46 @@ data %&gt;%
 
 ## Compositional effects
 
-data %&gt;% 
-  filter(countryb=="ireland" | countryb=="scotland" | countryb=="england") %&gt;%
-  filter(sex=="male" &amp; age&gt;=18 &amp; age&lt;=50) %&gt;%
-  group_by(countryb) %&gt;%
+data |&gt; 
+  filter(countryb!="overseas") |&gt;
+  filter(sex=="male" &amp; age&gt;=18 &amp; age&lt;=50) |&gt;
+  group_by(countryb) |&gt;
   summarize(
     obs = sum(!is.na(height)),
-    mean_height = mean(height, na.rm = TRUE),
-  )
+    mean_height = mean(height, na.rm = TRUE)) |&gt;
+  mutate(mean_height = round(mean_height, 1))
 
 
-## With qualitative variables
+## With qualitative variables (able to write)
 
-lit_sex_countryb &lt;- data %&gt;% 
-  mutate(write = ifelse(lit_adj=="write", 1, 0)) %&gt;%
-  filter(countryb %in% c("england", "ireland", "scotland")) %&gt;%
-  group_by(sex, countryb) %&gt;%
+data |&gt; 
+  mutate(write = ifelse(lit_adj=="write", 1, 0)) |&gt;
+  filter(countryb!="overseas" &amp; sex=="male" &amp; age&gt;18) |&gt;
+  group_by(sex, countryb) |&gt;
   summarize(
     obs = sum(!is.na(write)), 
-    write = mean(write, na.rm = TRUE)) %&gt;% 
-  mutate_if(is.numeric, round, 3) %&gt;%
-  pivot_wider(names_from = sex, values_from = c("obs", "write")) %&gt;%
-  relocate(countryb, obs_male, write_male, obs_female, write_female)
-lit_sex_countryb
+    write = round(mean(write, na.rm = TRUE), 3))
 
 
 ## Comparing multiple groups
 
-data %&gt;% 
-  group_by(sex, countryb) %&gt;%
+data |&gt; 
+  group_by(sex, countryb) |&gt;
   summarize(
     obs = sum(!is.na(height)), 
-    height = mean(height, na.rm = TRUE)) %&gt;% 
-  mutate_if(is.numeric, round, 2) %&gt;%
-  pivot_wider(names_from = sex, values_from = c("obs", "height")) %&gt;%
+    height = mean(height, na.rm = TRUE)) |&gt; 
+  mutate_if(is.numeric, round, 2) |&gt;
+  pivot_wider(names_from = sex, values_from = c("obs", "height")) |&gt;
   relocate(countryb, obs_male, height_male, obs_female, height_female)
 
 
 # Visually
 
-data %&gt;% 
-  group_by(sex, countryb) %&gt;%
+data |&gt; 
+  group_by(sex, countryb) |&gt;
   summarize(
     obs = sum(!is.na(height)), 
-    height = mean(height, na.rm = TRUE)) %&gt;% 
+    height = mean(height, na.rm = TRUE)) |&gt; 
   ggplot(aes(x = countryb, y = height, color = sex)) +
   geom_point()
 
@@ -399,43 +385,51 @@ data %&gt;%
 
 # Tables (class intervals)
 
-data &lt;- data %&gt;%
+data &lt;- data |&gt;
   mutate(weight_kg = 0.453592*weight)
 
-data %&gt;% 
-  filter(age&gt;=20) %&gt;%
-  mutate(age_class = cut(age, breaks = seq(20, 90, 10))) %&gt;%
-  group_by(age_class) %&gt;%
+data |&gt; 
+  mutate(age_class = cut(age, breaks = seq(9, 89, 10))) |&gt;  
+  filter(age&gt;=20) |&gt;
+  group_by(age_class) |&gt;
   summarise(obs = sum(!is.na(weight_kg)),
             mean_weight = mean(weight_kg, na.rm = TRUE))
 
 # Line graph
-data %&gt;% 
-  filter(age&gt;=20) %&gt;%
-  mutate(age_class = cut(age, breaks = seq(20, 90, 10))) %&gt;%
-  group_by(age_class) %&gt;%
+data |&gt; 
+  filter(age&gt;=20) |&gt;
+  mutate(age_class = cut(age, breaks = seq(20, 90, 10))) |&gt;
+  group_by(age_class) |&gt;
   summarise(obs = sum(!is.na(weight)),
-            mean_weight = mean(weight, na.rm = TRUE)) %&gt;%
+            mean_weight = mean(weight, na.rm = TRUE)) |&gt;
   ggplot(aes(x = age_class, y = mean_weight, group = 1)) +
   geom_line()
 
+## Do it by age (instead of age_class)
+
 # Scatter plot
-data %&gt;%
-  filter(age&gt;=20) %&gt;%
+data |&gt;
+  filter(age&gt;=20) |&gt;
   ggplot(aes(x = age, y = weight)) +
   geom_point()
 
-data %&gt;%
-  filter(age&gt;=20) %&gt;%
+data |&gt;
+  filter(age&gt;=20) |&gt;
   ggplot(aes(x = age, y = weight_kg)) +
   geom_point() +
-  geom_smooth(SE = FALSE) +
-  stat_summary(geom = "line", fun.y = "mean", color = "red")   
+  stat_summary(geom = "line", fun = "mean", color = "red")   
 
+# smoothing
+data |&gt;
+  filter(age&gt;=20) |&gt;
+  ggplot(aes(x = age, y = weight_kg)) +
+  geom_point() +
+  stat_summary(geom = "line", fun = "mean", color = "red") +  
+  geom_smooth(se = FALSE)
 
 # distinguishing by a third dimension
-data %&gt;%
-  filter(age&gt;=20) %&gt;%
+data |&gt;
+  filter(age&gt;=20) |&gt;
   ggplot(aes(x = age, y = weight_kg, color = sex)) +
   geom_point() +
   geom_smooth(se = FALSE)
@@ -443,28 +437,31 @@ data %&gt;%
 ### Evolution over time (history!)
 
 # a table
-height_year &lt;- data %&gt;%
-  mutate(year_birth = year - age) %&gt;%
-  filter(sex=="male" &amp; age&gt;=20 &amp; age&lt;=50) %&gt;%
-  group_by(year_birth) %&gt;%
+height_year &lt;- data |&gt;
+  mutate(year_birth = year - age) |&gt;
+  filter(sex=="male" &amp; age&gt;=20 &amp; age&lt;=50) |&gt;
+  group_by(year_birth) |&gt;
   summarise(obs = sum(!is.na(height)),   
-            av_height = mean(height, na.rm = TRUE))
+            av_height = round(mean(height, na.rm = TRUE), 1))
 height_year
 
 # visually
-height_year %&gt;%
+height_year |&gt;
   ggplot(aes(x = year_birth, y = av_height)) +
   geom_point(col = "red") +
   geom_line()
 
+## how to reduce the year-to-year variation (noise)? 
+### bins, moving average, smoothing
+
 # creating bins
-data %&gt;% 
-  mutate(year_birth = year - age) %&gt;%
-  mutate(year_birth_5 = cut(year_birth, breaks =  seq(1795, 1885, 5))) %&gt;%
-  filter(sex=="male" &amp; age&gt;=20 &amp; age&lt;=50) %&gt;%
-  group_by(year_birth_5) %&gt;%
+data |&gt; 
+  mutate(year_birth = year - age) |&gt;
+  mutate(year_birth_5 = cut(year_birth, breaks =  seq(1795, 1885, 5))) |&gt;
+  filter(sex=="male" &amp; age&gt;=20 &amp; age&lt;=50) |&gt;
+  group_by(year_birth_5) |&gt;
   summarise(
-    av_height = mean(height, na.rm = TRUE)) %&gt;%
+    av_height = mean(height, na.rm = TRUE)) |&gt;
   ggplot(aes(x = year_birth_5, y = av_height)) +
   geom_point() + geom_line(group = 1)  +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
@@ -472,34 +469,76 @@ data %&gt;%
 # we need `group = 1` to let `ggplot` know that all the observations 
 # should be treated as part of the same group, so the line can connect the points.
 
-# Smoothing the trend
-height_year %&gt;%
+# Moving average (lags and leads)
+
+height_year &lt;- height_year |&gt;
+  arrange(year_birth) |&gt;
+  mutate(
+    lag1 = lag(av_height, 1),
+    lag2 = lag(av_height, 2),
+    lead1 = lead(av_height, 1),
+    lead2 = lead(av_height, 2))
+height_year
+
+height_year |&gt;
+  mutate(
+    ma3 = (lag1 + av_height + lead1) / 3,
+    ma5 = (lag2 + lag1 + av_height + lead1 + lead2) / 5) |&gt;
+  ggplot(aes(x = year_birth)) +
+  geom_point(aes(y = av_height)) +
+  geom_line(aes(y = av_height)) +
+  geom_line(aes(y = ma3), color = "red") +
+  geom_line(aes(y = ma5), color = "blue")
+
+
+# Smoothing the trend (polynomial)
+height_year |&gt;
   ggplot(aes(x = year_birth, y = av_height)) +
-    geom_smooth(se = FALSE) +
     geom_point() +
-    geom_line()
+    geom_line() +
+    geom_smooth(se = FALSE)
 
 # Comparing groups
-data %&gt;% 
-  mutate(year_birth = year - age) %&gt;%
-  filter(countryb=="scotland" &amp; age&gt;=20 &amp; age&lt;=50) %&gt;%
-  group_by(year_birth, sex) %&gt;%
+data |&gt; 
+  mutate(year_birth = year - age) |&gt;
+  filter(countryb=="scotland" &amp; age&gt;=20 &amp; age&lt;=50) |&gt;
+  group_by(year_birth, sex) |&gt;
   summarise(
-    av_height = mean(height, na.rm = TRUE)) %&gt;%
+    av_height = mean(height, na.rm = TRUE)) |&gt;
   ggplot(aes(x = year_birth, y = av_height, color = sex)) +
   geom_point() +
   geom_smooth(se = FALSE)
 
+  # try adjusting the smoothing parameter: span (0.25, 1.40)
+
+data |&gt; 
+  mutate(year_birth = year - age) |&gt;
+  filter(countryb=="scotland" &amp; age&gt;=20 &amp; age&lt;=50) |&gt;
+  group_by(year_birth, sex) |&gt;
+  summarise(
+    av_height = mean(height, na.rm = TRUE)) |&gt;
+  ggplot(aes(x = year_birth, y = av_height, color = sex)) +
+  geom_point() +
+  geom_smooth(span = 0.25, se = FALSE)
+
+## showing all the raw data (but careful with the scale)
+data |&gt; 
+  mutate(year_birth = year - age) |&gt;
+  filter(countryb=="scotland" &amp; sex=="male" &amp; age&gt;=20 &amp; age&lt;=50) |&gt;
+  ggplot(aes(x = year_birth, y = height)) +
+  geom_point() +
+  stat_summary(geom = "line", fun = "mean") +
+  geom_smooth(se = FALSE)
 
 # Other statistics
 
-data %&gt;%  
-  mutate(year_birth = year - age) %&gt;%
-  filter(age &gt;= 18 &amp; sex=="male" &amp; year_birth&gt;=1800) %&gt;%
-  group_by(year_birth) %&gt;%
+data |&gt;  
+  mutate(year_birth = year - age) |&gt;
+  filter(age &gt;= 18 &amp; sex=="male" &amp; year_birth&gt;=1800) |&gt;
+  group_by(year_birth) |&gt;
   summarise(sd = sd(height, na.rm = TRUE),
-            mean = mean(height, na.rm = TRUE)) %&gt;% 
-  mutate(cv = sd/mean) %&gt;%
+            mean = mean(height, na.rm = TRUE)) |&gt; 
+  mutate(cv = sd/mean) |&gt;
   ggplot(aes(x = year_birth, y = cv)) +
   geom_point() +
   geom_line() + 
@@ -507,16 +546,16 @@ data %&gt;%
 
 # qualitative variables: dummy variables
 
-data %&gt;%
-  mutate(write = ifelse(lit_adj=="write", 1, 0)) %&gt;%
-  mutate(year_birth = year - age) %&gt;%  
-  filter(age&gt;=18 &amp; age&lt;=50) %&gt;%
-  group_by(year_birth, sex) %&gt;%
+data |&gt;
+  mutate(write = ifelse(lit_adj=="write", 1, 0)) |&gt;
+  mutate(year_birth = year - age) |&gt;  
+  filter(age&gt;=18 &amp; age&lt;=50) |&gt;
+  group_by(year_birth, sex) |&gt;
   summarise(
-    mean = mean(write, na.rm = TRUE)) %&gt;%
+    mean = mean(write, na.rm = TRUE)) |&gt;
   ggplot(aes(x = year_birth, y = mean, color = sex)) +
   geom_smooth(se = FALSE) +
-  geom_point() </code></pre>
+  geom_point()</code></pre>
 </div>
 </div>
 

@@ -19,46 +19,6 @@ library(tmap)
 library(geodata)
 
 
-# Examples
-
-# 1 Shapefiles
-
-mun_sh <- read_sf("data/mapping/mun_1860_1930/mun_1860_1930.shp")
-dist_sh <- read_sf("data/mapping/educ_1860/dist_1860.shp")
-coast_sh <- read_sf("data/mapping/coastline/spain_coastline.shp")
-
-tm_shape(coast_sh, bbox = dist_sh) + tm_lines() +
-  tm_shape(dist_sh) + tm_borders() +
-  tm_shape(mun_sh) + tm_bubbles(col = "red", alpha = 0.5, border.col = "red", size = "pop1860", 
-                                sizes.legend = c(250, 500, 1000, 5000, 10000, 20000, 50000, 100000, 500000),
-                                sizes.legend.labels = c("<.25", ".25-.50", ".5-1", "1-5", "5-10", "10-20", "20-50", "50-100", ">100"),
-                                title.size = "Population (in thousands), 1860") +
-  tm_layout(legend.position = c("right", "bottom"), legend.frame = TRUE, legend.bg.color = TRUE)
-
-# 2 Raster files
-
-elev_spain <- geodata::elevation_30s(country = "ES", res = 0.5, path = tempdir()) # SRTM 1KM
-
-box_coord <- list(rbind(c(-3.7, 36.6), c(-3.7, 37.4), c(-2.9, 37.4), c(-2.9, 36.6), c(-3.7, 36.6))) # close the polygon (draw points in order)
-box <- st_polygon(box_coord)
-box_shp <- st_sfc(box, crs = "EPSG:4326")
-
-m1 <- tm_shape(elev_spain, bbox = c(-9.5, 36, 4.5, 44)) + 
-  tm_raster(style = "fixed", breaks = c(0, 250, 500, 750, 1000, 1250, 1500, 1750, 2000, 2250, 2500, 2750, 3000, 3250, 3500), 
-            palette = terrain.colors(14)) +
-  tm_layout(legend.show = FALSE) +
-  tm_shape(box_shp) + tm_borders()
-
-m2 <- tm_shape(elev_spain, bbox = c(-3.7, 36.6, -2.9, 37.4)) + 
-  tm_raster(style = "fixed", breaks = c(0, 250, 500, 750, 1000, 1250, 1500, 1750, 2000, 2250, 2500, 2750, 3000, 3250, 3500), 
-            palette = terrain.colors(14), title = "Elevation (mts.)") +
-  tm_layout(legend.outside = TRUE, legend.outside.size = 0.5, legend.outside.position = "right", legend.text.size= .5)
-
-tmap_arrange(m1, m2, ncol = 2, asp = NULL, widths = c(.445, .555))
-
-## Spatial files are composed by a bunch of files
-  # R (or any other GIS software) treats them jointly
-
 ##### Shapefiles: polygons, lines, points
 
 ### Polygons
@@ -68,57 +28,59 @@ dist_sh <- read_sf("data/mapping/educ_1860/dist_1860.shp") # Spanish districts
 dist_sh
 
 # Map it: t_shape() + tm_polygons() (or tm_borders, tm_fill...)
-dist_sh %>% 
+dist_sh |> 
   tm_shape() +
-  tm_polygons(col = "grey", lwd = 0.5)
+  tm_polygons(fill = "lightblue", col = "grey", lwd = 0.5)
 
 # Map the info contained in particular fields (variables)
-dist_sh %>%
+dist_sh |>
   tm_shape() +
-    tm_polygons(col = "literacy_m")
+    tm_polygons(fill = "literacy_m", lwd = 0.5)
 
 ?tm_polygons
 
-dist_sh %>%
+dist_sh |>
   tm_shape() +
-    tm_polygons(col = "literacy_m", 
-              breaks = c(0, 15, 30, 45, 60, Inf),
-              title = "") + # Remove the legend title
-    tm_scale_bar(position = c("right", "top"))
+    tm_polygons(fill = "literacy_m", lwd = 0.5,
+                fill.scale = tm_scale_intervals(
+                  style = "fixed",
+                  breaks = c(0, 15, 30, 45, 60, Inf),
+                  values = "brewer.reds"), # color palette
+                fill.legend = tm_legend(
+                  title = "") + # Remove the legend title
+    tm_scale_bar(position = c("right", "bottom"))
 
 # Multiple maps
-dist_sh %>%
+dist_sh |>
   tm_shape() +
-    tm_polygons(col = c("literacy_m", "literacy_f"),
-              breaks = c(0, 15, 30, 45, 60, Inf),
-              title = "Literacy (%)") +
-    tm_layout(legend.outside = TRUE)
+  tm_polygons(fill = c("literacy_m", "literacy_f"),
+              fill.scale = tm_scale_continuous(
+                ticks = c(0, 10, 20, 30, 40, 50, 60, 70),
+                values = "brewer.reds"),
+              fill.legend = tm_legend(
+                title = ""
+                , orientation = "landscape"),
+              fill.free = FALSE) +
+  tm_layout(panel.labels = c("Men", "Women"),
+            panel.label.bg.color = "white",
+            panel.label.frame = FALSE)
 
-# or creating different objects
-
-m1 <- dist_sh %>%
+# exporting maps
+map <- dist_sh |>
   tm_shape() +
-    tm_polygons(col = "literacy_m", 
-              breaks = c(0, 15, 30, 45, 60, Inf))
+  tm_polygons(fill = "literacy_m")
 
-m2 <- dist_sh %>%
-  tm_shape() +
-    tm_polygons(col = "literacy_f", 
-              breaks = c(0, 15, 30, 45, 60, Inf))
 
-tmap_arrange(m1, m2, ncol = 2)
-
-tmap_arrange(m1, m2, ncol = 2) %>%  
-  tmap_save(filename = "output/map_lit_1860.png", dpi = 600)
-  # save the map as a .png file (with resolution = 600)
+tmap_save(map, "output/map_lit_1860.png", dpi = 600)
+  # save the map as a .png file (with resolution = 600 pixels)
 
 # Categorical (qualitative) variables
 
-dist_sh %>%
+dist_sh |>
   tm_shape() +
-    tm_polygons(col = "province") +
-    tmap_options(max.categories = 48) +
-    tm_layout(legend.outside = TRUE, legend.outside.position = "right")
+    tm_polygons(fill = "province",
+                fill.scale = tm_scale_categorical(
+                  n.max = 48)) # when many categories (avoid recycling colors)
 
 ### Point shapefiles
 
@@ -126,134 +88,105 @@ mun_sh <- read_sf("data/mapping/mun_1860_1930/mun_1860_1930.shp")
 mun_sh
 
 # Map it: tm_shape() + tm_dots() (or tm_bubbles...)
-mun_sh %>%
-  filter(ccau!=5) %>%
+mun_sh |>
+  filter(ccau!=5) |>
   tm_shape() +
-    tm_dots(col = "blue", size = 0.01)
+    tm_dots(fill = "blue", size = 0.01)
 
 # Adding contour for references
 spain <- read_sf("data/mapping/ESP_adm0/ESP_adm0_pr_peninsula.shp") # import Spanish boundaries
   # import shapefile with the contour first
 
-mun_sh %>%
-  filter(ccau!=5) %>%
+mun_sh |>
+  filter(ccau!=5) |>
   tm_shape() +
     tm_dots(col = "blue", size = 0.01) + 
-    tm_shape(spain) +
-    tm_borders()
+  tm_shape(spain) +
+    tm_borders(col = "grey70", lwd = 0.5)
 
 # Adjusting the size of the dots according to a particular field
   # population in 1860 here (pop1860)
-mun_sh %>%
-  filter(ccau!=5) %>%
+mun_sh |>
+  filter(ccau!=5) |>
   tm_shape() +
-  tm_bubbles(col = "blue", alpha = 0.5, border.col = "blue", 
-             size = "pop1860",
-             sizes.legend = c(500, 1000, 5000, 10000, 20000, 50000, 100000, 500000),
-             sizes.legend.labels = c("<.5", ".5-1", "1-5", "5-10", "10-20", "20-50", "50-100", ">100"),
-             title.size = "Population (in thousands), 1860") + 
+  tm_dots(fill = "blue", fill_alpha = 0.5, 
+          col = "blue", col_alpha = 0.5, 
+          size = "pop1860",
+          size.scale = tm_scale_continous(
+            ticks = c(500, 1000, 5000, 10000, 20000, 50000, 100000, 200000))) + 
   tm_shape(spain) +
-  tm_borders()
+    tm_borders(lwd = 0.05, col = "grey70")
 
 # Adding labels to the features: tm_text()
-
-mun_sh %>%
-  filter(ccau!=5) %>%
+mun_sh |>
+  filter(ccau!=5) |>
   tm_shape() +
-  tm_dots(col = "blue", size = "pop1860") + 
-  tm_text("municipio", just = "left", xmod = 0.5, size = 0.8) +
+  tm_dots(
+    fill = "blue", fill_alpha = 0.4,
+    col = "blue", col_alpha = 0.4,
+    size = "pop1860") +
+  tm_text("municipio", just = "left", xmod = 0.5, size = 0.5) +
   tm_shape(spain) +
-  tm_borders()
+  tm_borders(lwd = 0.5, col = "grey70")
 
+cities <- mun_sh |>
+  filter(pop1860>=50000)
 
-cities <- mun_sh %>% 
-  filter(pop1860>=50000) # big cities
-cities %>%
+mun_sh |>
+  filter(ccau!=5) |>
   tm_shape() +
-  tm_dots()
+  tm_dots(
+    fill = "blue", fill_alpha = 0.4,
+    col = "blue", col_alpha = 0.4,
+    size = "pop1860") +
+  tm_shape(spain) +
+  tm_borders(lwd = 0.5, col = "grey70") +
+  tm_shape(cities) +
+  tm_text("municipio", just = "left", xmod = 0.5, size = 0.5)
 
-mun_sh %>%
-  filter(ccau!=5) %>%
-  tm_shape() +
-    tm_dots(col = "blue", size = "pop1860") + 
-    tm_shape(spain) +
-    tm_borders() +
-    tm_shape(cities) +
-    tm_text("municipio", just = "left", xmod = 0.5, size = 0.8)
+  # you can also add labels to polygons if needed
 
 # Temporal variation
 
-mun_sh %>%
-  filter(ccau!=5) %>%
+mun_sh |>
+  filter(ccau!=5) |>
   tm_shape() +
-    tm_dots(col = "blue", size = c("pop1860", "pop1900", "pop1930"),
-          sizes.legend = c(250, 500, 1000, 5000, 10000, 20000, 50000, 100000, 500000, 1000000, 2000000),
-          sizes.legend.labels = c("<.25", ".25-.50", ".5-1", "1-5", "5-10", "10-20", "20-50", "50-100", "100-500", "500-1000", ">1000"),
-          title.size = "Population (in thousands)") + 
-    tm_facets(nrow = 1, free.scales.symbol.size = FALSE) +
-    tm_layout(panel.labels = c("1860", "1900", "1930"), panel.label.bg.color = "white",
-            legend.outside = TRUE, legend.position = c("center", "bottom")) +
-    tm_shape(spain) +
-    tm_borders()
+  tm_dots(
+    fill = "blue", fill_alpha = 0.4,
+    col = "blue", col_alpha = 0.4,
+    size = c("pop1860", "pop1900", "pop1930"),
+    size.legend = tm_legend(
+      title = "", 
+      orientation = "landscape"),
+    size.free = FALSE) +
+  tm_facets(nrow = 1) +
+  tm_layout(panel.labels = c("1860", "1900", "1930"),
+            panel.label.bg.color = "white") +
+  tm_shape(spain) +
+  tm_borders(lwd = 0.5, col = "grey70")
 
 
 # or using facets but we need to structure the data differently
-mun_sh_long <- mun_sh %>%
+mun_sh_long <- mun_sh |>
   pivot_longer(cols = starts_with("pop"), 
                names_to = "year", 
                names_prefix = "pop", 
-               values_to = "pop") %>%
-  filter(year=="1860" | year=="1900" | year=="1930") %>% # select only the years I am interested in
+               values_to = "pop") |>
+  filter(year=="1860" | year=="1900" | year=="1930") |> # select only the years I am interested in
   filter(ccau!=5) # excluding Canarias
 mun_sh_long
 
-tm_shape(spain) + tm_borders() + # Spanish border
-  tm_shape(mun_sh_long) + # municipalities
-    tm_dots(col = "blue", size = "pop", title.size = "Population") + 
-    tm_facets(by = "year", nrow = 1, free.scales.symbol.size = FALSE) +
-    tm_layout(legend.outside.position = "bottom")
+mun_sh_long |>
+  tm_shape() +
+  tm_dots(fill = "blue", fill_alpha = 0.5,
+          size = "pop",
+          size.legend = tm_legend(
+            title = ""
+            , orientation = "landscape")) +
+  tm_facets(by = "year", nrow = 1) +
+  tm_layout(legend.outside.position = "bottom") +
+  tm_shape(spain) + tm_borders()
 
-# Animated maps
-
-# install.packages("gifski")
-library("gifski")
-
-map_anim <- tm_shape(spain) + tm_borders() + 
-  tm_shape(mun_sh_long) + tm_symbols(size = "pop") +
-  tm_facets(by = "year", nrow = 1, ncol = 1, free.coords = FALSE)
-
-tmap_animation(map_anim, filename = "output/pop_1860_1930.gif", delay = 2) 
-    # save as a gif
-
-
-### Raster data
-library(geodata) # library containing ready-to-use spatial files (including rasters)
-?geodata
-
-elev_spain <- geodata::elevation_30s(country = "ES", res = 0.5, path = tempdir()) # SRTM 1KM
-elev_spain
-
-# Map it: tm_shape() + tm_raster()
-elev_spain %>%
-  tm_shape() + 
-    tm_raster(title = "Elevation", palette = terrain.colors(14)) + 
-    tm_legend(outside = TRUE)
-
-# Combining raster and shape files
-zgz_shp <- read_sf("data/mapping/ESP_adm2/ESP_adm2.shp") %>% 
-  filter(NAME_2=="Zaragoza")
-  # importing shapefile with province boundaries
-  # we already have a shapefile with municipalities
-rivers_main_shp <- read_sf("data/mapping/rivers/A3_main.shp")
-rivers_second_shp <- read_sf("data/mapping/rivers/A3_secondary.shp")
-
-elev_spain %>% 
-  tm_shape(bbox = zgz_shp) + 
-    tm_raster(title = "Elevation", palette = terrain.colors(14)) + 
-    tm_legend(outside = TRUE) + 
-  tm_shape(rivers_main_shp) + tm_lines(col = "blue", lwd = 1) +
-  tm_shape(rivers_second_shp) + tm_lines(col = "blue", lwd = 0.5) +  
-  tm_shape(mun_sh) + tm_dots(size = "pop1860", title.size = "Population, 1860")
 
 
 
@@ -289,13 +222,13 @@ tmap_arrange(m0, m1, m2, m3, ncol = 2)
 
 ## Retrieving the CRS: authority:code -- summary()
 spain                         # ETRS89 / UTM zone 30N
-spain %>% summary("geometry") # epsg:25830
-spain %>% st_crs()
+spain |> summary("geometry") # epsg:25830
+spain |> st_crs()
   # provides all the information needed to properly identify the CRS.
 
 ## Changing the CRS
 spain2 <- st_set_crs(spain, "EPSG:3035") # set CRS (LAEA Europe)
-spain2 %>% summary("geometry")
+spain2 |> summary("geometry")
 spain2 <- st_transform(spain, "EPSG:3035") # set CRS
 
 
@@ -331,8 +264,8 @@ tmap_arrange(m0, m1, ncol = 2)
 
 library(readxl) 
 paisley <- read_excel("data/paisley_data.xlsx") # Paisley data
-paisley_born <- paisley %>%
-  filter(countryb=="scotland") %>%
+paisley_born <- paisley |>
+  filter(countryb=="scotland") |>
   count(born, sort = TRUE)
 paisley_born
 
@@ -341,46 +274,67 @@ locations # shapefile with Scottish locations
 
 scotland <- read_sf("data/mapping/scotland/scotland.shp") # import the spatial object (shapefile)
 
-locations %>% summary("geometry") # epsg:27700
-scotland %>% summary("geometry") # epsg:4326
+locations |> summary("geometry") # epsg:27700
+scotland |> summary("geometry") # epsg:4326
 scotland <- st_transform(scotland, "EPSG:27700") # set CRS
+# or
+scotland <- st_transform(scotland, st_crs(locations)) 
+  # using the crs in the object "locations"
 
 tm_shape(scotland, bbox = locations) + tm_borders() +
   tm_shape(locations) + tm_dots(col = "blue")
 
 ## Clean the Paisley locations
-paisley <- paisley %>%
-  mutate(born = str_trim(born)) %>%       # removes leading/trailing spaces
-  mutate(born = str_to_lower(born)) %>%   # all to lower letters
+paisley <- paisley |>
+  mutate(born = str_trim(born)) |>       # removes leading/trailing spaces
+  mutate(born = str_to_lower(born)) |>   # all to lower letters
   mutate(born_adj = recode(born,          # homogenising categories
                            "campsey" = "campsie",                     
                            "bridge of wier" = "bridge of weir",
                            "n kilpatrick" = "new kilpatrick"))
 
-paisley <- paisley %>%
+paisley <- paisley |>
   mutate(born_adj = str_replace(born_adj, "shire", "")) # removing "shire"
 
-paisley_born <- paisley %>%
-  filter(countryb=="scotland") %>%
+paisley_born <- paisley |>
+  filter(countryb=="scotland") |>
   count(born_adj)
 paisley_born
 
 # Merge both objects: shapefile - paisley places 
-locations_ext <- locations %>%
-  mutate(name = str_to_lower(name)) %>%   # converts to lower case
-  left_join(paisley_born, by = join_by(name == born_adj))
-locations_ext
+locations_ext <- locations |>
+  mutate(name = str_to_lower(name)) |>   # converts to lower case
+  full_join(paisley_born, by = join_by(name == born_adj))
+locations_ext |> 
+  select(code, name, n)
 
-locations_ext %>%
-  filter(!is.na(n))
+locations_ext |>
+  filter(!is.na(n)) & is.na(code))
 
 # map the number of prisoners 
   # assuming we are satified with the matching
-scotland %>%
-  tm_shape(bbox = locations_ext) + tm_borders() +
-  tm_shape(locations) + tm_dots(col = "grey") +
-  tm_shape(locations_ext) + tm_bubbles(col = "red", size = "n")
+tm_shape(scotland, bbox = locations_ext) + tm_borders() +
+  tm_shape(locations) + tm_dots(fill = "grey", size = 0.05) +
+  tm_shape(locations_ext) +
+  tm_bubbles(fill = "red",
+             size = "n",
+             size.scale = tm_scale_continuous(
+               ticks = c(1, 5, 10, 25, 50, 100, 200)),
+             size.legend = tm_legend(
+               title = "Number of prisoners, by origin"))
   # most of our Scottish prisoners were born relatively near the prison
+
+## extracting features from larger spatial objects
+prov_shp <- read_sf("data/mapping/ESP_adm2/ESP_adm2.shp")
+prov_shp |>
+  tm_shape() +
+  tm_borders()
+
+zgz_shp <- prov_shp |>
+  filter(NAME_1=="Zaragoza")
+zgz_shp |>
+  tm_shape() +
+  tm_borders()
 
 ## Adding XY coordinates: st_as_sf()
 
@@ -391,20 +345,21 @@ zgz_mun
 zgz_mun_shp <- st_as_sf(zgz_mun, coords = c("lat", "lon"), crs = 3042)
 zgz_mun_shp
 
-zgz_mun_shp %>%
+zgz_mun_shp |>
   tm_shape() + tm_dots() +
   tm_shape(zgz_shp) + tm_borders()
 
 
 ## Geocoding
 
-paisley_born %>% arrange(-n)
+paisley_born |> arrange(-n)
 
 # install.packages("tidygeocoder")
 library(tidygeocoder)
 
-places_geo <- paisley_born %>%
-  geocode(born_adj, method = "osm", lat = latitude , lon = longitude, full_results = TRUE)
+places_geo <- paisley_born |>
+  geocode(born_adj, method = "osm", 
+          full_results = TRUE)
 places_geo
 view(places_geo)
 
@@ -420,42 +375,33 @@ view(places_geo)
 
 # improve the geocoding by adding more info (country)
 
-paisley_born <- paisley_born %>%
-  mutate(born_adj = str_to_title(born_adj)) %>%            # capitalise the first letter
+paisley_born <- paisley_born |>
+  mutate(born_adj = str_to_title(born_adj)) |>            # capitalise the first letter
   mutate(born_adj = paste(born_adj, ", Scotland", sep = ""))  # add string
 paisley_born
 
-places_geo <- paisley_born %>%
+places_geo <- paisley_born |>
   geocode(born_adj, method = "osm", full_results = TRUE)
 places_geo
 
-places_geo %>%
+places_geo |>
   filter(is.na(lat))
   # correct typos
   # finding the coordinates (lat, long) manually and add them using mutate()
 
 # transform it into a spatial object (including CRSs)
-places_geo_sf <- places_geo %>%
-  filter(!is.na(lat)) %>%
-  st_as_sf(coords = c("lat", "long"), crs = "EPSG:27700") # WGS 84 4326 EPSG:27700
+places_geo_sf <- places_geo |>
+  filter(!is.na(lat)) |>
+  st_as_sf(coords = c("lat", "long"), crs = 4326) # WGS 84 4326
   
 # map it
-places_geo_sf %>%
-  tm_shape() + tm_bubbles(col = "red", size = "n") +
+places_geo_sf |>
+  tm_shape() +
+  tm_bubbles(fill = "red",
+             size = "n",
+             size.scale = tm_scale_continuous(
+               ticks = c(1, 5, 10, 25, 50, 100, 200))) +
   tm_shape(scotland) + tm_borders()
-
-scotland %>%
-  tm_shape(bbox = places_geo_sf) + tm_borders() +
-  tm_shape(locations) + tm_dots(col = "grey") +
-  tm_shape(places_geo_sf) + tm_bubbles(col = "red", size = "n")
-
-scotland <- st_set_crs(scotland, "EPSG:27700") # set CRS (LAEA Europe)
-scotland %>% summary("geometry")
-scotland <- st_transform(scotland, "EPSG:27700") # set CRS
-
-locations %>% summary("geometry") # epsg:27700
-scotland %>% summary("geometry") # epsg:4326
-places_geo_sf %>% summary("geometry") # epsg:4326
 
 
 ## Digitise your own maps -- ArcGIS / QGIS

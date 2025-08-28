@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>1.4. Textual information (counting words) – Quantitative Methods for Historians - HIKU8863</title>
+<title>1.6. Social networks – Quantitative Methods for Historians - HIKU8863</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -152,7 +152,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">1.4. Textual information (counting words)</h1>
+<h1 class="title">1.6. Social networks</h1>
 </div>
 
 
@@ -169,424 +169,295 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>The script used in this session is included below. You can also downloaded it from <a href="4_desc_text.R" download="">here</a>.</p>
+<p>The script used in this session is included below. You can also downloaded it from <a href="6_networks.R" download="">here</a>.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code># clear de "Global Environment"
+<pre id="annotated-cell-1" class="code-annotation-code"><code>###### Social networks ######
+
+# clear de "Global Environment"
 rm(list=ls()) 
 
-# set working directory
-setwd("/Volumes/francijb/Documents/FRAN/Teaching/QM-2024/session") 
-
-# Install packages
-# install.packages("tidyverse")
-# install.packages("tidytext")
-# install.packages("tokenizers")
-
-# Open packages that we will be using
+# intro - simulated networks (run the following code: up to line 48)
+### nodes, edges, etc.
+### network structure
+### agents: centrality, bridges, etc.
 library(tidyverse)
-library(tidytext)
+library(igraph)      
+library(tidygraph)   
+library(ggraph)
 
-# Set the encoding (optional)
-Sys.setlocale("LC_ALL", "en_US.utf8")
-  # ensure that all our computers read the characters/symbols the same way
-  # you’re telling R to use U.S. English conventions with a UTF-8 codeset 
-  # it also depends on the language of the data your are using
-
-# Importing the data
-data &lt;- read_csv("data/state_of_the_union_texts.csv",
-                 locale = locale(encoding = "UTF-8"))
-  # we use same encoding as above 
-
-# Having a look at the data
-data
-print(data)
-print(data, n = 20)
-print(data, n = Inf)
-View(data)
-
-data |&gt; 
-  count(President)
-
-data |&gt;
-  ggplot(aes(x = Year) +
-  geom_histogram(bindwidth = 1)         
+set.seed(123)
+# Random (Erdős–Rényi): lower p increases sparsity
+g_random &lt;- sample_gnp(n = 50, p = 0.03, directed = FALSE) |&gt;
+  as_tbl_graph() |&gt;
+  mutate(degree = centrality_degree(),
+         betweenness = centrality_betweenness(),
+         closeness = centrality_closeness()) |&gt;
+  ggraph(layout = "nicely") +
+  geom_edge_link(alpha = 0.2) +
+  geom_node_point(size = 2, color = "steelblue") +
+  theme_void()
 
 
-# Reporting a particular speech (number 4 in this case)
-data$Text[4] 
-  # will show the fourth line of the text column of the "data" dataframe
+# Scale-free (Barabási–Albert)
+g_scalefree &lt;- sample_pa(n = 50, power = 2, m = 1, directed = FALSE) |&gt;
+  as_tbl_graph() |&gt;
+  mutate(degree = centrality_degree(),
+         betweenness = centrality_betweenness(),
+         closeness = centrality_closeness()) |&gt;
+  ggraph(layout = "nicely") +
+  geom_edge_link(alpha = 0.2) +
+  geom_node_point(size = 2, color = "steelblue") +
+  theme_void()
 
-# or
-speech_1912 &lt;- data |&gt; 
-  filter(Year==1912)
-speech_1912$Text
+# Clustered (high transitivity)
+g_clustered &lt;- sample_k_regular(no.of.nodes = 50, k = 4, directed = FALSE) |&gt;
+  as_tbl_graph() |&gt;
+  mutate(degree = centrality_degree(),
+         betweenness = centrality_betweenness(),
+         closeness = centrality_closeness()) |&gt;
+  ggraph(layout = "nicely") +
+  geom_edge_link(alpha = 0.2) +
+  geom_node_point(size = 2, color = "steelblue") +
+  theme_void()
 
+library(patchwork)
+g_random + g_scalefree + g_clustered
 
-#### n-grams (number of particular terms in the texts)
-data &lt;- data |&gt;
-  mutate(peace = str_count(Text, "[Pp]eace")) |&gt;
-  mutate(war = str_count(Text, "[Ww]ar")) 
+# set working directory
+setwd("/Volumes/francijb/Documents/FRAN/Teaching/QM_2024/session") 
 
-# summary statistics
-data |&gt;
-  summarize(obs = sum(!is.na(war)),
-            sum = sum(war),
-            mean = mean(war, na.rm = TRUE)) 
+# upload basic packages
+library(tidyverse)
 
-data |&gt;
-  group_by(Year) |&gt;
-  summarize(sum = sum(war), 
-            mean = mean(war, na.rm = TRUE)) |&gt;
-  ggplot(aes(x = Year, y = mean)) +
-  geom_line()
+# import the data
+letters &lt;- read_csv("data/tnp/tnp_letters.csv")
+letters
 
-data |&gt;
-  filter(Year&gt;1790) |&gt;
-  ggplot(aes(x = Year, y = war)) +
-  geom_line()
+# exploring the data (basic desc stats)
+letters |&gt;
+  count(from, sort = TRUE) |&gt;
+  mutate(perc = 100*n/sum(n)) |&gt;
+  mutate(cum_perc = cumsum(perc))
 
-data |&gt;
-  filter(war&gt;150)
-
-# aggregate the data into periods
-data |&gt;
-  mutate(period = case_when(
-    Year&lt;1914 ~ "Pre-1914",
-    Year&gt;=1914 &amp; Year&lt;=1945 ~ "World Wars",
-    Year&gt;1945 ~ "Post-1945")) |&gt;
-  mutate(period = factor(period, 
-                         levels = c("Pre-1914", "World Wars", "Post-1945"),
-                         ordered = TRUE)) |&gt;
-  group_by(period) |&gt;
-  summarize(sum = sum(war), 
-            mean = mean(war, na.rm = TRUE)) 
-  
-    # factor ranks them (instead of alphabetically, as with strings)
-
-# Plots
-data |&gt;
-  group_by(Year) |&gt;
-  summarize(peace = sum(peace), war = sum(war)) |&gt;
-  pivot_longer(c("peace", "war"), names_to = "word", values_to = "counts") |&gt;
-  ggplot(aes(x = Year, y = counts, color = word)) +
-  geom_line()
-
-data |&gt;
-  filter(Year&gt;1790) |&gt;
-  pivot_longer(c("peace", "war"), names_to = "word", values_to = "counts") |&gt;  
-  ggplot(aes(x = Year, y = counts, color = word)) +
-  geom_line()
-
-data |&gt;
-  filter(Year&gt;1840 &amp; Year&lt;1855 &amp; war&gt;50)
-
-## Regular expressions:
- # "^A" those starting with A
- # "e$" those ending with e
- # [ae] both a and e  
- # ^x except x
- # | or: (war|conflict)
- # Check for more: https://regexr.com/
-
-  # do it with "[Ww]omen"
-data &lt;- data |&gt; mutate(women = str_count(Text, "[Ww]om[ae]n"))
-
-data |&gt;
-  group_by(Year) |&gt;
-  summarize(women = sum(women)) |&gt;
-  ggplot(aes(x = Year, y = women)) +
-    geom_line()
-
-
-data |&gt;
-  filter(Year&gt;1790) |&gt;
-  ggplot(aes(x = Year, y = women)) +
-  geom_line()
-  # no need to group by year if you exclude the first year (with 2 speeches)
-
-
-
-#### Compute "word counts"
-
-# Counting all words or numbers that are separated by spaces on either side
-data &lt;- data |&gt;
-  mutate(wc = str_count(Text, "[\\w]+"))
-  # [\\w]+ is a regular expression (regex or regexp)
-  # [:alpha:]+ would also work: groups of alphanumeric characters without a space, punctuation or line break in between
-    # a sequence of characters that specifies a match pattern in text
-  # more on this here: https://regexr.com
-  # this other handy tool provides a quick references to regular expressions 
-    # and also allows testing them: https://regex101.com
-
-# Graph it
-data |&gt;
-  ggplot(aes(x = Year, y = wc)) + 
+senders &lt;- letters |&gt; count(from) |&gt; rename(n_out = n, agent = from)
+receivers &lt;- letters |&gt; count(to) |&gt; rename(n_in = n, agent = to)
+library(ggrepel)
+senders |&gt; full_join(receivers, by = "agent") |&gt;
+  ggplot(aes(x = n_out, y = n_in)) +
   geom_point() + 
-  geom_line()
-# just line graph
-# we might add geom_point() to underscore that we have missing years
-
-data |&gt; 
-  filter(Year&gt;1940 &amp; wc&gt;20000)
-
-data |&gt; 
-  mutate(war_rel = war/wc) |&gt;
-  mutate(war_rel2 = 1000*war/wc) |&gt;
-  filter(Year&gt;1790) |&gt;
-  ggplot(aes(x = Year, y = war_rel)) + 
-  geom_point() + 
-  geom_line()
-
-
-## the package ngramr allows doing this in the google books database
-# install.packages(ngramr)
-library(ngramr)
-ngrams &lt;- ngram(c("women", "peace", "war"), 
-                year_start = 1700)
-ngrams
-
-ngrams |&gt; 
-  ggplot(aes(x = Year, y = Frequency, colour = Phrase)) +
-  geom_line()
-
-
-
-#### Top word frequencies (the most common words)
-
-###### "tokenizing" first 
-  # removes all of the punctuation, 
-  # splits the text into individual words, and 
-  # converts everything into lowercase characters
-
-data_token &lt;- data |&gt;
-  unnest_tokens(output = words, input = Text)
-
-data_token # almost 1.8 million entries
-
-data_token |&gt;
-  count(words, sort = TRUE) |&gt; 
-  print(n = 20) # "Inf" display all rows
-  # the most common words have no meaning
-
-#### stop words 
-  # words that are so common that we are not interested in them 
-  # already built within the tidy environment
-
-stop_words |&gt; print(n = 25)
-  # note that the stop words are in the "word" column
-
-# Exclude stop_words from the tokens
-data_token_stop &lt;- data_token |&gt;
-  anti_join(stop_words, by = c("words" = "word"))
-  # anti_join drops the words matching in both "datasets"
-  # "words" &amp; "word" are the names of the fields in each "dataset"
-
-data_token_stop |&gt;
-  count(words, sort = TRUE) |&gt; 
-  print(n = 20)
-
-# Create our own stop words (or add more to the existing list)
-stop_words
-my_stop_words &lt;- c("peace", "war")
-my_stop_words
-custom_stop_words &lt;- tibble(word = my_stop_words, lexicon = "my_customization")
-custom_stop_words
-stop_words_custom &lt;- rbind(stop_words, custom_stop_words)
-stop_words_custom
-tail(stop_words_custom) # view the end of the tibble, look like our words were added correctly
-
-data_token_stop # reduce to almost 700,000 entries
-
-# Graphing - Top word frequencies
-data_token_stop |&gt;
-  count(words, sort=TRUE) |&gt;
-  top_n(15) |&gt;                     # selecting to show only top 15 words
-  mutate(words = reorder(words, n)) |&gt;  # highest frequency words appear first
-  ggplot(aes(words, n)) +
-    geom_col() +
-    coord_flip()
-
-# Focusing on a particular period (1850-1900)
-data_token_stop |&gt;
-  filter(Year &gt;1850 &amp; Year &lt; 1900) |&gt;
-  count(words, sort=TRUE) |&gt;
-  top_n(15) |&gt;                     # selecting to show only top 15 words
-  mutate(words = reorder(words, n)) |&gt;  # this will ensure that the highest frequency words appear to the left
-  ggplot(aes(words, n)) +
-  geom_col() +
-  coord_flip()
-
-# Comparing periods
-data_token_stop &lt;- data_token_stop |&gt;
-  mutate(period = ifelse(Year &lt;= 1900, "19th c.", "20th c."))
-
-data_token_stop |&gt;
-  group_by(period) |&gt;
-  count(words, sort=TRUE) |&gt;
-  mutate(proportion = n / sum(n) * 1000) |&gt;  # word freq- per 1000 words instead of counts
-  slice_max(order_by=proportion, n = 15) |&gt;  # selecting to show only top 15 words
-  mutate(words = reorder(words, desc(proportion))) |&gt;  # this will ensure that the highest frequency words appear to the left
-  ggplot(aes(reorder_within(x = words, by = proportion, within = period), proportion, fill = period)) +    # reordering is a bit tricky, see                                                                                                     ?reorder_within()
-    geom_col() +
-    scale_x_reordered() +
-    scale_fill_manual(values = c("blue", "#56B4E9")) +
-    coord_flip() +
-    facet_wrap(~period, ncol = 2, scales = "free") +
-    xlab("Word")
-
-?ggplot
-
-# Focusing on particular words
-data_token_stop &lt;- data_token_stop |&gt;
-  mutate(war = ifelse(words == "war", 1, 0))
-
-data_token |&gt;
-  filter(Year&gt;=1900 &amp; Year&lt;2000) |&gt;
-  mutate(women = ifelse(words == "women", 1, 0)) |&gt;
-  count(women)
-
-# Evolution over time
-data_token_stop |&gt;   
-  group_by(Year) |&gt;
-  summarize(fr_war = mean(war, na.rm = TRUE)) |&gt;
-  ggplot() +
-    geom_col(aes(x = Year, y = fr_war))
-
-
-# Stemming
-  # looking at the common root of similar words
-
-# install.packages(SnowballC)
-library(SnowballC)
-
-data_token_stop_stem &lt;- data_token_stop |&gt;
-  mutate(word_stem = wordStem(words))
-data_token_stop_stem
-
-data_token_stop_stem |&gt;
-  count(word_stem, sort=TRUE) |&gt; 
-  print(n = 30)
-
-data_token_stop_stem |&gt;
-  count(word_stem, sort=TRUE) |&gt;
-  top_n(15) |&gt;                     # selecting to show only top 15 words
-  mutate(word_stem = reorder(word_stem, n)) |&gt;  # this will ensure that the highest frequency words appear to the left
-  ggplot(aes(word_stem, n)) +
-  geom_col() + coord_flip()
-
-
-# We could do the whole process simultaneously
-data_adj &lt;- data |&gt;
-  unnest_tokens(output = words, input = Text) |&gt;       # tokenize
-  anti_join(stop_words, by = c("words" = "word")) |&gt;   # drop stop words
-  mutate(word_stem = wordStem(words))
-
-data_adj
-
-data_adj &lt;- data_adj |&gt;
-  mutate(war = ifelse(words == "war", 1, 0)) |&gt;
-  mutate(peace = ifelse(words == "peace", 1, 0))
-
-data_adj |&gt;   
-  group_by(Year) |&gt;
-  summarize(fr_war = mean(war, na.rm = TRUE),
-            fr_peace = mean(peace, na.rm = TRUE)) |&gt;
-  ggplot(aes(x = Year)) +
-    geom_line(aes(y = fr_war), color = "red") +
-    geom_line(aes(y = fr_peace), color = "blue")
-
-## dictionaries
-
-war_words &lt;- c("war", "conflict", "hostilities",    "agression", 
-               "armies", "army", "weapon")
-rights_words &lt;- c("rights", "democracy", "freedom")
-
-war_dict &lt;- tibble(word = war_words, dictionary = "war")
-rights_dict &lt;- tibble(word = rights_words, dictionary = "rights")
-
-dict &lt;- rbind(rights_dict, war_dict) # putting them together
-
-  # or import these lists from an txt, csv, excel file
-
-data |&gt;
-  unnest_tokens(output = words, input = Text) |&gt; 
-  inner_join(dict, by = c("words" = "word")) |&gt; 
-  count(Year, dictionary) |&gt; 
-  ggplot(aes(x = Year, y = n, color = dictionary)) +
-  geom_line() +
-  geom_smooth(se = FALSE)
-
-#### n-grams: multiple-word tokens
-
-data_token2 &lt;- data |&gt;
-  unnest_tokens(twogram, Text, token = "ngrams", n = 2)
-data_token2
-
-# in separate columns
-data_token2 &lt;- data_token2 |&gt;
-  separate_wider_delim(cols = twogram, delim = " ", names = c("g1", "g2"))
-data_token2
-
-## we could identify the most common bigrams and include them as unique words
-### "united nations"
-
-# identify words accompanying particular words
-women &lt;- data_token2 |&gt;
-  filter(g1 == "women" | g2 == "women") |&gt;
-  pivot_longer(g1:g2) |&gt; # put both columns in the same one
-  select(!name) |&gt; # drop the variable we are not using
-  rename(words = value) |&gt; # rename the new column we created
-  filter(words!="women") |&gt; # drop the word women (we are interested in those around)
-  anti_join(stop_words, by = c("words" = "word")) 
-
-women |&gt;
-  count(words, sort=TRUE) |&gt;
-  print(n = 25)
-
-women |&gt; 
-  filter(words == "pregnant") |&gt;
-  count(Year) 
-
-
-# Exercise: 
-  # think about a potential topic (word) 
-  # explore the words around it (2 in each side)
-
-
-# Further topics:
-  # TF-IDF Term frequency - Inverse document frequency
-  # POS (Part of Speech) - nouns, verbs, adjectives...
-  # Sentiment analysis
-  # Topic models
-  # Co-occurrence
-
-
-
-# check women / men
-
-data |&gt;
-  mutate(women = str_count(Text, "[Ww]omen")) |&gt;
-  summarize(women = sum(women)) # 300 
-
-data_token |&gt;
-  mutate(women = if_else(words, "women")) |&gt;
-  summarize(women = sum(women)) # 302 
-
-data_token2 |&gt;
-  mutate(women = str_count(g2, "[Ww]omen")) |&gt;
-  summarize(women = sum(women)) # 302 in either g1 and g2 
-
-### keywords-in-context
-# install.packages("quanteda")
-library(quanteda)
-
-tokens &lt;- corpus(data, text_field = "Text") |&gt;  
-  quanteda::tokens()
-
-keywords &lt;- kwic(tokens, pattern = "women", window = 5)
-
-head(keywords)</code></pre>
+  geom_text_repel(aes(label = ifelse(n_out &gt; 10 | n_in &gt; 25, agent, "")),
+                  vjust = -0.5, size = 2)
+
+### Exploring networks: all links simultaneously
+
+## convert the object into a network
+
+# install.packages("igraph")
+library(igraph)
+
+network &lt;- graph_from_data_frame(
+  d = letters, 
+  # vertices = people,      
+  directed = TRUE) 
+
+network
+
+## use a different package so it is "tidy"
+library(tidygraph)
+
+network_tidy &lt;- letters |&gt;
+  as_tbl_graph()
+network_tidy
+
+### visualising the network
+
+library(ggraph)
+
+set.seed(345) # so we see the same every time
+network_tidy |&gt;
+  ggraph("fr") + 
+  geom_edge_link0(alpha = 0.3) + 
+  geom_node_point(size = 0.5, alpha = 0.3, 
+                  color = "blue") + 
+  theme_graph()
+
+## connected vs disconnected nodes
+comps &lt;- components(network_tidy)
+  # three elements:
+    # 1. a vector assigning each node to a component (comps\$membership); 
+    # 2. the size of each component, that is, the number of nodes (comps\$csize); 
+    # 3. the total number of components (comp\$no).
+
+comps$csize
+
+## extract the biggest component
+main_network &lt;- network_tidy |&gt;
+  induced_subgraph(
+    which(comps$membership == which(comps$csize&gt;=10))) |&gt;
+  as_tbl_graph()
+main_network
+
+set.seed(456)
+main_network |&gt; # visualise it
+  ggraph("fr") + 
+  geom_edge_link0(alpha = 0.3) + 
+  geom_node_point(size = 0.5, alpha = 0.3,
+                  color = "blue") + 
+  theme_graph()
+
+##### Network metrics: global and local
+
+## Global metrics
+  # characterising the network itself
+    # compared to other networks or the same network over time
+  # size, density, diameter, average path length, connectedness...
+
+#### Extract two networks: before and during Elizabeth I's reign (1558-1603)
+n1 &lt;- network_tidy |&gt;
+  activate("edges") |&gt;
+  mutate(year = date_from %/% 10000) |&gt;
+  filter(year&lt;1558)
+comps &lt;- components(n1)
+n1 &lt;- n1 |&gt;
+  induced_subgraph(which(comps$membership == which.max(comps$csize))) |&gt;
+  as_tbl_graph()
+
+n2 &lt;- network_tidy |&gt;
+  activate("edges") |&gt;
+  mutate(year = date_from %/% 10000) |&gt;
+  filter(year&gt;=1558)
+comps &lt;- components(n2)
+n2 &lt;- n2 |&gt;
+  induced_subgraph(which(comps$membership == which.max(comps$csize))) |&gt;
+  as_tbl_graph()
+
+set.seed(567)
+s &lt;- 3
+x &lt;- 11
+y &lt;- 26
+g1 &lt;- n1 |&gt;
+  ggraph("fr") + 
+  geom_edge_link0(alpha = 0.3) + 
+  geom_node_point(size = 0.5, alpha = 0.3,
+                  color = "blue") + 
+  annotate("text", 
+           x = x, y = y,  
+           label = "1509-1557",
+           size = s, fontface = "bold") +
+  theme_graph() 
+g2 &lt;- n2 |&gt;
+  ggraph("fr") + 
+  geom_edge_link0(alpha = 0.3) + 
+  geom_node_point(size = 0.5, alpha = 0.3,
+                  color = "blue") + 
+  annotate("text", 
+           x = x, y = y,  
+           label = "1558-1603",
+           size = s, fontface = "bold") +
+  theme_graph() 
+library(patchwork)
+g1 + g2
+
+## compute the measures: gorder(), gsize(), diameter(), ...
+  # and construct a table reporting them
+tibble(
+  period = c("1509-1557", "1558-1603"),
+  nodes  = c(gorder(n1), gorder(n2)),
+  edges  = c(gsize(n1), gsize(n2)),
+  density  = c(edge_density(n1), edge_density(n2)),
+  diameter  = c(diameter(n1, directed = TRUE), 
+                diameter(n2, directed = TRUE)),  
+  avg_path  = c(mean_distance(n1, directed = TRUE), 
+                mean_distance(n2,  directed = TRUE)))
+
+## Local metrics
+### discriminating between the nodes: allows identifying important actors
+  # yields a metric for each node (agent)
+
+  # - Degree: number of connections (neighbours).
+  # - Closeness: distance to all other nodes.
+  # - Betweenness: how a node facilitates accessing other nodes. 
+  # - Eigenvector: connectedness to other influential nodes. 
+
+n2 &lt;- n2 |&gt;
+  activate("nodes") |&gt; # probably not needed
+  mutate(degree_out = centrality_degree(mode = "out"),
+         degree_in = centrality_degree(mode = "in"),
+         degree_tot = centrality_degree(mode = "total"),
+         closeness = centrality_closeness(), 
+         betweenness = centrality_betweenness(), 
+         eigen = centrality_eigen(directed = TRUE))
+
+n2 |&gt;
+  activate("nodes") |&gt;
+  arrange(desc(degree_out)) |&gt; 
+  as_tibble()
+
+n2 |&gt;
+  arrange(desc(closeness)) |&gt; 
+  as_tibble()
+
+## visualising local metrics
+set.seed(678)
+n2 |&gt;
+  ggraph("fr") + 
+  geom_edge_link0(alpha = 0.3) +
+  geom_node_point(aes(size = degree_out,
+                      color = closeness), 
+                  shape = 16, alpha = 0.6) +
+  geom_node_text(aes(label = if_else(closeness&gt;0.5 |
+                                       degree_out&gt;10,
+                                     name, NA)), size = 1.5) +
+  scale_color_gradient(low="#104E8B",high="#CD2626") +
+  scale_size(range = c(0.5, 4)) +
+  labs(color = "Closeness", 
+       size = "Degree")
+theme_graph()
+
+### Community (cluster) detection
+network_tidy # components
+
+# identifying connected/unconnected nodes
+set.seed(345)
+network_tidy |&gt;
+  mutate(component = group_components(),
+         component = as_factor(component)) |&gt;
+  ggraph("fr") + 
+  geom_edge_link0(alpha = 0.3) + 
+  geom_node_point(aes(color = component), size = 0.5) + 
+  scale_color_viridis_d() +
+  theme_graph() + 
+  theme(legend.position = "none") 
+
+## find clusters
+  # groups of nodes that are densely connected between them
+  # many different algorithms: lovain, leiden...
+
+set.seed(456)
+main_network |&gt;
+  as_undirected(mode = "collapse") |&gt; 
+  as_tbl_graph() |&gt; 
+  mutate(cluster = group_louvain(),
+         cluster = as_factor(cluster)) |&gt;
+  ggraph("fr") + 
+  geom_edge_link0(alpha = 0.3) + 
+  geom_node_point(aes(color = cluster), size = 0.5) + 
+  theme_graph() + 
+  scale_color_viridis_d() +
+  theme(legend.position = "none") 
+
+## explore clusters' properties
+main_network |&gt;
+  as_undirected(mode = "collapse") |&gt; 
+  as_tbl_graph() |&gt; 
+  mutate(cluster = group_louvain(),
+         cluster = as_factor(cluster)) |&gt;
+  activate(nodes) |&gt;
+  as_tibble() |&gt;
+  count(cluster, sort = TRUE) 
+
+## spatial networks (map them to "real" locations)</code></pre>
 </div>
 </div>
 

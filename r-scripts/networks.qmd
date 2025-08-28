@@ -1,0 +1,12 @@
+---
+title: "1.6. Social networks"
+---
+
+The script used in this session is included below. You can also downloaded it from <a href="6_networks.R" download>here</a>.
+
+```{r}
+#| echo: false
+#| warning: false
+cat(readLines("6_networks.R"), sep = "\n")
+```
+

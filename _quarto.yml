@@ -50,7 +50,9 @@ website:
           - text: "1.4 Textual information" 
             #file: r-scripts/desc_text.qmd   
           - text: "1.5 Mapping" 
-            #file: r-scripts/mapping.qmd             
+            #file: r-scripts/mapping.qmd  
+          - text: "1.6 Social networks" 
+            #file: r-scripts/networks.qmd              
       - text: "2. Correlation and regression"
         #file: r-scripts/corr_reg.qmd
       - text: "3. Uncertainty"

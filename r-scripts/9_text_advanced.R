@@ -28,6 +28,126 @@ library(SnowballC)
 data <- read_csv("data/state_of_the_union_texts.csv")
 data
 
+#### Tagging - Expanding on counting words (script 4) 
+  # tagging the corpus into "parts of speech" and "named entities"
+
+## Part-of-speech tagging
+### identify verbes, nouns, etc.
+
+# install.packages("udpipe")
+library(udpipe)
+
+  # first download and load the language library (English have several libraries)
+pos_model <- udpipe_download_model("english-gum")
+pos_model <- udpipe_load_model(file = pos_model$file_model)
+
+  # example with the first sentence of the first speech
+library(tokenizers)
+sample_sentence <- tokenize_sentences(data$Text[1])[[1]][[1]]
+tagged_pos <- udpipe_annotate(pos_model, x = sample_sentence)
+as_tibble(tagged_pos)
+
+### upos: universal part of speech tag
+### xpos: language- (or corpus-) specific part of speech tag
+| Tag         | Category                  |
+  |-------------|---------------------------|
+  | ADJ         | adjective                 |
+  | ADP         | adposition                |
+  | ADV: adverb | adverb                    |
+  | AUX         | auxiliary                 |
+  | CCONJ       | coordinating conjunction  |
+  | DET         | determiner                |
+  | INTJ        | interjection              |
+  | NOUN        | noun                      |
+  | NUM         | numeral                   |
+  | PART        | particle                  |
+  | PRON        | pronoun                   |
+  | PROPN       | proper noun               |
+  | PUNCT       | punctuation               |
+  | SCONJ       | subordinating conjunction |
+  | SYM         | symbol                    |
+  | VERB        | verb                      |
+  | X           | other                     |
+
+## finding the most commonly occuring nouns
+data_pos <- udpipe_annotate(pos_model,
+                            x = data$Text,
+                            doc_id = data$Year)    
+data_pos <- as_tibble(data_pos) |> 
+  mutate(Year = as.numeric(doc_id)) # more coherent with our dat
+data_pos |> 
+  filter(upos == "NOUN") |> 
+  count(lemma, sort=TRUE) |>  
+  top_n(15) |>                 
+  mutate(lemma = reorder(lemma,n)) |>  
+  ggplot(aes(lemma, n)) + 
+  geom_col() + 
+  coord_flip()
+  
+## another example more for language/literary analyses: 
+  # chart the number of adjectives, nouns and verbs (as a percentage of total words)
+
+data_pos |> 
+  group_by(Year) |> 
+  summarize(word_count = n(), 
+            nouns = sum(upos == "NOUN"), 
+            verbs = sum(upos == "VERB"),
+            adj = sum(upos == "ADJ")) |> 
+  mutate(nouns = nouns/word_count, 
+         verbs = verbs/word_count, 
+         adj = adj/word_count) |> 
+  select(!word_count) |> 
+  pivot_longer(!Year, names_to = "POS", values_to = "Count") |> 
+  ggplot() +
+  geom_line(aes(x = Year, y = Count, group = POS, color = POS)) +
+  scale_y_continuous(labels = scales::label_percent()) + # labels as %
+  scale_x_continuous(breaks = seq(1905, 2021, 10))
+
+
+## Named entity recognition (NER)
+install.packages("entity") # wrapped around NLP and openNLP
+  # download the zip ball here: 
+  # https://github.com/trinker/entity/?tab=readme-ov-file#installation
+  # and run:
+  if (!require("pacman")) install.packages("pacman")
+  pacman::p_load_gh("trinker/entity")
+
+library(entity)
+  
+  # entity can annotate six kinds of names: 
+  ## persons, locations, organizations, dates, mentions of money, and dates
+  ## person_entity(), location_entity(), organization_entity(), ... 
+
+## example with locations (what type before and after 1900?)
+location_entity(data$Text[5]) 
+
+locations <- data |> 
+  mutate(locations = location_entity(Text)) 
+locations |>   
+  mutate(Period = ifelse(Year<1900, "XIX c.", "XX c."))  |>  
+  mutate(Period = factor(Period, levels = c("XIX c.", "XX c."))) |> 
+  unnest(locations)|> # instead of unnest_tokens (unnesting a list now)
+  group_by(Period) |>                                            
+  count(locations, sort=TRUE) |> 
+  mutate(proportion = 1000*n/sum(n)) |>                    
+  top_n(15) |> 
+  ggplot(aes(x = reorder_within(x = locations, 
+                                by = proportion, 
+                                within = Period), 
+             y = proportion, 
+             fill = Period)) +    
+  geom_col() +
+  scale_x_reordered() +
+  coord_flip() +
+  facet_wrap(~Period, ncol = 2, scales = "free") +
+  labs(x = "Word", 
+       y = "Frequency per 1000 words", 
+       title = "Location frequencies") +  
+  theme_bw() +
+  guides(fill="none") 
+
+  ### we could now map this (geocoding first to extract xy-coordinates)
+
 #### TF-IDF Term frequency - Inverse document frequency
   # Identifying words that are unique (or show up less often) to certain documents (speeches, periods, etc.)
   # No need to "stopwords" because words that are common in all docs are unimportant here
