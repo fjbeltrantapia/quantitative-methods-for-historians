@@ -43,15 +43,15 @@ website:
         contents: 
           - text: "1.1. Qualitative variables"
             #file: r-scripts/desc_qual.qmd
-          - text: "1.2 Numerical variables" 
+          - text: "1.2. Numerical variables" 
             #file: r-scripts/desc_num.qmd
-          - text: "1.3 Bivariate statistics" 
+          - text: "1.3. Bivariate statistics" 
             #file: r-scripts/desc_bivar.qmd 
-          - text: "1.4 Textual information" 
+          - text: "1.4. Textual information" 
             #file: r-scripts/desc_text.qmd   
-          - text: "1.5 Mapping" 
+          - text: "1.5. Mapping" 
             #file: r-scripts/mapping.qmd  
-          - text: "1.6 Social networks" 
+          - text: "1.6. Social networks" 
             #file: r-scripts/networks.qmd              
       - text: "2. Correlation and regression"
         #file: r-scripts/corr_reg.qmd
@@ -61,7 +61,7 @@ website:
         contents: 
           - text: "4.1. Multiple regression"
             #file: r-scripts/mult_reg.qmd
-          - text: "4.2 Challenges to regression" 
+          - text: "4.2. Challenges to regression" 
             #file: r-scripts/chall_reg.qmd        
       - text: "5. Advance textual analysis"
         #file: r-scripts/text_advanced.qmd        
