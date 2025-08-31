@@ -34,6 +34,8 @@ Below you can find a curated set of varied historical datasets that you can use 
 
 - [The HathiTrust Library](https://www.hathitrust.org) also contains millions of digitised texts and an online tool for single word queries ([bookworm](https://bookworm.htrc.illinois.edu/develop/)). The underlying data can be downloaded by request. The [hathiTools](https://xmarquez.github.io/hathiTools/) R package [@marquez2022] allows to interact directly with these resources. 
 
+- The [American Stories](https://huggingface.co/datasets/dell-research-harvard/AmericanStories) dataset is a collection of full article texts extracted from historical U.S. newspaper images [@dell2023]. It includes nearly 20 million scans from the public domain [Chronicling America](https://www.loc.gov/collections/chronicling-america/titles/?searchType=advanced&st=table&sb=title_s_asc) collection maintained by the Library of Congress. 
+
 ## Norwegian data
 
 The [National Biblioteket](https://www.nb.no/search) has million of digitised resources (books, manuscripts, newspapers, letters, etc.). As well as hosting an online [norsk n-gram](https://www.nb.no/ngram/#1_1_1__1_1_3_1810%2C2022_2_2_2_12_2) for quering the corpus, the [DH-LAB](https://www.nb.no/dh-lab/digital-tekstanalyse/) is also creating its own tools for accessing and analysing their collections (including R packages). In any case, if you are interested in a particular period, you can directly contact them and request a particular set of texts. 
