@@ -2,7 +2,7 @@
 title: "Other historical datasets"
 ---
 
-Below you can find a curated set of varied historical datasets that you can use for the class assignments and your own research projects. Please make sure to read the original article describing the information. Digitising historical sources constitutes a huge effort, so we should especially thanks (and properly acknowledge) those authors who make their datasets public.  
+Below you can find a curated set of varied historical datasets that you can use for the class assignments and your own research projects. Please make sure to read the original article describing the information. Digitising historical sources constitutes a huge effort, so we should especially thanks (and properly acknowledge) those authors who make their datasets public. The list is obviously highly selected based on my own interests and availability, so you are also free to choose your own sources.
 
 ## International data
 
@@ -17,6 +17,8 @@ Below you can find a curated set of varied historical datasets that you can use 
 - [VOC Dataset](https://zenodo.org/records/10599528) [@petram2024]: This dataset stores the pay ledgers of the Dutch East India Company’s (VOC), primarily from the eighteenth century. It contains almost 800,000 records containing each crew member’s name, place of origin, rank, wage, etc. The raw information has been carefully curated and stored in several .csv files that can be merged together using the corresponding IDs. Read more about this source [here](https://openhumanitiesdata.metajnl.com/articles/10.5334/johd.210).
 
 - [Tudor Network of Power](https://github.com/tudor-networks-of-power/code/tree/main/TNP_DATA) [@tnp2023]. This data contains all (surviving) items of correspondence in the Tudor State Papers (1509-1603), which are the official government records of the Tudor period in England. As explained by the authors [@ahnert-etal2023], data cleaning and curation constituted a significant effort. As well as more traditional quantitative methods, this data set is suited for the network analysis.
+
+- [A brief history of human time](https://medialab.github.io/bhht-datascape/#about) [@laouenan2022]. This database includes information on 2.2 million notable individuals born between 3500BC and 2020 (5,500 years of human history) collected from Wikipedia and other secondary sources. As well as dates of birth and death, the data set includes place of birth and other features characterising these individuals (when available). As the authors document, Anglo-Saxon personalities are over-represented due to the bias naturally present in existing projects based on the English edition of Wikipedia. See also @schich-etal2014 who used the dates of birth and death of a subsample of this data (150,000 notable individuals) to map the evolution of European cultural history during the last 2,000 years.
 
 - [Academich scholars and literati in Medieval and Early Modern Europe](https://perso.uclouvain.be/david.delacroix/menushiny.html) [@delacroix2021]. Relational database on around 83,000 scholars and literati active in European Academia between 1000 and 1800. As well as place and year of birth and details, it details to which institutions these individuals belonged (universities, scientific academies, etc.). See @delacroix2025a and @delacroix2025b for two applications using social network analysis.
 
