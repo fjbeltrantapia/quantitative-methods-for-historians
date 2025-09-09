@@ -1,5 +1,5 @@
 ---
-title: "Case-study 1: The Paisley House of Correction Dataset"
+title: "Case-study 1: The Paisley House of Correction"
 ---
 
 The fist case-study deals with the admission records from the Paisley prison, an institution located in a village near Glasgow (The Scottish National Archives). Kept in the National Archives of Scotland, these registers provide individual information on those prisoners who were admitted into this institution between 1841 and 1883. 

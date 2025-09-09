@@ -12,8 +12,9 @@ As an illustration, please read the text included in the link below that records
 
 The full corpus contains 235 texts (speeches; with a total of almost 1.7 million words) and constitutes an important source of information about the US political agenda and the wider socio-economic and cultural context surrounding them. This information has been gathered together into a .csv file that looks like @fig-csv below. Instead of columns, comma-separate (.csv) files separate the different pieces of information using commas as delimiters: name of the president delivering the speech (*President*), the year the speech was delivered (*Year*), the title of the speech (*Title*) and the (whole) text of the speech itself (*Text*).^[An extended dataset including party affiliation is available here: https://www.kaggle.com/datasets/rtatman/state-of-the-union-corpus-1989-2017] The first row displays the name of these variables and the remaining rows are devoted to each observation (speech) in the dataset.
 
-::: {#fig-csv}
+::: {#fig-csv layout-ncol="1"}
 ![](images/speeches-csv.png){width="100%" height="100%" fig-align="center"}
+
 Digital version of the State of the Union Addresses (.csv file).
 :::
 

@@ -1,0 +1,31 @@
+---
+title: "Case-study 3: The Tudor Network of Letters"
+---
+
+The third case-study deals with **The Tudor Networks of Power** data set [@tnp2023], which contains a large corpus of letters originated from the correspondence kept in the [Tudor State Papers](https://www.nationalarchives.gov.uk/help-with-your-research/research-guides/state-papers-domestic-1547-1649/), thus covering the period from the ascension of Henry VIII (1509) and the death of Elizabeth I (1603), an important period in British and European history.^[Apart from these two monarchs, Edward VI (1547-1553) and Mary I (1553-1558) also reigned during this period.] 
+
+The letter below, for instance, dated in April 1554, was sent from [Queen Mary I](https://en.wikipedia.org/wiki/Mary_I_of_England) ("Marye the quene") to inform Lord Paget of the imminent arrival of Phillip II, Prince of Spain, to England (more examples [here](https://www.sothebys.com/en/articles/letters-from-tudor-monarchs-to-the-man-who-survived-them)). [Lord Paget](https://en.wikipedia.org/wiki/William_Paget,_1st_Baron_Paget), an important statesman and diplomat, was crucial during the negotiations to secure a marriage agreement between Mary and Philip, who were married at Winchester Cathedral on July 1554. 
+
+::: {#fig-mary layout-ncol="1"}
+![](images/letter-mary.png){width="100%" height="100%" fig-align="center"}
+
+Letter signed by Queen Mary I (St James's Palace, 18 April 1554). Source: [here](https://www.sothebys.com/en/buy/auction/2019/english-literature-history-childrens-books-and-illustrations/queen-mary-i-letter-signed-18-april-1554?locale=en).
+:::
+
+These letters form part of the official government records of the Tudor period in England. In particular, they store the communications between the members of the government: the monarchs' secretaries and the monarchs themselves, local government officials, overseas embassies and military missions. They also include intercepted and seized correspondence, as well as the petitions to government from across Tudor Society. The provide therefore a privileged window into the functioning of the Tudor governments and the society as a whole.
+
+In total, there are almost 140,000 letters, exchanged between more than 20,000 historical actors. You can check the wonderful visualisation the authors made available [here](https://tudornetworks.net).] This digitised source that has opened up new ways of studying the Early Modern Period [@ahnert-etal2023]. Given the scale of the dataset, we will work with a 1 per-cent random sample to reduce the computing requirements. The resulting data frame contains 1,393 rows, which in our case refer to letters. The image below shows how the first rows in this data set look like. 
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+library(tidyverse)
+library(readxl)
+letters <- read_csv("data/tnp-letters-locations.csv")
+letters
+```
+
+This source includes information on the sender (*from*) and the receiver (*to*), as well the dates these letters were sent and received (*date_from* and *date_to*). Note that the first two columns also define the direction of the relationship: `from` A `to` B. The same person can be therefore found as sender and/or recipient (he/she can also send/receive one or multiple letters to/from the same or different individuals).^[Although the data set we are exploring does not contain information on the content of the letters themselves, the original source includes a description of the letter contents @ahnert-etal2023 [p.147-204]. This would constitute another layer. Here, we are just concern with the metadata (sender, recipient, place of origin, date, etc.) but this does not preclude the analysis of the texts themselves in different stages of the research process.] This dataset also indicates the locations of the sender and the recipient, as well as their subsequent spatial coordinates: longitude and latitudes (*x_from* and *y_from*; *x_to* and *y_to*).^[The original data only reports the sending location. We have curated it  and completed the information assuming that those receiving the letters did so in the location that was most common when sending letters (we should be aware nonetheless that we are not sure where exactly the letter was dispatched to).] Mapping these locations allow having a sense of the reach of the Tudor governments (their worldview). 
+
+Given that these letters document the relationships between these historical actors, we will treat this data set as a social network. Explicitly analysing the relationships between these actors helps understanding the complex web of social and institutional relationships that shaped their world: the presence of distinct communities, the role that each member played within the wider network; the emergence, evolution and demise of particular communities; the features that made these networks different; etc. As the authors made perfectly clear, the letters that ended up in this data set constitute a selected sample of all existing letters, so any inference should be taken with caution.
