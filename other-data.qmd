@@ -2,13 +2,13 @@
 title: "Other historical datasets"
 ---
 
-Below you can find a curated set of varied historical datasets that you can use for the class assignments and your own research projects. Please make sure to read the original article describing the information. Digitising historical sources constitutes a huge effort, so we should especially thanks (and properly acknowledge) those authors who make their datasets public. The list is obviously highly selected based on my own interests and availability, so you are also free to choose your own sources.
+Below you can find a curated set of varied historical datasets that you can use for the class assignments and your own research projects. Please make sure to read the original article describing the information. Digitising historical sources constitutes a huge effort, so we should especially thank (and properly acknowledge) those authors who make their datasets public. The list is obviously highly selected based on my own interests and availability, so you are also free to choose your own sources.
 
 ## International data
 
 - [Hansard dataset](https://hansard.parliament.uk/about): UK Parliamentary speeches between 1806 and 1911 (over 1 million parliamentary speeches). This is a huge dataset that might be computationally too demanding on some machines. Find <a href="data/other-data/hansard_sample.csv" download>here</a> a random sample of 10,000 speeches. See @blaxill2020 and @guldi2023 for illustrations using this information.
 
-- Population censuses. [IPUMS International](https://international.ipums.org/international/) holds individual-level information from a variety of historical population censuses [@ruggles2025]. The same or even more extended datasets can be requested to the respective national agencies). 
+- Population censuses. [IPUMS International](https://international.ipums.org/international/) holds individual-level information from a variety of historical population censuses [@ruggles2025]. The same or even more extended datasets can be requested to the respective national agencies. 
 
 - Civil and parish registers. [The European Historical Samples Network](https://ehps-net.eu) provides micro-data on individuals (families and households) taken from birth (and baptisms), marriage and death records (and the like). This information allows following individuals through their life courses and study topics such as fertility, mortality, age at marriage and partner choice, social mobility and migration, among others. See @alter2014 and @quaranta2021.
 
