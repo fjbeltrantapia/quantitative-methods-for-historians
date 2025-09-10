@@ -10,7 +10,7 @@ Below are the instructions to prepare the session in advance:
 
 **3. Download the following materials**. Store these files in separate folders (named `data` and `scripts`, respectively) within the folder `quants`:
 
-  * The [datasets]{.underline} we will be working with: [here](data/paisley-data.xlsx) and <a href="data/state-of-the-union-texts.csv" download>here</a>.
+  * The [datasets]{.underline} we will be working with: [here](data/paisley-data.xlsx), <a href="data/state-of-the-union-texts.csv" download>here</a> and <a href="data/tnp-letters-locations.csv" download>here</a>. We will also need the following .zip files for the mapping session: [here](data/dist-1860.zip) and [here](data/tnp-shp.zip).
     
   * The [R scripts]{.underline} containing the code to extract information from them (available in Blackboard).
   
