@@ -18,7 +18,7 @@ Below are the instructions to prepare the session in advance:
   
 **5. Read the following texts in advance:** 
 
-  - The background information for the two [case-studies]{.underline} we will be exploring: [The Paisley Prisoners' Dataset](backg-paisley.html) and [The State of the Union Presidential Speeches](backg-speeches.html).
+  - The background information for the three [case-studies]{.underline} we will be exploring: [The Paisley Prisoners](backg-paisley.html), [The State of the Union Presidential Speeches](backg-speeches.html) and [The Tudor Network of Letters](backg-tnp.html).
 
   - The article [Quantifying history]{.underline} (available in Blackboard). This text outlines the advantages and disadvantages of using quantitative and computational methods in history. We will be discussing it at the beginning of the first session.
 

@@ -84,111 +84,137 @@ dist_sh |>
 
 ### Point shapefiles
 
-mun_sh <- read_sf("data/mapping/mun_1860_1930/mun_1860_1930.shp")
-mun_sh
+letters <- read_sf("data/tnp-shp/tnp-letters.shp")
+letters
+  # 845 rows
+  # some locations are duplicated (letters being sent from the same place)
 
 # Map it: tm_shape() + tm_dots() (or tm_bubbles...)
-mun_sh |>
-  filter(ccau!=5) |>
+letters |>
   tm_shape() +
-    tm_dots(fill = "blue", size = 0.01)
+  tm_dots(fill = "blue", size = 0.05)
 
 # Adding contour for references
-spain <- read_sf("data/mapping/ESP_adm0/ESP_adm0_pr_peninsula.shp") # import Spanish boundaries
-  # import shapefile with the contour first
+  # import your own shapefile
+  # obtain it from somewhere else
+# install.packages("rnaturalearth")
+library(rnaturalearth)
 
-mun_sh |>
-  filter(ccau!=5) |>
+coast <- ne_coastline(scale = "medium", returnclass = "sf")
+  # world coastline (for contour)
+coast
+
+letters |>
   tm_shape() +
-    tm_dots(col = "blue", size = 0.01) + 
-  tm_shape(spain) +
-    tm_borders(col = "grey70", lwd = 0.5)
+  tm_dots(fill = "blue", size = 0.05) +
+  tm_shape(coast, bbox = letters) + # bounding box around the dots
+  tm_lines(lwd = 0.5, col_alpha = 0.5)
 
 # Adjusting the size of the dots according to a particular field
-  # population in 1860 here (pop1860)
-mun_sh |>
-  filter(ccau!=5) |>
+  # number of letters sent from each location
+  # create that field first
+
+letters_n <- letters |> # 696 unique locations
+  count(from, place_from)
+  # some actors sent letters from different places
+
+letters_n |> as_tibble() |>
+  ggplot(aes(x = n)) + geom_histogram()
+
+letters_n |>
   tm_shape() +
-  tm_dots(fill = "blue", fill_alpha = 0.5, 
-          col = "blue", col_alpha = 0.5, 
-          size = "pop1860",
-          size.scale = tm_scale_continous(
-            ticks = c(500, 1000, 5000, 10000, 20000, 50000, 100000, 200000))) + 
-  tm_shape(spain) +
-    tm_borders(lwd = 0.05, col = "grey70")
+  tm_symbols(fill = "blue", col = "blue", col_alpha = 0.5, 
+          size = "n",
+          size.scale = tm_scale_discrete(
+            ticks = c(1, 2, 3, 4, 5, 6), # or "ticks = 1:6"   
+            values  = c(0.03, 0.18))) + # size of the dots (range)
+  tm_shape(coast, bbox = letters) + # bounding box around the dots
+  tm_lines(lwd = 0.5, col_alpha = 0.5)
+
+  # this is "discrete" but it could be:
+    # tm_scale_intervals() or tm_scale_continous()
+    # depending the type of field we want to map
 
 # Adding labels to the features: tm_text()
-mun_sh |>
-  filter(ccau!=5) |>
+letters_n |>
   tm_shape() +
-  tm_dots(
-    fill = "blue", fill_alpha = 0.4,
-    col = "blue", col_alpha = 0.4,
-    size = "pop1860") +
-  tm_text("municipio", just = "left", xmod = 0.5, size = 0.5) +
-  tm_shape(spain) +
-  tm_borders(lwd = 0.5, col = "grey70")
+  tm_symbols(fill = "blue", col = "blue", col_alpha = 0.5, 
+             size = "n",
+             size.scale = tm_scale_discrete(
+               ticks = c(1, 2, 3, 4, 5, 6), # or "ticks = 1:6"   
+               values  = c(0.03, 0.18))) + # size of the dots (range)
+  tm_text("from", xmod = 0.5, size = 0.2) +
+  tm_shape(coast, bbox = letters) + # bounding box around the dots
+  tm_lines(lwd = 0.5, col_alpha = 0.5)
 
-cities <- mun_sh |>
-  filter(pop1860>=50000)
+key_actors <- letters_n |>
+  filter(n>=5)
 
-mun_sh |>
-  filter(ccau!=5) |>
+letters_n |>
   tm_shape() +
-  tm_dots(
-    fill = "blue", fill_alpha = 0.4,
-    col = "blue", col_alpha = 0.4,
-    size = "pop1860") +
-  tm_shape(spain) +
-  tm_borders(lwd = 0.5, col = "grey70") +
-  tm_shape(cities) +
-  tm_text("municipio", just = "left", xmod = 0.5, size = 0.5)
+  tm_symbols(fill = "blue", col = "blue", col_alpha = 0.5, 
+             size = "n",
+             size.scale = tm_scale_discrete(
+               ticks = c(1, 2, 3, 4, 5, 6), # or "ticks = 1:6"   
+               values  = c(0.03, 0.18))) + # size of the dots (range)
+  tm_shape(key_actors) +
+  tm_text("from", xmod = 0.5, size = 0.2) +
+  tm_shape(coast, bbox = letters) + # bounding box around the dots
+  tm_lines(lwd = 0.5, col_alpha = 0.5)
+
 
   # you can also add labels to polygons if needed
 
-# Temporal variation
+# Temporal variation: 
+  
+  # only two periods for simplicty
 
-mun_sh |>
-  filter(ccau!=5) |>
+  # let's create them: elizabethan period (1558-) and before
+bbox_all <- letters
+
+letters |>
+  mutate(year = date_from %/% 10000) |>
+  mutate(period = if_else(year>=1558, "Elizabethan", "Pre-1558"),
+         period = factor(period, 
+                         levels = c("Pre-1558", "Elizabethan"))) |>
+  count(period, from, place_from) |> # or group_by() and summarise()
   tm_shape() +
-  tm_dots(
-    fill = "blue", fill_alpha = 0.4,
-    col = "blue", col_alpha = 0.4,
-    size = c("pop1860", "pop1900", "pop1930"),
-    size.legend = tm_legend(
-      title = "", 
-      orientation = "landscape"),
-    size.free = FALSE) +
-  tm_facets(nrow = 1) +
-  tm_layout(panel.labels = c("1860", "1900", "1930"),
-            panel.label.bg.color = "white") +
-  tm_shape(spain) +
-  tm_borders(lwd = 0.5, col = "grey70")
+  tm_symbols(fill = "blue", col = "blue", col_alpha = 0.5, 
+             size = "n",
+             size.scale = tm_scale_discrete(
+               ticks = c(1, 2, 3, 4, 5, 6), # or "ticks = 1:6"   
+               values  = c(0.03, 0.18)), # size of the dots (range)
+             size.legend = tm_legend(
+               title = "Number of letters", 
+               orientation = "landscape")) + 
+  tm_facets(by = "period", nrow = 1, free.coords = FALSE) +
+  tm_shape(coast, bbox = bbox_all) + # so it does not change over maps
+  tm_lines(lwd = 0.5, col_alpha = 0.5) +
+  tm_options(component.autoscale = FALSE) + # to disable rescaling
+  tm_layout(legend.outside.position = "bottom",
+            legend.text.size  = 0.5,
+            legend.title.size = 0.5,
+            panel.label.bg.color = "white",
+            panel.label.size = 0.5)
+
+  # %/% is integer division 
+  # it divides two numbers and returns the whole number part
+    # (dropping any remainder) / note that date is a number (not a proper date)
 
 
-# or using facets but we need to structure the data differently
-mun_sh_long <- mun_sh |>
-  pivot_longer(cols = starts_with("pop"), 
-               names_to = "year", 
-               names_prefix = "pop", 
-               values_to = "pop") |>
-  filter(year=="1860" | year=="1900" | year=="1930") |> # select only the years I am interested in
-  filter(ccau!=5) # excluding Canarias
-mun_sh_long
+## it could be done by creating two independent maps 
+  # and putting them together with patchwork
+  # library(patchwork)
+  # map1 + map2
+letters_1 <- letters |>
+  mutate(year = date_from %/% 10000) |>
+  filter(year<1558) |>
+  count(from, place_from)
 
-mun_sh_long |>
-  tm_shape() +
-  tm_dots(fill = "blue", fill_alpha = 0.5,
-          size = "pop",
-          size.legend = tm_legend(
-            title = ""
-            , orientation = "landscape")) +
-  tm_facets(by = "year", nrow = 1) +
-  tm_layout(legend.outside.position = "bottom") +
-  tm_shape(spain) + tm_borders()
-
-
-
+letters_2 <- letters |>
+  mutate(year = date_from %/% 10000) |>
+  filter(year>=1558) |>
+  count(from, place_from)
 
 ### A brief note on coordinate systems and projections
 
