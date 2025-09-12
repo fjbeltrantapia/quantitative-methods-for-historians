@@ -6,7 +6,7 @@ Instructor: [Francisco J. Beltrán Tapia](https://fjbeltrantapia.github.io)
 
 \vspace{1em}
 
-This course, offered by the [Faculty of Humanities](https://www.ntnu.edu/hf) at the [Norwegian University of Science and Technology](https://www.ntnu.edu), provides a practical introduction on how historians can use computational tools to learn about the past.
+This MA/PhD course, offered by the [Faculty of Humanities](https://www.ntnu.edu/hf) at the [Norwegian University of Science and Technology](https://www.ntnu.edu), provides a practical introduction on how historians can use computational tools to learn about the past.
 
 ## Description
 
@@ -16,7 +16,9 @@ How can we make sense of this ever-increasing wealth of information? Computation
 
 This course provides an in-depth introduction to quantitative methods, covering some of the techniques most widely used in research in the historical and social sciences. This hands-on course shows how to apply quantitative methods to historical information, both textual and numerical, keeping statistical theory and mathematics to a minimum. The goal is to provide students with the tools to critically engage with the literature relying on quantitative methods and to be able to conduct original research using those tools either in academia, the public, or the business sector. In the process, students will master R, a free statistical software widely used by practitioners in many different fields.
 
-The course is taught intensively during one week (morning and afternoon sessions; 30 hours in total). Each session combines lectures and computer practicals using R. Students will learn by applying the different concepts to real data used by historians. No previous background in computing or statistics is required.
+The course is taught intensively during one week (morning and afternoon sessions; 30 hours in total). Each session combines lectures and computer practicals using R. Students will learn by applying the different concepts to real data used by historians. 
+
+The course is open to Master and PhD students. No previous background in computing or statistics is required. For more information, contact [Francisco J. Beltrán Tapia](https://fjbeltrantapia.github.io). 
 
 ### Important warning
 
