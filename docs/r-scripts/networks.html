@@ -287,7 +287,8 @@ network_tidy |&gt;
   theme_graph()
 
 ## connected vs disconnected nodes
-comps &lt;- components(network_tidy)
+comps &lt;- network_tidy |&gt;
+  components()
   # three elements:
     # 1. a vector assigning each node to a component (comps\$membership); 
     # 2. the size of each component, that is, the number of nodes (comps\$csize); 
@@ -298,8 +299,8 @@ comps$csize
 ## extract the biggest component
 main_network &lt;- network_tidy |&gt;
   induced_subgraph(
-    which(comps$membership == which(comps$csize&gt;=10))) |&gt;
-  as_tbl_graph()
+    which(comps$membership == which(comps$csize&gt;=10))) |&gt; 
+  as_tbl_graph() 
 main_network
 
 set.seed(456)
@@ -320,9 +321,12 @@ main_network |&gt; # visualise it
 #### Extract two networks: before and during Elizabeth I's reign (1558-1603)
 n1 &lt;- network_tidy |&gt;
   activate("edges") |&gt;
-  mutate(year = date_from %/% 10000) |&gt;
+  mutate(year = date_from %/% 10000) |&gt; 
   filter(year&lt;1558)
-comps &lt;- components(n1)
+
+comps &lt;- n1 |&gt;
+  components() 
+
 n1 &lt;- n1 |&gt;
   induced_subgraph(which(comps$membership == which.max(comps$csize))) |&gt;
   as_tbl_graph()
@@ -331,7 +335,8 @@ n2 &lt;- network_tidy |&gt;
   activate("edges") |&gt;
   mutate(year = date_from %/% 10000) |&gt;
   filter(year&gt;=1558)
-comps &lt;- components(n2)
+comps &lt;- n2 |&gt;
+  components()
 n2 &lt;- n2 |&gt;
   induced_subgraph(which(comps$membership == which.max(comps$csize))) |&gt;
   as_tbl_graph()
@@ -430,7 +435,7 @@ network_tidy |&gt;
   ggraph("fr") + 
   geom_edge_link0(alpha = 0.3) + 
   geom_node_point(aes(color = component), size = 0.5) + 
-  scale_color_viridis_d() +
+  scale_color_viridis_d() +   
   theme_graph() + 
   theme(legend.position = "none") 
 
