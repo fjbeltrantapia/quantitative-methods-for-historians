@@ -6,7 +6,7 @@ Below you can find a curated set of varied historical datasets that you can use 
 
 ## International data
 
-- [Hansard dataset](https://hansard.parliament.uk/about): UK Parliamentary speeches between 1806 and 1911 (over 1 million parliamentary speeches). This is a huge dataset that might be computationally too demanding on some machines. Find <a href="data/other-data/hansard_sample.csv" download>here</a> a random sample of 10,000 speeches. See @blaxill2020 and @guldi2023 for illustrations using this information.
+- [Hansard Parliamentary Debates](https://hansard.parliament.uk/about): Records of the speeches held at Britain's House of Commons and House of Lords between 1806 and 1911 (over 1 million parliamentary speeches). This is a huge [dataset](http://www.hansard-archive.parliament.uk) that might be computationally too demanding on some machines. Find <a href="data/other-data/hansard_sample.csv" download>here</a> a random sample of 10,000 speeches. See @blaxill2020 and @guldi2023 for illustrations using this information.
 
 - Population censuses. [IPUMS International](https://international.ipums.org/international/) holds individual-level information from a variety of historical population censuses [@ruggles2025]. The same or even more extended datasets can be requested to the respective national agencies. 
 
@@ -53,6 +53,8 @@ Other additional sources can be found below:
 - The Norwegian Parliamentary Debates Dataset [@fiva2025]. This dataset includes all speeches delivered in the Norwegian Parliament between December 1945 and June 2024 (almost one million speeches). As well as the text itself, it includes information on date, speaker, political and regional affiliation, etc.). Given the size of this dataset, we include  <a href="data/other-data/norway/NPD_5pc_sample.csv" download>here</a> a 5 per cent random sample. You can find the whole dataset [here](https://www.jon.fiva.no/data.htm). 
 
 - Norwegian parliamentary elections from 1906 to 2013: candidate-level observations for all candidates from all parties since the 1906 election (2024 version; [@fiva2017]): [here](data/other-data/norway/FivaSmith2024.dta) in .dta format (requires `read_dta()` from the package `haven`). 
+
+Note that it might also be interesting to explore how Norway (and Norwegian personalities, institutions and/or locations) has been depicted in other countries' sources. You can therefore use some of the datasets above to find instances related to Norway and study the underlying context (for instance, in British Parliamentary Debates, US newspapers, etc.). Figure 5 in @guldi2021 [p. 355] seems to indicate that mentions of Norway in British parliamentary debates became less numerous throughout the 19^th^ century but a finer-grain analysis could identify which years were particularly important and why, as well as exploring in which context these mentions occurred. This same article, for instance, suggests that Norway is frequently mentioned along Sweden [p. 360].
 
 ## Miscellaneous
 
