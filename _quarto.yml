@@ -11,9 +11,6 @@ website:
     - text: "Overview"
       icon: fa-home
       href: index.qmd
-    - text: "Syllabus"
-      icon: fa-home
-      href: syllabus.qmd      
     - text: "Instructions"
       icon: fa-list-ul
       href: instructions.qmd
@@ -29,6 +26,8 @@ website:
         href: backg-speeches.qmd
       - text: "The Tudor Network of Letters"
         href: backg-tnp.qmd  
+    - text: "Coursework"
+      href: coursework.qmd
     - text: "Other sources"
       href: other-data.qmd
     - text: "Further readings"
@@ -46,27 +45,17 @@ website:
           - text: "1.1. Qualitative variables"
             #file: r-scripts/desc_qual.qmd
           - text: "1.2. Numerical variables" 
-            #file: r-scripts/desc_num.qmd
           - text: "1.3. Bivariate statistics" 
-            #file: r-scripts/desc_bivar.qmd 
           - text: "1.4. Textual information" 
-            #file: r-scripts/desc_text.qmd   
           - text: "1.5. Mapping" 
-            #file: r-scripts/mapping.qmd  
           - text: "1.6. Social networks" 
-            #file: r-scripts/networks.qmd              
       - text: "2. Correlation and regression"
-        #file: r-scripts/corr_reg.qmd
       - text: "3. Uncertainty"
-        #file: r-scripts/uncert.qmd
       - section: "4. Regression analysis"
         contents: 
           - text: "4.1. Multiple regression"
-            #file: r-scripts/mult_reg.qmd
           - text: "4.2. Challenges to regression" 
-            #file: r-scripts/chall_reg.qmd        
-      - text: "5. Advance textual analysis"
-        #file: r-scripts/text_advanced.qmd        
+      - text: "5. From sources to data"
 bibliography: refs.bib
 
 format:

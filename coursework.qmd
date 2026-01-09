@@ -1,0 +1,45 @@
+---
+title: "Coursework"
+---
+
+Student attendance is compulsory. Students are expected to participate actively in each session and replicate the examples implemented in class. In addition, students will have time to explore how the tools covered here can be applied to their own materials. Grading will be based on active participation and a final take-home exam.
+
+The **final assignment** consists of a take-home exam in the form of an essay. The course cover many tools, so choose those that you found most useful for your own research. Write a short essay where you show how you implement these tools to your own data (or to one of the sources provided [here](other-data.html)). Take this assignment as an opportunity to work on your topic from a computational perspective and get feedback on it.
+
+Remember that you must include both (1) the R code and the results obtained from the different analyses, and (2) the interpretation of those results. Please detail all the steps behind your research process. Start from the very beginning (needed packages, importing the data set, describing the material, making the research question explicit, etc.) and continue by showing how you treat your material (clearning, re-categorisation, etc.), implement the analysis and report your results.  
+
+The take-home assignment will be open in [Inspera](https://i.ntnu.no/wiki/-/wiki/norsk/digital+hjemmeeksamen+-+for+studenter). Remember to upload your text before the deadline (November 25th). You will need to upload a PDF file integrating code and the subsequent results with your own writing.
+
+For inspiration, see the following [**blogposts**]{.underline}:
+
+- [A Dissertation's infancy: The geography of the post](https://cblevins.github.io/posts/a-dissertations-infancy-the-geography-of-the-post/)
+
+- [Postal geography and the Golden West](https://cblevins.github.io/posts/postal-geography-and-the-golden-west/)
+
+- [Mapping the State of the Union](https://www.theatlantic.com/politics/archive/2015/01/mapping-the-state-of-the-union/384576/)
+
+- [A better map of slavery in 1860](https://lincolnmullen.com/blog/a-better-map-of-slavery-in-1860/)
+
+- [Historical religion data in the NHGIS and what you can do with it](https://lincolnmullen.com/blog/historical-religion-data-in-the-nhgis-and-what-you-can-do-with-it/)
+
+- [Sex ratios and missing girls in 19^th^-century Europe](https://ehs.org.uk/sex-ratios-and-missing-girls-in-nineteenth-century-europe/)
+
+- [The spread of Romantic nationalism across Europe: A case of ideational difussion](https://www.broadstreet.blog/p/the-spread-of-romantic-nationalism)
+
+- [Stalin's famine](https://www.broadstreet.blog/p/stalins-famine)
+
+- [Where the Dutch East India Company crews came from](https://maritimecareers.eu/2018/06/11/where-the-voc-crews-came-from/)
+
+Check also the following [**online visualisations**]{.underline}:
+
+- [US frontier expansion of post offices during the 19^th^ century](https://cblevins.github.io/us-post-offices/)
+
+- [Racial lynchings in the US, 1877-1950](https://lynchinginamerica.eji.org/)
+
+- [Oceanic shipping from 18^th^- and 19^th^-century ship's logs](http://sappingattention.blogspot.com/2012/11/reading-digital-sources-case-study-in.html)
+
+- [Mapping the State of the Union](https://www.theatlantic.com/politics/archive/2015/01/mapping-the-state-of-the-union/384576/)
+
+- [Locating London's past](https://www.locatinglondon.org)
+
+- [Mapping emotions in 18^th^- and 19^th^-century London](https://news.stanford.edu/stories/2017/03/mapping-emotions-london)

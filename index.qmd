@@ -1,12 +1,21 @@
 ## Welcome to quantification in history!
 
-September 15-19, 2025 -- 09:15-16:00 -- Room U201 ([Akrinn](https://maps.app.goo.gl/neGSMmi15nzrfNyr5), Kalvskinnet)
+::: {.callout-note appearance="simple"}
+September TBA, 2026 -- 09:15-16:00 -- Room TBA ([Akrinn](https://maps.app.goo.gl/neGSMmi15nzrfNyr5), Kalvskinnet)
+
+:::
 
 Instructor: [Francisco J. Beltrán Tapia](https://fjbeltrantapia.github.io)
 
 \vspace{1em}
 
 This MA/PhD course, offered by the [Faculty of Humanities](https://www.ntnu.edu/hf) at the [Norwegian University of Science and Technology](https://www.ntnu.edu), provides a practical introduction on how historians can use computational tools to learn about the past.
+
+::: {.column-margin}  
+![State of the Union Presidential Address - Woodrow Wilson - December 2, 1913](images/wilson.jpg){width=100% height=100% fig-align="center"}
+
+![Relative frequency of the terms "men" and "women" in the State of the Union Speeches, 1790-2019](images/plot-speeches.png){width=100% height=100%} 
+:::
 
 ## Description
 
@@ -20,6 +29,9 @@ The course is taught intensively during one week (morning and afternoon sessions
 
 The course is open to Master and PhD students. No previous background in computing or statistics is required. For more information, contact [Francisco J. Beltrán Tapia](https://fjbeltrantapia.github.io). 
 
+::: {.callout-important}
 ### Important warning
 
 Please follow the [Instructions](instructions.html) section to prepare for the course in advance. As well as reading the article [Quantifying history]{.underline}, this involves downloading the [course materials]{.underline}, installing and getting familiar with [R]{.underline} and [RStudio]{.underline} and going through the background information on the [case-studies]{.underline} we will be exploring.
+
+:::
