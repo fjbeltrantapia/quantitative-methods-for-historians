@@ -7,6 +7,7 @@ website:
   
   navbar:
     type: inverse
+    
     right:
     - text: "Overview"
       icon: fa-home
@@ -24,14 +25,11 @@ website:
         href: backg-paisley.qmd
       - text: "The State of the Union Speeches"
         href: backg-speeches.qmd
-      - text: "The Tudor Network of Letters"
-        href: backg-tnp.qmd  
+      #- text: "The Tudor Network of Letters"
+       # href: backg-tnp.qmd  
     - text: "Coursework"
       href: coursework.qmd
-    - text: "Other sources"
-      href: other-data.qmd
-    - text: "Further readings"
-      href: further-readings.qmd  
+      
   sidebar:
     title: "Contents"
     style: "docked"
@@ -48,21 +46,33 @@ website:
           - text: "1.3. Bivariate statistics" 
           - text: "1.4. Textual information" 
           - text: "1.5. Mapping" 
-          - text: "1.6. Social networks" 
-      - text: "2. Correlation and regression"
-      - text: "3. Uncertainty"
+          # - text: "1.6. Social networks" 
+      - text: "2. Uncertainty"
+      - text: "3. Correlation and regression"
       - section: "4. Regression analysis"
         contents: 
           - text: "4.1. Multiple regression"
           - text: "4.2. Challenges to regression" 
       - text: "5. From sources to data"
+      - text: "---" # to create extra space
+      - section: "Additional material"
+        contents:
+          - text: "Other sources"
+            file: other-data.qmd
+          - text: "Further readings"
+            file: further-readings.qmd  
+            
 bibliography: refs.bib
 
 format:
   html:
+    page-layout: full
+    grid:
+      margin-width: 420px
     theme: cosmo
     css: styles.css
     toc: true
-    fig-cap-location: margin
-    fig-align: center
+    fig-cap: false
+    fig-number: false
+    #fig-align: center  
     linkcolor: $blue

@@ -8,3 +8,6 @@
 
 r-scripts/
 docs/r-scripts/
+.positai
+
+**/*.quarto_ipynb

@@ -13,3 +13,26 @@ For additional background on quantification in history, check the texts below:
 - Blaxill, Luke (2023), [Why do historians ignore digital analysis. Bring on the Luddites](readings/blaxill2023.pdf), *The Political Quarterly*, vol. 94, no. 2, pp. 279-289.
 
 - Jockers, Matthew L. (2013), [Macroanalysis. Foundation](readings/jockers2013.pdf), in *Macroanalysis. Digital Methods and Literary History* (University of Illinois Press), pp. 3-32.
+
+For discussions on the use of computational methods in the humanities in general, see:
+
+- Mullen, Lincoln: [Behind, ahead](https://lincolnmullen.com/blog/behind-ahead/) (March 9, 2026).
+
+- Posner, Miriam (2015), [Humanities Data: A Necessary Contradiction](https://miriamposner.com/blog/humanities-data-a-necessary-contradiction/), Blogpost.
+
+- Kirschenbaum, Matthew (2014), [What is “Digital Humanities,” and why are they saying such terrible things about it?](https://mkirschenbaum.wordpress.com/wp-content/uploads/2014/04/dhterriblethingskirschenbaum.pdf), *Differences* 25 (1).
+https://mkirschenbaum.wordpress.com/wp-content/uploads/2011/03/ade-final.pdf
+
+- Kirschenbaum, Matthew (2010), [What is Digital Humanities and what's it doing in English departments?](https://mkirschenbaum.wordpress.com/wp-content/uploads/2011/03/ade-final.pdf), *ADE Bulletin* 50.
+
+- Fish, Stanley (2012), [Mind Your P’s and B’s: The Digital Humanities and Interpretation](https://archive.nytimes.com/opinionator.blogs.nytimes.com/2012/01/23/mind-your-ps-and-bs-the-digital-humanities-and-interpretation/), *The New York Times* (Jan 23, 2012).
+
+- Marche, Stephen (2012), [Literature is not data](https://lareviewofbooks.org/article/literature-is-not-data-against-digital-humanities/), *Los Angeles Review of Books* (Oct 28, 2012).
+
+- Blevins, Cameron (2026), [Bottlenecks, side quests, and the calculus of historical research](https://cblevins.github.io/posts/bottleneck-side-quests/) (March 27, 2026).
+
+- Cohen, Dan (2025), [The Writing Is on the Wall for Handwriting Recognition](https://newsletter.dancohen.org/archive/the-writing-is-on-the-wall-for-handwriting-recognition) (Nov 25, 2025)
+
+- Blevins, Cameron (2025), [Generative AI and History in 2025](https://cblevins.github.io/posts/gen-ai-history-2025/) (Dec 19, 2025)
+
+

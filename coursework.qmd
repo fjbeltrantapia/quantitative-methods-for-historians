@@ -2,44 +2,37 @@
 title: "Coursework"
 ---
 
-Student attendance is compulsory. Students are expected to participate actively in each session and replicate the examples implemented in class. In addition, students will have time to explore how the tools covered here can be applied to their own materials. Grading will be based on active participation and a final take-home exam.
+Student attendance is compulsory. Students are expected to participate actively in each session and replicate the examples implemented in class. In addition, students will have time to explore how the tools covered here can be applied to their own materials. Grading will be based on active participation and a final take-home exam. Optionally, students can request additional case-studies to work on their own to solidify concepts after the course. 
 
-The **final assignment** consists of a take-home exam in the form of an essay. The course cover many tools, so choose those that you found most useful for your own research. Write a short essay where you show how you implement these tools to your own data (or to one of the sources provided [here](other-data.html)). Take this assignment as an opportunity to work on your topic from a computational perspective and get feedback on it.
+The **final assignment** consists of a take-home exam in the form of an essay. The course cover many tools, so choose those that you found most useful for your own research. Write an essay where you show how you implement these tools to your own data (or to one of the sources provided [here](other-data.html)). Take this assignment as an opportunity to work on your topic from a computational perspective and get feedback on it.
 
-Remember that you must include both (1) the R code and the results obtained from the different analyses, and (2) the interpretation of those results. Please detail all the steps behind your research process. Start from the very beginning (needed packages, importing the data set, describing the material, making the research question explicit, etc.) and continue by showing how you treat your material (clearning, re-categorisation, etc.), implement the analysis and report your results.  
+Remember that you must include both (1) the R code and the results obtained from the different analyses, and (2) the interpretation of those results. Please detail all the steps behind your research process. Start from the very beginning (needed packages, importing the data set, describing the material, making the research question explicit, etc.) and continue by showing how you treat your material (clearning, re-categorisation, etc.), implement the analysis and report your results. See a more detailed explanation below. 
 
-The take-home assignment will be open in [Inspera](https://i.ntnu.no/wiki/-/wiki/norsk/digital+hjemmeeksamen+-+for+studenter). Remember to upload your text before the deadline (November 25th). You will need to upload a PDF file integrating code and the subsequent results with your own writing.
+The take-home assignment needs to be submitted via [Inspera](https://i.ntnu.no/wiki/-/wiki/norsk/digital+hjemmeeksamen+-+for+studenter). Remember to upload your text before the deadline (November 25th). You will need to upload a PDF file integrating code and the subsequent results with your own writing.
 
-For inspiration, see the following [**blogposts**]{.underline}:
+::: {.callout-important}
+### Note on AI use
 
-- [A Dissertation's infancy: The geography of the post](https://cblevins.github.io/posts/a-dissertations-infancy-the-geography-of-the-post/)
+Employing AI for coding assistance is allowed. You have nonetheless to explicitly indicate how you have used AI. Also, you should be able to explain your code when requested. Make sure therefore to understand the code and the results you obtain. AI can also be used for complementing datasets with additional information. If necessary, inform the reader about the prompt(s) you were using. Note also that AI results are often inaccurate. You have to either check the quality of the results (or a small sample of them). The same with using AI for coding assistance: the results might not be what you intend, so use it with caution. Lastly, AI is not allowed for writing.
 
-- [Postal geography and the Golden West](https://cblevins.github.io/posts/postal-geography-and-the-golden-west/)
+:::
 
-- [Mapping the State of the Union](https://www.theatlantic.com/politics/archive/2015/01/mapping-the-state-of-the-union/384576/)
+# Final assignment
 
-- [A better map of slavery in 1860](https://lincolnmullen.com/blog/a-better-map-of-slavery-in-1860/)
+The final assignment consists of a take-home exam in the form of an essay. You will work on a data set of your choice and write an essay. The aim is to address a historical question using that source and relying on tools covered during the course. The style of the essay is quite free but it should include an introduction explaining the historical question(s) you are exploring, a clear argument and structure. Overall, the essays needs to show how you have addressed the chosen topic methodologically.
 
-- [Historical religion data in the NHGIS and what you can do with it](https://lincolnmullen.com/blog/historical-religion-data-in-the-nhgis-and-what-you-can-do-with-it/)
+I encourage you to your your own data but you can find digitised historical sources [here](other-data.html). You will also need to think about what potential research questions can be asked to that type of source. Think about the data set as a historical artifact that has survived from the society you are studying. What does it tell us about that society? What kind of questions can be asked? You can also start by a potential question and find a historical source that allows you to tackle the question. Alternatively, it is also possible to write a text based on the process of digitising a historical source. 
 
-- [Sex ratios and missing girls in 19^th^-century Europe](https://ehs.org.uk/sex-ratios-and-missing-girls-in-nineteenth-century-europe/)
+Relying on this material, the text should:
 
-- [The spread of Romantic nationalism across Europe: A case of ideational difussion](https://www.broadstreet.blog/p/the-spread-of-romantic-nationalism)
+1) Explain the dataset: topic, structure, number of observations, pieces of information provided, etc.
 
-- [Stalin's famine](https://www.broadstreet.blog/p/stalins-famine)
+2) Describe the research question(s): Are rural women marrying earlier than urban women in Norway circa 1910? What about those from Oslo and Trondheim? Are men and women talking about different things in the Friend TV Show? Are these topics changing over time?).
 
-- [Where the Dutch East India Company crews came from](https://maritimecareers.eu/2018/06/11/where-the-voc-crews-came-from/)
+3) Analyse the data set and extract information (i.e. demographic, economic, cultural, etc.) that helps addressing your research question. The results should be interpreted.
 
-Check also the following [**online visualisations**]{.underline}:
+4) Conclusion
 
-- [US frontier expansion of post offices during the 19^th^ century](https://cblevins.github.io/us-post-offices/)
+Use some of the methods learned during this course. The material you are working with (qualitative, numerical, textual) will obviously require different methods. You can produce tables and graphs to better present your results (even maps if your material and research question has a spatial dimension). 
 
-- [Racial lynchings in the US, 1877-1950](https://lynchinginamerica.eji.org/)
-
-- [Oceanic shipping from 18^th^- and 19^th^-century ship's logs](http://sappingattention.blogspot.com/2012/11/reading-digital-sources-case-study-in.html)
-
-- [Mapping the State of the Union](https://www.theatlantic.com/politics/archive/2015/01/mapping-the-state-of-the-union/384576/)
-
-- [Locating London's past](https://www.locatinglondon.org)
-
-- [Mapping emotions in 18^th^- and 19^th^-century London](https://news.stanford.edu/stories/2017/03/mapping-emotions-london)
+Remember that you must include both (1) the R code and the results obtained from the different analyses, and (2) the interpretation of those results. Please detail all the steps behind your research process. Start from the very beginning (needed packages, importing the dataset, describing the material, making the research question explicit, etc.).

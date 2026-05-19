@@ -2,7 +2,7 @@
 title: "Case-study 1: The Paisley House of Correction"
 ---
 
-The fist case-study deals with the admission records from the Paisley prison, an institution located in a village near Glasgow (The Scottish National Archives). Kept in the National Archives of Scotland, these registers provide individual information on those prisoners who were admitted into this institution between 1841 and 1883. 
+The fist case-study deals with the admission records from the Paisley prison, an institution located in a village near Glasgow. Kept in the National Archives of Scotland, these registers provide individual information on those prisoners who were admitted into this institution between 1841 and 1883. 
 
 For an illustration on how this type of source looks like, see the register included below of John Hearn, a 12-year old convicted in 1873 for stealing 11 pieces of leather who was sentenced to one month of hard labour. Interestingly, prison records provide info on both males and females, a feature that is relatively uncommon for this period (when most of the height data come from military conscripts).
 
@@ -36,33 +36,11 @@ Inputing the raw data into an Excel spreadsheet results in @fig-excel below. Eac
 Digital version of the Paisley data (Excel file).
 :::
 
-Who were these prisoners? Where they were coming from? Did prisoners' occupations differ significantly from the rest of the population? What about literacy rates? Did men and women commit different crimes? Did judges treat everyone equally or did particular groups suffer harsher sentences? What explains the variation in stature and weights observed across prisoners? How did theses dimensions change during the period? The range of historical questions that this source can address is almost endless. Sarah Horrell, David Meredith and Deborah Oxley have relied on this information to significantly contribute to our understanding of 19th-century British society, especially regarding the biological living standards of the working classes and the gender dynamics that drove the allocation of resources within these families \[@horrell2013; @meredith2015).[^1_1_desc_cat-2] We strongly encourage reading those pieces to get to know more about the source and its possibilities. Bear in mind that, for practical reasons, we will rely on a subset of the full data set, containing a thousand prisoners.[^1_1_desc_cat-3]
+Who were these prisoners? Where they were coming from? Did prisoners' occupations differ significantly from the rest of the population? What about literacy rates? Did men and women commit different crimes? Did judges treat everyone equally or did particular groups suffer harsher sentences? What explains the variation in stature and weights observed across prisoners? How did theses dimensions change during the period? The range of historical questions that this source can address is almost endless. 
 
-[^1_1_desc_cat-2]: In a seminal paper, Sarah Horrell and Deborah Oxley had previously addressed these issues using similar registers from the Wandsworth prison, near London [@horrell2009].
-
-[^1_1_desc_cat-3]: We are extremely grateful to Deborah Oxley and Hamish Maxwell-Stewart for kindly sharing the Paisley dataset.
-
-This type of source allows exploring many historical questions: 
-
-- How did the biological living standard of living change during the period? 
-
-- What explains the variation in stature observed across prisoners? 
-
-- Did prisoners' occupations differ significantly from the rest of the population? 
-
-- What about literacy rates? 
-
-- Did men and women commit different crimes? 
-
-- Did judges treat everyone equally or did particular groups suffer harsher sentences?
-
-- ...
+Sarah Horrell, David Meredith and Deborah Oxley have relied on this information to significantly contribute to our understanding of 19th-century British society, especially regarding the living standards of the working classes and gender dynamics that drove the allocation of resources within these families [@horrell2013; @meredith2015]. In a seminal article, Sarah Horrell and Deborah Oxley had previously addressed these issues using similar registers from the Wandsworth prison, near London [@horrell2009]. We strongly encourage reading those pieces to get to know more about the source and its possibilities.  Alternatively, watch the wonderful [Tawney Lecture](https://ehs.org.uk/multimedia/tawney-lecture-2013-weighty-matters-anthropometrics-gender-and-health-inequality-in-history/) delivered by Deborah Oxley at the Economic History Society Annual Conference in 2013. Bear in mind that, for practical reasons, we will rely on a subset of the full data set, containing a thousand prisoners.
 
 \vspace{1em}
-
-Sarah Horrell, David Meredith and Deborah Oxley have relied on this information to significantly contribute to our understanding of 19th-century British society, especially regarding the living standards of the working classes and gender dynamics that drove the allocation of resources within these families [@horrell2013; @meredith2015]. In a seminal article, Sarah Horrell and Deborah Oxley had previously addressed these issues using similar registers from the Wandsworth prison, near London [@horrell2009]. Those who are interested in knowing more about the source and its possibilities are encouraged to read those articles.
-
-{{< pagebreak >}}
 
 ### Further references
 

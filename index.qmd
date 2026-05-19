@@ -1,21 +1,33 @@
 ## Welcome to quantification in history!
 
 ::: {.callout-note appearance="simple"}
-September TBA, 2026 -- 09:15-16:00 -- Room TBA ([Akrinn](https://maps.app.goo.gl/neGSMmi15nzrfNyr5), Kalvskinnet)
+September 7-11, 2026 -- 09:15-16:00 -- Room TBA ([Akrinn](https://maps.app.goo.gl/neGSMmi15nzrfNyr5), Kalvskinnet)
 
 :::
 
-Instructor: [Francisco J. Beltrán Tapia](https://fjbeltrantapia.github.io)
-
-\vspace{1em}
-
-This MA/PhD course, offered by the [Faculty of Humanities](https://www.ntnu.edu/hf) at the [Norwegian University of Science and Technology](https://www.ntnu.edu), provides a practical introduction on how historians can use computational tools to learn about the past.
+Instructors: [Francisco J. Beltrán Tapia](https://fjbeltrantapia.github.io) / [Elise Barring Berggren](https://www.ntnu.edu/employees/elise.b.berggren)
 
 ::: {.column-margin}  
-![State of the Union Presidential Address - Woodrow Wilson - December 2, 1913](images/wilson.jpg){width=100% height=100% fig-align="center"}
+::: {style="font-size: 0.8em;"}
+![](images/wilson.jpg){width=100% height=100% fig-align="center"}
 
-![Relative frequency of the terms "men" and "women" in the State of the Union Speeches, 1790-2019](images/plot-speeches.png){width=100% height=100%} 
+![](images/plot-speeches.png){width=100% height=100%} 
+State of the Union Presidential Address (Woodrow Wilson - December 2, 1913) and relative frequency of the terms "men" and "women" in the State of the Union Speeches, 1790-2019
+
+\
+
+\
+
+![](images/censo-1860-cropped.jpg){width=100% height=100%} 
+
+![](images/map_lit_1860.jpg){width=100% height=100%} 
+
+Household register card (Spanish population census) and percentage of the male population who were able to read and write, 1860
 :::
+:::
+
+
+This MA/PhD course, offered by the [Faculty of Humanities](https://www.ntnu.edu/hf) at the [Norwegian University of Science and Technology](https://www.ntnu.edu), provides a practical introduction on how historians can use computational tools to learn about the past.
 
 ## Description
 
