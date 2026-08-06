@@ -4,7 +4,7 @@ title: "Instructions"
 
 Below are the instructions to prepare the session in advance: 
 
-**1. Install R and RStudio**. **R** is a (free) statistical software and **RStudio** is an integrated interface that makes working with R easier. Bear in mind that you have to download and install both softwares: R and RStudio. The version you install depends on whether you are using Windows or Mac. Here is a [link](https://posit.co/download/rstudio-desktop) to access them.
+**1. Install R and RStudio**. **R** is a (free) statistical software and **RStudio** is an integrated interface that makes working with R easier. Bear in mind that you have to download and install both programmes. Here are the links to download them: [R](https://cloud.r-project.org) and [RStudio](https://posit.co/download/rstudio-desktop). The version you install depends on whether you are using Windows or Mac.
 
 **2. Create a dedicated folder to this session in your computer.** Name it `quants`. 
 
