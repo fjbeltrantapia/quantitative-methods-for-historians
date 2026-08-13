@@ -4,7 +4,7 @@ title: "Further reading"
 
 For additional background on quantification in history, check the texts below: 
 
-- Graham, Shawn, Milligan, Ian, Weingart, Scott and Martin, Kim (2022), [The joys of big data for historians]((readings/graham-etal2022.pdf)), in *Exploring Big Historical Data. The Historians Macroscope* (World Scientific; 2nd Edition), pp. 1-34.
+- Graham, Shawn, Milligan, Ian, Weingart, Scott and Martin, Kim (2022), [The joys of big data for historians](readings/graham-etal2022.pdf), in *Exploring Big Historical Data. The Historians Macroscope* (World Scientific; 2nd Edition), pp. 1-34.
 
 - Fourie, Johan (2023), [Quantitative history and uncharted people](readings/fourie2023.pdf), in *Quantitative history and uncharted people. Case studies from the South African Past* (Bloomsbury), pp. 1-32.
 
