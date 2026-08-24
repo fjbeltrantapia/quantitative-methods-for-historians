@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Exploring the National Biblioteket corpus with dhlabR – Quantitative Methods for Historians - HIKU8863</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-9740d911b7302bde6b258944d591d507.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Quantitative Methods for Historians - HIKU8863</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> <i class="bi bi-fa-home" role="img">
+</i> 
+<span class="menu-text">Overview</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./instructions.html"> <i class="bi bi-fa-list-ul" role="img">
+</i> 
+<span class="menu-text">Instructions</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./get-r.html"> <i class="bi bi-fa-book" role="img">
+</i> 
+<span class="menu-text">Intro to R</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-case-studies" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="bi bi-fa-book" role="img">
+</i> 
+ <span class="menu-text">Case-studies</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-case-studies">    
+        <li>
+    <a class="dropdown-item" href="./backg-paisley.html">
+ <span class="dropdown-text">The Paisley Prisoners</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./backg-speeches.html">
+ <span class="dropdown-text">The State of the Union Speeches</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="./coursework.html"> 
+<span class="menu-text">Coursework</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#getting-familiar-with-dhlabr" id="toc-getting-familiar-with-dhlabr" class="nav-link active" data-scroll-target="#getting-familiar-with-dhlabr">Getting familiar with dhlabR</a></li>
+  <li><a href="#retrieving-the-corpus-metadata" id="toc-retrieving-the-corpus-metadata" class="nav-link" data-scroll-target="#retrieving-the-corpus-metadata">Retrieving the corpus metadata</a></li>
+  <li><a href="#term-frequencies-per-document" id="toc-term-frequencies-per-document" class="nav-link" data-scroll-target="#term-frequencies-per-document">Term frequencies per document</a></li>
+  <li><a href="#collocation" id="toc-collocation" class="nav-link" data-scroll-target="#collocation">Collocation</a></li>
+  <li><a href="#keywords-in-context" id="toc-keywords-in-context" class="nav-link" data-scroll-target="#keywords-in-context">Keywords in context</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full column-page-left" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Exploring the National Biblioteket corpus with dhlabR</h1>
+</div>
+
+
+
+<div class="quarto-title-meta column-page-left">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Norway has been fortunate to have the financial muscle and the political will to adopt a massive digitization of its historical record. In 2006, the Norwegian <a href="https://www.nb.no/search">National Library</a> started digitising its entire collection. This programme has resulted in million of digitised resources (books, manuscripts, newspapers, letters, etc.). this programme has been combined with efforts at making this wealth of material as accessible as possible. The <em>Nasjonalbibliotek</em> website, for instance, is wonderful and makes browsing the catalogue and looking up for particular records extremely easy, even pleasant as illustrated in the image below. Feel free to have a look at some of the available <a href="https://www.nb.no/search?mediatype=brev-og-manuskripter">collections</a></p>
+<p><img src="images/nb.png" class="quarto-figure quarto-figure-center" style="width:100.0%;height:100.0%" alt="National Biblioteket digital collection."> Likewise, as well as hosting an online <a href="https://www.nb.no/ngram/#1_1_1__1_1_3_1810%2C2022_2_2_2_12_2">norsk n-gram</a> for quering the corpus, the team at <a href="https://www.nb.no/dh-lab/digital-tekstanalyse/">DH-LAB</a> is also creating its own tools for exporing and analysing their collections, including <a href="https://github.com/NationalLibraryOfNorway/dhlabR">dhlabR</a> an R package to directly interact with the corpus. Although it is still in development, this post we will explore some of its features so we can access and explore its massive corpus using computational tools.</p>
+<section id="getting-familiar-with-dhlabr" class="level1 page-columns page-full">
+<h1>Getting familiar with dhlabR</h1>
+<p>The package <code>dhlabR</code> interacts with the API of National Biblioteket. Although it does not allow to download full texts, you can query the collection, get the necessary metadata (including text IDs) and extracting text-derived outputs such as token frequencies or the text around keywords.</p>
+<p>Using this R package usually entail two steps:</p>
+<ol type="1">
+<li><p>Retrieve corpus metadata based on quering the corpus using given parameters such as author, title, year, language, type of document (e.g.&nbsp;book, newspaper, etc.), among others. This query is sent to the DH-LAB API and returns a table of matching documents, including document ID and associated metadata.</p></li>
+<li><p>Request derived text data: term frequencies, concordances, collocations, etc. Instead of extracting full texts directly, you obtain representations (term frequencies, terms around keywords, etc.) tied to those document IDs, usually as a data frame or a list that you can use in R for analysis and visualisation.</p></li>
+</ol>
+<p>Here I provide a basic overview of some of these functions.</p>
+<p>First, you need to install and load the package <code>dhlabR</code>. Given that it is a beta version, it is not available via the usual channel but with the following commands (de-activated in my case). Make sure to also install <code>devtools</code> and <code>pak</code> if you haven’t used these packages before.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("devtools")</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("pak")</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># devtools::install_github("NationalLibraryOfNorway/dhlabR")</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># pak::pak("NationalLibraryOfNorway/dhlabR")</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dhlabR)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Once the package is loaded, you get access to different functions, such as <code>get_document_corpus()</code>, <code>get_document_frequencies()</code>, <code>get_concordance()</code>, or <code>get_collocations()</code>, among others. Let’s go through them separately.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;The number of documents analysed here may be slightly different than what you get if you replicate the same commands if the <em>National Biblioteket</em> has modified the underlying corpus since I conducted this exercise (March 23, 2026).</p></div></div></section>
+<section id="retrieving-the-corpus-metadata" class="level1 page-columns page-full">
+<h1>Retrieving the corpus metadata</h1>
+<p><code>get_document_corpus()</code> queries the corpus available at NB and retrieve the associated metadata. This query is defined by particular parameters such as author, title, year, language, type of document (e.g.&nbsp;book, newspaper, journal, letter, etc.), among others. The following, for instance, extracts the metadata associated to texts stored as “digibok”, written by “Ibsen” between the years 1880 and 1890 (note that the argument <code>to_year</code> retrieves up to the defined year, without including it). The argument <code>limit</code> sets the maximum number of items that can be retrieved. Here we are getting 37 rows, so setting it to “50” is fitting, so you do not miss any (careful because the default value is 10). By default, <code>limit</code> is set to 10, so you need to explicitly set a larger number if you want to retrieve all the documents meeting your query. This function returns a data frame, so I use <code>glimpse()</code> to have a sense of how the data looks like (you can also just type the name of the object). As mentioned above, none of these fields contain the text itself associated with these documents (more on this later).</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get corpus</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>corpus <span class="ot">&lt;-</span> <span class="fu">get_document_corpus</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">doctype =</span> <span class="st">"digibok"</span>, <span class="at">author =</span> <span class="st">"Ibsen"</span>, </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">from_year =</span> <span class="dv">1880</span>, <span class="at">to_year =</span> <span class="dv">1891</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">limit =</span> <span class="dv">50</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>corpus <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 43
+Columns: 19
+$ dhlabid       &lt;named list&gt; 100633970, 100622098, 100354315, 100654413, 10032…
+$ urn           &lt;named list&gt; "URN:NBN:no-nb_digibok_2017030148005", "URN:NBN:n…
+$ title         &lt;named list&gt; "Hærmændene på Helgeland : skuespil i fire handli…
+$ authors       &lt;named list&gt; "Ibsen , Henrik", "Ibsen , Henrik", "Bødtker , Si…
+$ oaiid         &lt;named list&gt; "oai:nb.bibsys.no:990004798964702202", "oai:nb.bi…
+$ sesamid       &lt;named list&gt; "90b243a79fbbcfbf9fa5c7f53712ea82", "59143ff7dd89…
+$ isbn10        &lt;named list&gt; "", "", "", "", "", "", "", "", "", "", "", "", "…
+$ city          &lt;named list&gt; "København", "København", "Kristiania", "Norge", …
+$ timestamp     &lt;named list&gt; 18850101, 18820101, 18800101, 1880, 18830101, 188…
+$ year          &lt;named list&gt; 1885, 1882, 1880, 1880, 1883, 1884, 1883, 1888, 1…
+$ publisher     &lt;named list&gt; "Gyldendalske Boghandel", "Gyldendalske Boghandel…
+$ langs         &lt;named list&gt; "nob", "nob", "nob", "nob / swe / fre", "nob", "n…
+$ subjects      &lt;named list&gt; "", "", "", "Arbeiderklassen / Union / Dyr / Hyll…
+$ ddc           &lt;named list&gt; "", "", "", "", "", "", "", "", "", "", "", "", "…
+$ genres        &lt;named list&gt; "", "drama", "", "poetry / tekst", "fiction", "",…
+$ literaryform  &lt;named list&gt; "Uklassifisert", "Skjønnlitteratur", "Uklassifise…
+$ doctype       &lt;named list&gt; "digibok", "digibok", "digibok", "digibok", "digi…
+$ ocr_creator   &lt;named list&gt; "dhlab", "dhlab", "nb", "", "nb", "nb", "dhlab", …
+$ ocr_timestamp &lt;named list&gt; 20221209, 20221201, 20060101, "", 20060101, 20060…</code></pre>
+</div>
+</div>
+<p>Notice that, instead of as characters or numerical values, the columns are formated as list-columns. This is because the API returns nested JSON, which the package converts into lists inside a tibble. Retrieving these values requires converting them. You can, for instance, transform them using <code>map_chr()</code> or <code>map_int()</code> depending on whether the underlying values are strings or numerical.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> As shown below, the fields <em>dhlabid</em> and <em>title</em> are now expressed as integers (<int>) or a sequence of string characters (<chr>).</chr></int></p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;If the list contains more than one value for each row (locations or publishers, for instance), you can use <code>unnest()</code>. You can use <code>lengths()</code> to check if that is the case.</p></div></div><div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>corpus <span class="ot">&lt;-</span> corpus <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">title =</span> <span class="fu">map_chr</span>(title, <span class="dv">1</span>),</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">dhlabid =</span> <span class="fu">map_int</span>(dhlabid, <span class="dv">1</span>))</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>corpus <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 43
+Columns: 19
+$ dhlabid       &lt;int&gt; 100633970, 100622098, 100354315, 100654413, 100329338, 1…
+$ urn           &lt;named list&gt; "URN:NBN:no-nb_digibok_2017030148005", "URN:NBN:n…
+$ title         &lt;chr&gt; "Hærmændene på Helgeland : skuespil i fire handlinger", …
+$ authors       &lt;named list&gt; "Ibsen , Henrik", "Ibsen , Henrik", "Bødtker , Si…
+$ oaiid         &lt;named list&gt; "oai:nb.bibsys.no:990004798964702202", "oai:nb.bi…
+$ sesamid       &lt;named list&gt; "90b243a79fbbcfbf9fa5c7f53712ea82", "59143ff7dd89…
+$ isbn10        &lt;named list&gt; "", "", "", "", "", "", "", "", "", "", "", "", "…
+$ city          &lt;named list&gt; "København", "København", "Kristiania", "Norge", …
+$ timestamp     &lt;named list&gt; 18850101, 18820101, 18800101, 1880, 18830101, 188…
+$ year          &lt;named list&gt; 1885, 1882, 1880, 1880, 1883, 1884, 1883, 1888, 1…
+$ publisher     &lt;named list&gt; "Gyldendalske Boghandel", "Gyldendalske Boghandel…
+$ langs         &lt;named list&gt; "nob", "nob", "nob", "nob / swe / fre", "nob", "n…
+$ subjects      &lt;named list&gt; "", "", "", "Arbeiderklassen / Union / Dyr / Hyll…
+$ ddc           &lt;named list&gt; "", "", "", "", "", "", "", "", "", "", "", "", "…
+$ genres        &lt;named list&gt; "", "drama", "", "poetry / tekst", "fiction", "",…
+$ literaryform  &lt;named list&gt; "Uklassifisert", "Skjønnlitteratur", "Uklassifise…
+$ doctype       &lt;named list&gt; "digibok", "digibok", "digibok", "digibok", "digi…
+$ ocr_creator   &lt;named list&gt; "dhlab", "dhlab", "nb", "", "nb", "nb", "dhlab", …
+$ ocr_timestamp &lt;named list&gt; 20221209, 20221201, 20060101, "", 20060101, 20060…</code></pre>
+</div>
+</div>
+<p>You can obviously make use of the information associated with each document, the metadata codified in the remaining fields, in different ways. You can for instance have a sense of the different <em>genres</em> included in this corpus. You might perhaps be interested in a particular genre or want to perform your analysis separately for each genre.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>corpus <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">genres =</span> <span class="fu">map_chr</span>(genres, <span class="dv">1</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(genres)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>          genres  n
+1                24
+2          drama 12
+3        fiction  6
+4 poetry / tekst  1</code></pre>
+</div>
+</div>
+<p>The example above retrieves a corpus of books (“digbok”: novels, monographs, plays, etc.), but defining the argument <code>doctype</code> differently allows accessing other materials, such as newspapers (“digavis”), journals and periodicals (“digitidsskrift”), letters and manuscripts (“digimanus”) or images (“digifoto”). The example below retrieves 20 newspapers published in 1905. Note that I am setting <code>lang = NULL</code> to avoid the default language (“nob”; bokmål, the official Norwegian language), which may make less sense in historical documents. The metadata contains potentially interesting information such as “title”, place of publication (“city”) or date of publication (“year” or “timestamp”).</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>newspapers <span class="ot">&lt;-</span> <span class="fu">get_document_corpus</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">doctype =</span> <span class="st">"digavis"</span>, </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">from_year =</span> <span class="dv">1904</span>, <span class="at">to_year =</span> <span class="dv">1906</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">lang =</span> <span class="cn">NULL</span>, </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">limit =</span> <span class="dv">20</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>newspapers <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 20
+Columns: 19
+$ dhlabid       &lt;named list&gt; 203386631, 203152953, 200847060, 202478853, 20021…
+$ urn           &lt;named list&gt; "URN:NBN:no-nb_digavis_sarpen_null_null_19040713_…
+$ title         &lt;named list&gt; "sarpen", "nordenfjeldsktidende", "jarlsbergoglar…
+$ authors       &lt;named list&gt; "", "", "", "", "", "", "", "", "", "", "", "", "…
+$ oaiid         &lt;named list&gt; "", "", "", "", "", "", "", "", "", "", "", "", "…
+$ sesamid       &lt;named list&gt; "", "", "", "", "", "", "", "", "", "", "", "", "…
+$ isbn10        &lt;named list&gt; "", "", "", "", "", "", "", "", "", "", "", "", "…
+$ city          &lt;named list&gt; "", "Levanger", "Larvik", "", "Bergen", "Oslo", "…
+$ timestamp     &lt;named list&gt; 19040713, 19050106, 19040720, 19050417, 19041215,…
+$ year          &lt;named list&gt; 1904, 1905, 1904, 1905, 1904, 1905, 1904, 1904, 1…
+$ publisher     &lt;named list&gt; "", "", "", "", "", "", "", "", "", "", "", "", "…
+$ langs         &lt;named list&gt; "", "", "", "", "", "", "", "", "", "", "", "", "…
+$ subjects      &lt;named list&gt; "", "", "", "", "", "", "", "", "", "", "", "", "…
+$ ddc           &lt;named list&gt; "", "", "", "", "", "", "", "", "", "", "", "", "…
+$ genres        &lt;named list&gt; "", "", "", "", "", "", "", "", "", "", "", "", "…
+$ literaryform  &lt;named list&gt; "", "", "", "", "", "", "", "", "", "", "", "", "…
+$ doctype       &lt;named list&gt; "digavis", "digavis", "digavis", "digavis", "diga…
+$ ocr_creator   &lt;named list&gt; "nb", "nb", "nb", "nb", "nb", "nb", "nb", "nb", "…
+$ ocr_timestamp &lt;named list&gt; 20060101, 20060101, 20060101, 20060101, 20060101,…</code></pre>
+</div>
+</div>
+</section>
+<section id="term-frequencies-per-document" class="level1 page-columns page-full">
+<h1>Term frequencies per document</h1>
+<p>Searching for the occurrence of particular terms within the corpus is a popular strategy when exploring textual information. The function <code>get_document_frequencies()</code> search within the respective NB collections and computes <em>ngram</em> counts of the documents that are specified, an information that is contained in the corpus metadata retrieved in the previous step. The results can be analysed and plotted using regular R functions.</p>
+<p>Let’s start from afresh and define the corpus we want to explore. Imagine that we want to track the relative importance of the terms “dame” and “kvinne” to refer to women during the first half of the 20<sup>th</sup> century. We will focus on books, the literary realm. We first extract the metadata behind the digitised collection. As mentioned earlier, it is important to define a limit that is larger than the collection itself, so we don’t miss any text (this is basically done by trial and error). The resulting dataframe, containing information on 58,228 documents, is stored as an object named <code>books</code>. <!--It turns out that 6 documents were duplicated (`count(dhlabid) |> filter(n>1)`), so using the function `distinct(dhlabid, .keep_all = TRUE)` removes them by only keeping the first occurrence of each duplicated row, so we end up with 58,222 documents.--></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>books <span class="ot">&lt;-</span> <span class="fu">get_document_corpus</span>(</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">doctype =</span> <span class="st">"digibok"</span>, </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">from_year =</span> <span class="dv">1900</span>, <span class="at">to_year =</span> <span class="dv">1951</span>,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">lang =</span> <span class="cn">NULL</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">limit =</span> <span class="dv">100000</span>) </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>books <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 58,222
+Columns: 19
+$ dhlabid       &lt;named list&gt; 100617220, 100377744, 100219360, 100259848, 10026…
+$ urn           &lt;named list&gt; "URN:NBN:no-nb_digibok_2009020904159", "URN:NBN:n…
+$ title         &lt;named list&gt; "Fred med Norge : tal vid fredsdemonstrationen i …
+$ authors       &lt;named list&gt; "Gullers , Emil", "Vegard , L. / Hillesund , Sigu…
+$ oaiid         &lt;named list&gt; "oai:nb.bibsys.no:999703500404702202", "oai:nb.bi…
+$ sesamid       &lt;named list&gt; "3820e909becc25d5fcd25a130b941657", "aa180a0e60e1…
+$ isbn10        &lt;named list&gt; "", "", "", "", "", "", "", "", "", "", "", "", "…
+$ city          &lt;named list&gt; "", "Oslo", "Oslo", "Kristiania", "[Oslo]", "Kris…
+$ timestamp     &lt;named list&gt; 19050101, 19420101, 19440101, 19190101, 19320101,…
+$ year          &lt;named list&gt; 1905, 1942, 1944, 1919, 1932, 1906, 1938, 1910, 1…
+$ publisher     &lt;named list&gt; "Wilhelmsson", "I kommisjon hos Dybwad", "Nytteve…
+$ langs         &lt;named list&gt; "swe", "ger", "nob", "nob", "nno", "nno", "nno", …
+$ subjects      &lt;named list&gt; "Unionsoppløsningen (1905) / Fred", "", "lin / te…
+$ ddc           &lt;named list&gt; "", "", "", "", "", "", "", "", "", "", "", "398"…
+$ genres        &lt;named list&gt; "", "", "", "", "", "", "", "", "", "", "", "", "…
+$ literaryform  &lt;named list&gt; "Uklassifisert", "Uklassifisert", "Uklassifisert"…
+$ doctype       &lt;named list&gt; "digibok", "digibok", "digibok", "digibok", "digi…
+$ ocr_creator   &lt;named list&gt; "dhlab", "nb", "nb", "nb", "nb", "nb", "nb", "nb"…
+$ ocr_timestamp &lt;named list&gt; 20221201, 20060101, 20060101, 20060101, 20060101,…</code></pre>
+</div>
+</div>
+<p>We now use <code>get_document_frequencies()</code> to retrieve word counts of the terms we are interested in. The computation itself takes place in the NB server, where the texts themselves are located, and we get the results. What this function is doing is to search for a list of particular <code>words</code> in the documents from the corpus we are studying, identified by their <code>pids</code>, which are stored in the object <code>corpus</code> and field <em>urn</em>. The function distinguish between lower- and upper-case letter, so make sure to expand the number of keywords accordingly if you think that finding upper-case characters is important. For comparison, it is important to include a term that is common enough to appear in almost all documents (e.g.&nbsp;“og” or “er”). Otherwise, you get only information on the documents providing hits.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>women_freq <span class="ot">&lt;-</span> <span class="fu">get_document_frequencies</span>(</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">pids =</span> books<span class="sc">$</span>urn,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">words =</span> <span class="fu">c</span>(<span class="st">"dame"</span>, <span class="st">"damer"</span>, <span class="st">"kvinne"</span>, <span class="st">"kvinner"</span>, <span class="st">"og"</span>, <span class="st">"er"</span>))</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(women_freq)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 163,909
+Columns: 4
+$ V1 &lt;list&gt; 100502131, 100502266, 100502268, 100502461, 100502533, 100502678, …
+$ V2 &lt;list&gt; "dame", "dame", "dame", "dame", "dame", "dame", "dame", "dame", "d…
+$ V3 &lt;list&gt; 2, 1, 1, 1, 1, 3, 19, 1, 1, 2, 1, 15, 1, 9, 3, 3, 9, 8, 15, 22, 3,…
+$ V4 &lt;list&gt; 138288, 109973, 130050, 45193, 23226, 118260, 85964, 53291, 51249,…</code></pre>
+</div>
+</div>
+<p>The command above returns a data frame with 163909 rows. Notice that the API returns four unnamed columns referring to the document identifier (<em>V1</em>), the term(s) we were looking for (<em>V2</em>), the frequency those terms appear in that particular document (<em>V3</em>) and the total word count in that document (<em>V4</em>). Also, as before, these fields are structured as lists. It is therefore a good idea to tidy the data frame up a bit.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>women_freq <span class="ot">&lt;-</span> women_freq <span class="sc">|&gt;</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">dhlabid =</span> V1,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> V2,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">count =</span> V3,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">doc_length =</span> V4) <span class="sc">|&gt;</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">dhlabid =</span> <span class="fu">map_int</span>(dhlabid, <span class="dv">1</span>),</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> <span class="fu">map_chr</span>(word, <span class="dv">1</span>),</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">count =</span> <span class="fu">map_int</span>(count, <span class="dv">1</span>),</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">doc_length =</span> <span class="fu">map_int</span>(doc_length, <span class="dv">1</span>))</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>women_freq</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 163,909 × 4
+     dhlabid word  count doc_length
+       &lt;int&gt; &lt;chr&gt; &lt;int&gt;      &lt;int&gt;
+ 1 100502131 dame      2     138288
+ 2 100502266 dame      1     109973
+ 3 100502268 dame      1     130050
+ 4 100502461 dame      1      45193
+ 5 100502533 dame      1      23226
+ 6 100502678 dame      3     118260
+ 7 100503009 dame     19      85964
+ 8 100503166 dame      1      53291
+ 9 100503169 dame      1      51249
+10 100503282 dame      2     174321
+# ℹ 163,899 more rows</code></pre>
+</div>
+</div>
+<p>The resulting object now contains the information we were looking for and structured in a familiar way. Note that this object only contains the counts themselves. However, we have the document ids (<em>dhlabid</em>), so we could retrieve the metadata that was stored in the first object we retrieve (stored as <em>books</em> here), so we can make use of features such as “year” and “city” of publication, “author,”genres”, etc.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> We can therefore merge both objects together, the one with the metadata and the one with the term frequencies.</p>
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;There are more fields but here we just focus on some of them.</p></div></div><p>However, it is important to realise that the data frame above is unbalanced because each row refers to a document where the particular term is mentioned at least once (no row is created if if the particular term is not mentioned). Counting the number of rows for each term makes this very clear. Recall that our corpus has 58,228 documents. The table below indicates the number of documents in which those terms are mentioned. The terms “er” and “og” show up in almost all of them (53,327 and 52,781, respectively) and we can perhaps safely argue that, if those terms do not show up, the document itself is probably unimportant or not very representative, so not having info on them (e.g.&nbsp;<em>doc_lenght</em>) is not going to affect our results.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>women_freq <span class="sc">|&gt;</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(word)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 2
+  word        n
+  &lt;chr&gt;   &lt;int&gt;
+1 dame    14953
+2 damer   12373
+3 er      53327
+4 kvinne  14922
+5 kvinner 15553
+6 og      52781</code></pre>
+</div>
+</div>
+<p>In fact, the problem is less severe because there are documents which do not mention “og” but do mention “er” (or the other terms) and vice versa, so the total number of documents with at least one occurrence is slightly higher (53,877; but not the full universe we started with). A potential solution is going back and add more terms to the search but we may not succeed in hitting all documents because a few of them might be very short documents anyway.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>women_freq <span class="sc">|&gt;</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(dhlabid)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 53,877 × 2
+     dhlabid     n
+       &lt;int&gt; &lt;int&gt;
+ 1 100000002     4
+ 2 100000009     2
+ 3 100000011     3
+ 4 100000016     4
+ 5 100000017     3
+ 6 100000019     6
+ 7 100000022     2
+ 8 100000472     1
+ 9 100000473     2
+10 100000474     2
+# ℹ 53,867 more rows</code></pre>
+</div>
+</div>
+<p>More important is the unbalanced nature of the data frame above. Take into account, for instance, that if our search has found 3 instances of “og” in 1 document but none of the other terms, the data frame only contains one row for that document: the one indicating that <em>word</em> “og” has a <em>count</em> of 3 (and <em>doc_lenght</em> of “whatever”). We want though to have a “complete” data frame containing 6 rows for each document, one for each <em>word</em> we are looking for, indicating a <em>count</em> of 0 when that is the case. The way to deal with is to use <code>complete()</code>, a commands that adds the rows with the categories that are missing (in our case, the terms that are not mentioned in the documents). The function <code>complete()</code> requires indicating the identifying field and the full set of categories present in the other field.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>women_freq <span class="ot">&lt;-</span> women_freq <span class="sc">|&gt;</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">complete</span>(dhlabid, </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">word =</span> <span class="fu">c</span>(<span class="st">"dame"</span>, <span class="st">"damer"</span>, <span class="st">"kvinne"</span>, <span class="st">"kvinner"</span>, <span class="st">"og"</span>, <span class="st">"er"</span>))</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>women_freq</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 323,262 × 4
+     dhlabid word    count doc_length
+       &lt;int&gt; &lt;chr&gt;   &lt;int&gt;      &lt;int&gt;
+ 1 100000002 dame       10      42104
+ 2 100000002 damer       1      42104
+ 3 100000002 er        447      42104
+ 4 100000002 kvinne     NA         NA
+ 5 100000002 kvinner    NA         NA
+ 6 100000002 og       1349      42104
+ 7 100000009 dame       NA         NA
+ 8 100000009 damer      NA         NA
+ 9 100000009 er        534      61896
+10 100000009 kvinne     NA         NA
+# ℹ 323,252 more rows</code></pre>
+</div>
+</div>
+<p>The result is a data frame with 323,262 rows, which is the number of individual documents with at least 1 hit (53,877) times 6, the number of terms we searched for. Note for instance the 6 first rows above that refer to the document “100000002”. This document is 42,104 words long and the terms “dame”, “damer”, “er” and “og” are mentioned 10, 1, 447 and 1,349 times, respectively. The terms “kvinne” og “kvinner” are not mentioned, so they did not have a row. The function <code>complete()</code> added that row and assigned the value <em>NA</em>. We just need to fill in the gaps (NAs) with the adequate information, so we know not only the positive hits but also those with no hits, as well as the associated length of that document (<em>doc_lenght</em>).</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>women_freq <span class="ot">&lt;-</span> women_freq <span class="sc">|&gt;</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">count =</span> <span class="fu">if_else</span>(<span class="fu">is.na</span>(count), <span class="dv">0</span>, count)) <span class="sc">|&gt;</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(dhlabid) <span class="sc">|&gt;</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">doc_length =</span> <span class="fu">mean</span>(doc_length, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>women_freq</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 323,262 × 4
+     dhlabid word    count doc_length
+       &lt;int&gt; &lt;chr&gt;   &lt;dbl&gt;      &lt;dbl&gt;
+ 1 100000002 dame       10      42104
+ 2 100000002 damer       1      42104
+ 3 100000002 er        447      42104
+ 4 100000002 kvinne      0      42104
+ 5 100000002 kvinner     0      42104
+ 6 100000002 og       1349      42104
+ 7 100000009 dame        0      61896
+ 8 100000009 damer       0      61896
+ 9 100000009 er        534      61896
+10 100000009 kvinne      0      61896
+# ℹ 323,252 more rows</code></pre>
+</div>
+</div>
+<p>Let’s then merge both objects. The original one also needs a bit of tuning. For simplicity, we just keep 4 fields of all the available metadata.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>books_freq <span class="ot">&lt;-</span> books <span class="sc">|&gt;</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(dhlabid, year, city, authors, genres) <span class="sc">|&gt;</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">dhlabid =</span> <span class="fu">map_int</span>(dhlabid, <span class="dv">1</span>),</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">year =</span> <span class="fu">map_int</span>(year, <span class="dv">1</span>),</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">city =</span> <span class="fu">map_chr</span>(city, <span class="dv">1</span>),</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">authors =</span> <span class="fu">map_chr</span>(authors, <span class="dv">1</span>),</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">genres =</span> <span class="fu">map_chr</span>(genres, <span class="dv">1</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">full_join</span>(women_freq, <span class="at">by =</span> <span class="st">"dhlabid"</span>)</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>books_freq </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 327,607 × 8
+     dhlabid  year city   authors                  genres word  count doc_length
+       &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;                    &lt;chr&gt;  &lt;chr&gt; &lt;dbl&gt;      &lt;dbl&gt;
+ 1 100617220  1905 ""     Gullers , Emil           ""     dame      0       3383
+ 2 100617220  1905 ""     Gullers , Emil           ""     damer     1       3383
+ 3 100617220  1905 ""     Gullers , Emil           ""     er        0       3383
+ 4 100617220  1905 ""     Gullers , Emil           ""     kvin…     0       3383
+ 5 100617220  1905 ""     Gullers , Emil           ""     kvin…     0       3383
+ 6 100617220  1905 ""     Gullers , Emil           ""     og        0       3383
+ 7 100377744  1942 "Oslo" Vegard , L. / Hillesund… ""     dame      0       7073
+ 8 100377744  1942 "Oslo" Vegard , L. / Hillesund… ""     damer     0       7073
+ 9 100377744  1942 "Oslo" Vegard , L. / Hillesund… ""     er        6       7073
+10 100377744  1942 "Oslo" Vegard , L. / Hillesund… ""     kvin…     0       7073
+# ℹ 327,597 more rows</code></pre>
+</div>
+</div>
+<p>We have some more rows now than before because the original corpus had more documents than the ones containing the terms we defined. As argued above, this is not very important, so we could easily drop them (they will have missing values in the columns <em>word</em>, <em>count</em> and <em>doc_length</em>).</p>
+<p>So we now have a corpus of documents, its associated metadata, the frequency of particular terms and the total word count. The only issue is that a minority of documents don’t have term frequency data because they returned no hits (these can be mitigated by adding more key terms to the search function). We are now ready to see the results of our analysis. We can, for instance, track the evolution of the relative importance of those terms over time. Given that dame/damer and kvinne/kvinner are meant to capture the same concept, we can first aggregate them before relativising the <em>doc_length</em>. Given that documents are quite varied in size, we compute an weigthed average. Check what the code in doing in each successive step.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>books_freq <span class="sc">|&gt;</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(word)) <span class="sc">|&gt;</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(word<span class="sc">!=</span><span class="st">"og"</span> <span class="sc">&amp;</span> word<span class="sc">!=</span><span class="st">"er"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">word =</span> <span class="fu">if_else</span>(word<span class="sc">==</span><span class="st">"kvinner"</span>, <span class="st">"kvinne"</span>, word),</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> <span class="fu">if_else</span>(word<span class="sc">==</span><span class="st">"damer"</span>, <span class="st">"dame"</span>, word)) <span class="sc">|&gt;</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(dhlabid, year, word) <span class="sc">|&gt;</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">sum</span>(count, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">doc_length =</span> <span class="fu">mean</span>(doc_length, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rel_freq =</span> <span class="dv">1000</span><span class="sc">*</span>count<span class="sc">/</span>doc_length) <span class="sc">|&gt;</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year, word) <span class="sc">|&gt;</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">rel_freq =</span> <span class="fu">weighted.mean</span>(rel_freq, </span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>                                     doc_length, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> rel_freq, <span class="at">col =</span> word)) <span class="sc">+</span> </span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_line</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="dhlabr_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This analysis could be refined in many different ways. We could for instance explore what is behind these trends by distinguishing by genre or dropping the shortest or the longest texts to check whether the results are driven by a particular type of text. There could also be regional differences or by authorship, among other potential hypotheses. It is possible that the trends do not reflect real changes in language use but in the composition of the corpus. In general, always be careful with the composition of the sample in large-scale collections. Imagine that a bunch of specific records (e.g.&nbsp;periodicals, children lit, etc.), published between 1927 and 1940, make up for a significant fraction of the digitised texts present in the collection for that period. The use of “dame/r” and “kvinne/r” in those records would potentially be driving the results but they might not be representative of the phenomenon we are studying.</p>
+</section>
+<section id="collocation" class="level1 page-columns page-full">
+<h1>Collocation</h1>
+<p>As well as getting term frequencies, the package <code>dhlabR</code> allows extracting the terms occurring next to the word we are interested in. The function <code>get_collocations()</code> works the same way as the one computing term frequencies. It requires providing a vector containing the unique identifiers of the texts in the corpus we are analysing (<code>pid</code>), the target word (<code>word</code>) and the number of words <code>before</code> and <code>after</code> the target word to include as context (the default is 10 in both).</p>
+<p>To limit computational requirements, let’s use a more limited corpus: the books published in the 1930s (a corpus with 10,698 items).</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>books <span class="ot">&lt;-</span> <span class="fu">get_document_corpus</span>(</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">doctype =</span> <span class="st">"digibok"</span>, </span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">from_year =</span> <span class="dv">1930</span>, <span class="at">to_year =</span> <span class="dv">1939</span>,</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">lang =</span> <span class="cn">NULL</span>,</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">limit =</span> <span class="dv">15000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>We now make the query for obtaining the words occurring next to “dame” within a window of 5 words (before and after). We can only query one term at a time but it is easy to append different data frames after if we wished so. The argument <code>sample_size</code> indicates the number of samples we are retrieving from the API (default is 5000). Instead of analyzing all occurrences of the word in the corpus, the function can analyze a random sample of them to reduce computations. Setting a higher number gets you closer to the full corpus but slows down the computations.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>collocations <span class="ot">&lt;-</span> <span class="fu">get_collocations</span>(</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">pids =</span> books<span class="sc">$</span>urn,</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">word =</span> <span class="st">"dame"</span>,</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">before =</span> <span class="dv">5</span>,</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">after =</span> <span class="dv">5</span>,</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">sample_size =</span> <span class="dv">10000</span>)</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>collocations <span class="sc">|&gt;</span> </span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="at">n =</span> <span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>             counts dist bdist
+übønnhørlige      3    1   0.2
+Kate              3    1   0.2
+misakte           3    1   0.2
+vrai              2    1  0.25
+elegantiarum      2    1  0.25
+arbiter           2    1  0.25
+TÅKEN             2    1  0.25
+McTavish          2    1  0.25
+fraulein          2    1  0.25
+Challenger        2    1  0.25</code></pre>
+</div>
+</div>
+<p>This function returns a data frame with three columns: <em>counts</em>, <em>dist</em> and <em>bdist</em>, as well as a list with the terms that are stored as row names (not as a column). <em>counts</em> is the number of times a particular term shows up within the specified window around the target word. <em>dist</em> and <em>bdist</em> are weighted distance score to identify how far from the target word (the latter is a bidirectional distance score). As before, the resulting data frame needs to be tuned before use (a bit involved to be sure because the resulting data frame may sometimes empty fields). For simplicity, let’s also drop the weighting fields: <!--Strange that dist and bdist get very high values: "dist" ranges from 1 to over 10000. How is this possible if I set the window to be 5 before and 5 after? CHECK WITH THE AUTHORS?? --></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>collocations <span class="ot">&lt;-</span> collocations <span class="sc">|&gt;</span>  </span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames_to_column</span>(<span class="st">"term"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">counts =</span> <span class="fu">map_int</span>(counts, <span class="sc">~</span> <span class="cf">if</span> (<span class="fu">length</span>(.x) <span class="sc">==</span> <span class="dv">0</span>) <span class="cn">NA_integer_</span> </span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>                          <span class="cf">else</span> <span class="fu">as.integer</span>(.x[[<span class="dv">1</span>]])),</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">dist   =</span> <span class="fu">map_dbl</span>(dist,   <span class="sc">~</span> <span class="cf">if</span> (<span class="fu">length</span>(.x) <span class="sc">==</span> <span class="dv">0</span>) <span class="cn">NA_real_</span> </span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>                          <span class="cf">else</span> <span class="fu">as.numeric</span>(.x[[<span class="dv">1</span>]])),</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">bdist  =</span> <span class="fu">map_dbl</span>(bdist,  <span class="sc">~</span> <span class="cf">if</span> (<span class="fu">length</span>(.x) <span class="sc">==</span> <span class="dv">0</span>) <span class="cn">NA_real_</span> </span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>                          <span class="cf">else</span> <span class="fu">as.numeric</span>(.x[[<span class="dv">1</span>]]))) <span class="sc">|&gt;</span></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(term, counts)</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>collocations </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 20,609 × 2
+   term         counts
+   &lt;chr&gt;         &lt;int&gt;
+ 1 übønnhørlige      3
+ 2 Kate              3
+ 3 misakte           3
+ 4 vrai              2
+ 5 elegantiarum      2
+ 6 arbiter           2
+ 7 TÅKEN             2
+ 8 McTavish          2
+ 9 fraulein          2
+10 Challenger        2
+# ℹ 20,599 more rows</code></pre>
+</div>
+</div>
+<p>The most common terms next to “dame” are stop words (and punctuation symbols), as expected.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>collocations <span class="sc">|&gt;</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(counts))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 20,609 × 2
+   term  counts
+   &lt;chr&gt;  &lt;int&gt;
+ 1 en     12180
+ 2 ,      10849
+ 3 .       9390
+ 4 og      4628
+ 5 som     4130
+ 6 med     3014
+ 7 i       2853
+ 8 var     2832
+ 9 den     2567
+10 er      2024
+# ℹ 20,599 more rows</code></pre>
+</div>
+</div>
+<p>We need to get rid of them. One way of doing this is by having a dictionary of Norwegian stop words that we could rely on. The function <code>get_stopwords()</code> from the <code>tidytext</code> package pulls stop words from different languages. Here we choose <code>"no"</code>.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidytext)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>norsk_stop <span class="ot">&lt;-</span> <span class="fu">get_stopwords</span>(<span class="at">language =</span> <span class="st">"no"</span>)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>norsk_stop</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 176 × 2
+   word  lexicon 
+   &lt;chr&gt; &lt;chr&gt;   
+ 1 og    snowball
+ 2 i     snowball
+ 3 jeg   snowball
+ 4 det   snowball
+ 5 at    snowball
+ 6 en    snowball
+ 7 et    snowball
+ 8 den   snowball
+ 9 til   snowball
+10 er    snowball
+# ℹ 166 more rows</code></pre>
+</div>
+</div>
+<p>The resulting data frame contains 176 Norwegian stopwords, such as “og”, “i”, “jeg”, “det”, etc. We can then remove them from the previous object using <code>anti_join()</code> and present the most common terms occurring next to “dame”.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>collocations <span class="sc">|&gt;</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anti_join</span>(norsk_stop, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"term"</span> <span class="ot">=</span> <span class="st">"word"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(counts))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 20,463 × 2
+   term  counts
+   &lt;chr&gt;  &lt;int&gt;
+ 1 ,      10849
+ 2 .       9390
+ 3 ung     1918
+ 4 »       1624
+ 5 «       1495
+ 6 En      1433
+ 7 —       1371
+ 8 unge    1205
+ 9 sig      935
+10 ?        824
+# ℹ 20,453 more rows</code></pre>
+</div>
+</div>
+<p>There are still some issues here. The most apparent is all those punctuation symbols but we can also see that upper- and lower-case letters might prevent identifying terms that are otherwise equal.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> Although invisible, there might also be blanks at the beginning or at the end of a string that also count as characters and complicate identifying the same terms. The code below therefore removes potential blank spaces, converts all characters into lower-case and filters out rows containing symbols instead of letters using a regular expression that allows one or more of the specified characters between the start and the end of a string. Notice also that we are removing the stop words last because that list is all in lower-case characters, so doing it before transforming <em>term</em> into lower-case would miss many stop words whose first character appears capitalised.</p>
+<div class="no-row-height column-margin column-container"><div id="fn4"><p><sup>4</sup>&nbsp;Unless we want to distinguish those terms that are located at the beginning of a sentence is useful. Similarly, punctuation marks can also be informative. It all depends on what is our research question and which features of the corpus may help us better answer it.</p></div></div><div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>collocations <span class="sc">|&gt;</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">term =</span> <span class="fu">str_trim</span>(term),</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">term =</span> <span class="fu">str_to_lower</span>(term)) <span class="sc">|&gt;</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(term, <span class="st">"^[A-Za-zæøåÆØÅ]+$"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anti_join</span>(norsk_stop, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"term"</span> <span class="ot">=</span> <span class="st">"word"</span>)) <span class="sc">|&gt;</span>  </span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(counts))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 19,048 × 2
+   term   counts
+   &lt;chr&gt;   &lt;int&gt;
+ 1 ung      1918
+ 2 unge     1205
+ 3 sig       935
+ 4 gammel    737
+ 5 gamle     652
+ 6 sa        638
+ 7 mig       468
+ 8 liten     420
+ 9 ham       377
+10 eldre     367
+# ℹ 19,038 more rows</code></pre>
+</div>
+</div>
+<p>The results look much better and are very telling about the context in which the term dame is mentioned in this corpus. It seems that having a sense of women’s ages was very important in those books published in 1930.</p>
+</section>
+<section id="keywords-in-context" class="level1 page-columns page-full">
+<h1>Keywords in context</h1>
+<p>As well as counting the terms appearing next to the word we are interested in, we may want to have a look at the overall context in which those words appear. The function <code>get_concordance()</code> does the job for you. It works as the previous functions: it requires providing the text identifiers (<em>pid</em>), indicating the term (or terms) we are interested in (<em>words</em>) and specifying the <em>window</em>, the number of characters before and after the matching word that will be retrieved (default is 20). The optional argument <em>limit</em> indicates the maximum number of results to be returned (default is 5000). You will want all but here, which it is just an illustration, we set it to 20.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>conc <span class="ot">&lt;-</span> <span class="fu">get_concordance</span>(</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">pid =</span> books<span class="sc">$</span>urn,</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">words =</span> <span class="st">"dame"</span>,</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">window =</span> <span class="dv">30</span>,</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">limit =</span> <span class="dv">20</span>) </span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>conc <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 20
+Columns: 3
+$ docid &lt;named list&gt; 100159411, 100508251, 100295452, 100508048, 100367671, 10…
+$ urn   &lt;named list&gt; "URN:NBN:no-nb_digibok_2013072208052", "URN:NBN:no-nb_dig…
+$ conc  &lt;named list&gt; "Krogstad . med en &lt;b&gt;dame&lt;/b&gt; . Nora . Og hvad så ?", "3…</code></pre>
+</div>
+</div>
+<p>The function returns a data frame with two columns that identify the individual texts containing the target term and a column named <em>conc</em> with the text surrounding that keyword. As before, it needs a bit of tuning, so we have it in a more familiar format. You could now work on this data frame the same way you work with any other object we have been looking into.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>conc <span class="sc">|&gt;</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">docid =</span> <span class="fu">map_int</span>(docid, <span class="dv">1</span>),</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">urn   =</span> <span class="fu">map_chr</span>(urn, <span class="dv">1</span>),</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">conc  =</span> <span class="fu">map_chr</span>(conc, <span class="dv">1</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(docid, conc)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 20 × 2
+       docid conc                                                               
+       &lt;int&gt; &lt;chr&gt;                                                              
+ 1 100159411 "Krogstad . med en &lt;b&gt;dame&lt;/b&gt; . Nora . Og hvad så ?"              
+ 2 100508251 "3 oinineren 1932 lik jeg lra en tvBk &lt;b&gt;dame&lt;/b&gt; i I ^ eipxig , I…
+ 3 100295452 "... Straks efter kom ordonnansen tilsyne igjen , fulgt av en &lt;b&gt;d…
+ 4 100508048 "... Hun saa en høi og bleg , omtrent tredveaars &lt;b&gt;dame&lt;/b&gt; , som…
+ 5 100367671 "... Men fortell nu du mig hvorfor du er så interessert i den unge…
+ 6 100537749 "... arbeidet igjen , da han fikk øie på en post for en &lt;b&gt;dame&lt;/b…
+ 7 100221416 "... I yngre år fulgte han en engelsk &lt;b&gt;dame&lt;/b&gt; på jakt i Beitst…
+ 8 100169605 "Med ess , konge , &lt;b&gt;dame&lt;/b&gt; : spil kongen . Med konge , &lt;b&gt;dame…
+ 9 100064240 "... et ess og en &lt;b&gt;dame&lt;/b&gt; ) i grand ( før 1 % honnørstikk ) ." 
+10 100126518 "... Død og pine , sa han og rettet sig fort op. — Der står en sto…
+11 100517164 "... avdeling fører ikke den slags , sa Gundersen , og mente at in…
+12 100205097 "Brevet inneholdt for øvrig en beretning om at Bjarne Verring hadd…
+13 100274169 "... Særlig vakker var hun jo ikke , men hun førte sig som en &lt;b&gt;d…
+14 100465471 "... Jeg vet ikke , » 82 fru Legras , « en eller annen « Hvit &lt;b&gt;d…
+15 100295077 "... Bettler : » Meine &lt;b&gt;Dame&lt;/b&gt; , schenken Sie einem armen , al…
+16 100572800 "Det er en ung &lt;b&gt;dame&lt;/b&gt; like foran mig . Hun spør så vennlig : …
+17 100543507 "... ideelle ektepar — de er skilt ! Han har funnet sig en annen &lt;…
+18 100159384 "... Det er en nieget erfaren &lt;b&gt;dame&lt;/b&gt; . Elisabethstrasse . Inn…
+19 100241318 "... Imidlertid hadde denne &lt;b&gt;dame&lt;/b&gt; sett sitt snitt til å fors…
+20 100226882 "... Hun sad ved hans Side , lænede sig tryg og fortrolig ind til …</code></pre>
+</div>
+</div>
+<hr>
+<p>I am going to leave it here.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> I hope that this offers a hint of the promises (and perils) of accessing the collection hosted by the Norwegian National Library. It is now your turn to find interesting stories behind this wealth of information.</p>
+
+
+<div class="no-row-height column-margin column-container"><div id="fn5"><p><sup>5</sup>&nbsp;The package <code>dhlabR</code> is still under development and scarcely documented. There are also other functions we have not explored such as <code>get_dispersion()</code>. If you are interested, you can find more details <a href="https://github.com/NationalLibraryOfNorway/dhlabR/tree/main/R">here</a>.</p></div></div></section>
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

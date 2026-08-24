@@ -1,0 +1,320 @@
+---
+title: "Exploring the National Biblioteket corpus with dhlabR"
+execute: 
+  warning: false
+  message: false
+format:
+  html:
+    code-fold: true
+    code-summary: "Show code"  
+    code-copy: true # adds a copy button to code blocks   
+    reference-location: margin  
+---
+
+Norway has been fortunate to have the financial muscle and the political will to adopt a massive digitization of its historical record. In 2006, the Norwegian [National Library](https://www.nb.no/search) started digitising its entire collection. This programme has resulted in million of digitised resources (books, manuscripts, newspapers, letters, etc.). this programme has been combined with efforts at making this wealth of material as accessible as possible. The *Nasjonalbibliotek* website, for instance, is wonderful and makes browsing the catalogue and looking up for particular records extremely easy, even pleasant as illustrated in the image below. Feel free to have a look at some of the available [collections](https://www.nb.no/search?mediatype=brev-og-manuskripter)
+
+![National Biblioteket digital collection.](images/nb.png){width=100% height=100% fig-align="center"}
+Likewise, as well as hosting an online [norsk n-gram](https://www.nb.no/ngram/#1_1_1__1_1_3_1810%2C2022_2_2_2_12_2) for quering the corpus, the team at [DH-LAB](https://www.nb.no/dh-lab/digital-tekstanalyse/) is also creating its own tools for exporing and analysing their collections, including [dhlabR](https://github.com/NationalLibraryOfNorway/dhlabR) an R package to directly interact with the corpus. Although it is still in development, this post we will explore some of its features so we can access and explore its massive corpus using computational tools. 
+
+# Getting familiar with dhlabR
+
+The package `dhlabR` interacts with the API of National Biblioteket. Although it does not allow to download full texts, you can query the collection, get the necessary metadata (including text IDs) and extracting text-derived outputs such as token frequencies or the text around keywords. 
+
+Using this R package usually entail two steps:
+
+1. Retrieve corpus metadata based on quering the corpus using given parameters such as author, title, year, language, type of document (e.g. book, newspaper, etc.), among others. This query is sent to the DH-LAB API and returns a table of matching documents, including document ID and associated metadata.
+
+2. Request derived text data: term frequencies, concordances, collocations, etc. Instead of extracting full texts directly, you obtain representations (term frequencies, terms around keywords, etc.) tied to those document IDs, usually as a data frame or a list that you can use in R for analysis and visualisation. 
+
+```{r}
+#| echo: false
+rm(list=ls()) 
+```
+
+Here I provide a basic overview of some of these functions. 
+
+First, you need to install and load the package `dhlabR`. Given that it is a beta version, it is not available via the usual channel but with the following commands (de-activated in my case). Make sure to also install `devtools` and `pak` if you haven't used these packages before.
+
+```{r}
+# install.packages("devtools")
+# install.packages("pak")
+# devtools::install_github("NationalLibraryOfNorway/dhlabR")
+# pak::pak("NationalLibraryOfNorway/dhlabR")
+
+library(tidyverse)
+library(dhlabR)
+```
+
+Once the package is loaded, you get access to different functions, such as `get_document_corpus()`, `get_document_frequencies()`, `get_concordance()`, or `get_collocations()`, among others. Let's go through them separately.^[The number of documents analysed here may be slightly different than what you get if you replicate the same commands if the *National Biblioteket* has modified the underlying corpus since I conducted this exercise (March 23, 2026).]
+
+# Retrieving the corpus metadata
+
+`get_document_corpus()` queries the corpus available at NB and retrieve the associated metadata. This query is defined by particular parameters such as author, title, year, language, type of document (e.g. book, newspaper, journal, letter, etc.), among others. The following, for instance, extracts the metadata associated to texts stored as "digibok", written by "Ibsen" between the years 1880 and 1890 (note that the argument `to_year` retrieves up to the defined year, without including it). The argument `limit` sets the maximum number of items that can be retrieved. Here we are getting 37 rows, so setting it to "50" is fitting, so you do not miss any (careful because the default value is 10). By default, `limit` is set to 10, so you need to explicitly set a larger number if you want to retrieve all the documents meeting your query. This function returns a data frame, so I use `glimpse()` to have a sense of how the data looks like (you can also just type the name of the object). As mentioned above, none of these fields contain the text itself associated with these documents (more on this later).
+
+```{r}
+# Get corpus
+corpus <- get_document_corpus(
+  doctype = "digibok", author = "Ibsen", 
+  from_year = 1880, to_year = 1891,
+  limit = 50)
+corpus |> glimpse()
+```
+
+Notice that, instead of as characters or numerical values, the columns are formated as list-columns. This is because the API returns nested JSON, which the package converts into lists inside a tibble. Retrieving these values requires converting them. You can, for instance, transform them using `map_chr()` or `map_int()` depending on whether the underlying values are strings or numerical.^[If the list contains more than one value for each row (locations or publishers, for instance), you can use `unnest()`. You can use `lengths()` to check if that is the case.] As shown below, the fields *dhlabid* and *title* are now expressed as integers (<int>) or a sequence of string characters (<chr>).
+
+```{r}
+corpus <- corpus |>
+  mutate(title = map_chr(title, 1),
+         dhlabid = map_int(dhlabid, 1))
+corpus |> glimpse()
+```
+
+You can obviously make use of the information associated with each document, the metadata codified in the remaining fields, in different ways. You can for instance have a sense of the different *genres* included in this corpus. You might perhaps be interested in a particular genre or want to perform your analysis separately for each genre. 
+
+```{r}
+corpus |>
+  mutate(genres = map_chr(genres, 1)) |>
+  count(genres)
+```
+
+The example above retrieves a corpus of books ("digbok": novels, monographs, plays, etc.), but defining the argument `doctype` differently allows accessing other materials, such as newspapers ("digavis"), journals and periodicals ("digitidsskrift"), letters and manuscripts ("digimanus") or images ("digifoto"). The example below retrieves 20 newspapers published in 1905. Note that I am setting `lang = NULL` to avoid the default language ("nob"; bokmål, the official Norwegian language), which may make less sense in historical documents. The metadata contains potentially interesting information such as "title", place of publication ("city") or date of publication ("year" or "timestamp"). 
+
+```{r}
+newspapers <- get_document_corpus(
+  doctype = "digavis", 
+  from_year = 1904, to_year = 1906,
+  lang = NULL, 
+  limit = 20)
+newspapers |> glimpse()
+```
+
+# Term frequencies per document
+
+Searching for the occurrence of particular terms within the corpus is a popular strategy when exploring textual information. The function `get_document_frequencies()` search within the respective NB collections and computes *ngram* counts of the documents that are specified, an information that is contained in the corpus metadata retrieved in the previous step. The results can be analysed and plotted using regular R functions. 
+
+Let's start from afresh and define the corpus we want to explore. Imagine that we want to track the relative importance of the terms "dame" and "kvinne" to refer to women during the first half of the 20^th^ century. We will focus on books, the literary realm. We first extract the metadata behind the digitised collection. As mentioned earlier, it is important to define a limit that is larger than the collection itself, so we don't miss any text (this is basically done by trial and error). The resulting dataframe, containing information on 58,228 documents, is stored as an object named `books`. <!--It turns out that 6 documents were duplicated (`count(dhlabid) |> filter(n>1)`), so using the function `distinct(dhlabid, .keep_all = TRUE)` removes them by only keeping the first occurrence of each duplicated row, so we end up with 58,222 documents.-->
+
+```{r}
+books <- get_document_corpus(
+  doctype = "digibok", 
+  from_year = 1900, to_year = 1951,
+  lang = NULL,
+  limit = 100000) 
+books |> glimpse()
+```
+
+We now use `get_document_frequencies()` to retrieve word counts of the terms we are interested in. The computation itself takes place in the NB server, where the texts themselves are located, and we get the results. What this function is doing is to search for a list of particular `words` in the documents from the corpus we are studying, identified by their `pids`, which are stored in the object `corpus` and field *urn*. The function distinguish between lower- and upper-case letter, so make sure to expand the number of keywords accordingly if you think that finding upper-case characters is important. For comparison, it is important to include a term that is common enough to appear in almost all documents (e.g. "og" or "er"). Otherwise, you get only information on the documents providing hits.
+
+```{r}
+women_freq <- get_document_frequencies(
+  pids = books$urn,
+  words = c("dame", "damer", "kvinne", "kvinner", "og", "er"))
+glimpse(women_freq)
+```
+
+The command above returns a data frame with `{r} nrow(women_freq)` rows. Notice that the API returns four unnamed columns referring to the document identifier (*V1*), the term(s) we were looking for (*V2*), the frequency those terms appear in that particular document (*V3*) and the total word count in that document (*V4*). Also, as before, these fields are structured as lists. It is therefore a good idea to tidy the data frame up a bit.
+
+```{r}
+women_freq <- women_freq |>
+  rename(dhlabid = V1,
+         word = V2,
+         count = V3,
+         doc_length = V4) |>
+  as_tibble() |>
+  mutate(dhlabid = map_int(dhlabid, 1),
+         word = map_chr(word, 1),
+         count = map_int(count, 1),
+         doc_length = map_int(doc_length, 1))
+women_freq
+```
+
+The resulting object now contains the information we were looking for and structured in a familiar way. Note that this object only contains the counts themselves. However, we have the document ids (*dhlabid*), so we could retrieve the metadata that was stored in the first object we retrieve (stored as *books* here), so we can make use of features such as "year" and "city" of publication, "author, "genres", etc.^[There are more fields but here we just focus on some of them.] We can therefore merge both objects together, the one with the metadata and the one with the term frequencies.
+
+However, it is important to realise that the data frame above is unbalanced because each row refers to a document where the particular term is mentioned at least once (no row is created if if the particular term is not mentioned). Counting the number of rows for each term makes this very clear. Recall that our corpus has 58,228 documents. The table below indicates the number of documents in which those terms are mentioned. The terms "er" and "og" show up in almost all of them (53,327 and 52,781, respectively) and we can perhaps safely argue that, if those terms do not show up, the document itself is probably unimportant or not very representative, so not having info on them (e.g. *doc_lenght*) is not going to affect our results. 
+
+```{r}
+women_freq |>
+  count(word)
+```
+
+In fact, the problem is less severe because there are documents which do not mention "og" but do mention "er" (or the other terms) and vice versa, so the total number of documents with at least one occurrence is slightly higher (53,877; but not the full universe we started with). A potential solution is going back and add more terms to the search but we may not succeed in hitting all documents because a few of them might be very short documents anyway. 
+
+```{r}
+women_freq |>
+  count(dhlabid)
+```
+
+
+More important is the unbalanced nature of the data frame above. Take into account, for instance, that if our search has found 3 instances of "og" in 1 document but none of the other terms, the data frame only contains one row for that document: the one indicating that *word* "og" has a *count* of 3 (and *doc_lenght* of "whatever"). We want though to have a "complete" data frame containing 6 rows for each document, one for each *word* we are looking for, indicating a *count* of 0 when that is the case. The way to deal with is to use `complete()`, a commands that adds the rows with the categories that are missing (in our case, the terms that are not mentioned in the documents). The function `complete()` requires indicating the identifying field and the full set of categories present in the other field.
+
+```{r}
+women_freq <- women_freq |>
+  complete(dhlabid, 
+           word = c("dame", "damer", "kvinne", "kvinner", "og", "er"))
+women_freq
+```
+
+The result is a data frame with 323,262 rows, which is the number of individual documents with at least 1 hit (53,877) times 6, the number of terms we searched for. Note for instance the 6 first rows above that refer to the document "100000002". This document is 42,104 words long and the terms "dame", "damer", "er" and "og" are mentioned 10, 1, 447 and 1,349 times, respectively. The terms "kvinne" og "kvinner"	are not mentioned, so they did not have a row. The function `complete()` added that row and assigned the value *NA*. We just need to fill in the gaps (NAs) with the adequate information, so we know not only the positive hits but also those with no hits, as well as the associated length of that document (*doc_lenght*).
+
+```{r}
+women_freq <- women_freq |>
+  mutate(count = if_else(is.na(count), 0, count)) |>
+  group_by(dhlabid) |>
+  mutate(doc_length = mean(doc_length, na.rm = TRUE)) |>
+  ungroup()
+women_freq
+```
+
+Let's then merge both objects. The original one also needs a bit of tuning. For simplicity, we just keep 4 fields of all the available metadata. 
+
+```{r}
+books_freq <- books |>
+  as_tibble() |>
+  select(dhlabid, year, city, authors, genres) |>
+  mutate(dhlabid = map_int(dhlabid, 1),
+         year = map_int(year, 1),
+         city = map_chr(city, 1),
+         authors = map_chr(authors, 1),
+         genres = map_chr(genres, 1)) |>
+  full_join(women_freq, by = "dhlabid")
+books_freq 
+```
+
+We have some more rows now than before because the original corpus had more documents than the ones containing the terms we defined. As argued above, this is not very important, so we could easily drop them (they will have missing values in the columns *word*, *count* and *doc_length*).
+
+So we now have a corpus of documents, its associated metadata, the frequency of particular terms and the total word count. The only issue is that a minority of documents don't have term frequency data because they returned no hits (these can be mitigated by adding more key terms to the search function). We are now ready to see the results of our analysis. We can, for instance, track the evolution of the relative importance of those terms over time. Given that dame/damer and kvinne/kvinner are meant to capture the same concept, we can first aggregate them before relativising the *doc_length*. Given that documents are quite varied in size, we compute an weigthed average. Check what the code in doing in each successive step.
+
+```{r}
+books_freq |>
+  filter(!is.na(word)) |>
+  filter(word!="og" & word!="er") |>
+  mutate(word = if_else(word=="kvinner", "kvinne", word),
+         word = if_else(word=="damer", "dame", word)) |>
+  group_by(dhlabid, year, word) |>
+  summarise(count = sum(count, na.rm = TRUE),
+            doc_length = mean(doc_length, na.rm = TRUE)) |>
+  ungroup() |>
+  mutate(rel_freq = 1000*count/doc_length) |>
+  group_by(year, word) |>
+  summarise(rel_freq = weighted.mean(rel_freq, 
+                                     doc_length, na.rm = TRUE)) |>
+  ggplot(aes(x = year, y = rel_freq, col = word)) + 
+  geom_point() + geom_line()
+```
+
+This analysis could be refined in many different ways. We could for instance explore what is behind these trends by distinguishing by genre or dropping the shortest or the longest texts to check whether the results are driven by a particular type of text. There could also be regional differences or by authorship, among other potential hypotheses. It is possible that the trends do not reflect real changes in language use but in the composition of the corpus. In general, always be careful with the composition of the sample in large-scale collections. Imagine that a bunch of specific records (e.g. periodicals, children lit, etc.), published between 1927 and 1940, make up for a significant fraction of the digitised texts present in the collection for that period. The use of "dame/r" and "kvinne/r" in those records would potentially be driving the results but they might not be representative of the phenomenon we are studying.
+
+# Collocation
+
+As well as getting term frequencies, the package `dhlabR` allows extracting the terms occurring next to the word we are interested in. The function `get_collocations()` works the same way as the one computing term frequencies. It requires providing a vector containing the unique identifiers of the texts in the corpus we are analysing (`pid`), the target word (`word`) and the number of words `before` and `after` the target word to include as context (the default is 10 in both). 
+
+To limit computational requirements, let's use a more limited corpus: the books published in the 1930s (a corpus with 10,698 items).
+
+```{r}
+books <- get_document_corpus(
+  doctype = "digibok", 
+  from_year = 1930, to_year = 1939,
+  lang = NULL,
+  limit = 15000)
+```
+
+We now make the query for obtaining the words occurring next to "dame" within a window of 5 words (before and after). We can only query one term at a time but it is easy to append different data frames after if we wished so. The argument `sample_size` indicates the number of samples we are retrieving from the API (default is 5000). Instead of analyzing all occurrences of the word in the corpus, the function can analyze a random sample of them to reduce computations. Setting a higher number gets you closer to the full corpus but slows down the computations. 
+
+```{r}
+collocations <- get_collocations(
+  pids = books$urn,
+  word = "dame",
+  before = 5,
+  after = 5,
+  sample_size = 10000)
+collocations |> 
+  head(n = 10)
+```
+
+This function returns a data frame with three columns: *counts*, *dist* and *bdist*, as well as a list with the terms that are stored as row names (not as a column). *counts* is the number of times a particular term shows up within the specified window around the target word. *dist* and *bdist* are weighted distance score to identify how far from the target word (the latter is a bidirectional distance score). As before, the resulting data frame needs to be tuned before use (a bit involved to be sure because the resulting data frame may sometimes empty fields). For simplicity, let's also drop the weighting fields:
+<!--Strange that dist and bdist get very high values: "dist" ranges from 1 to over 10000. How is this possible if I set the window to be 5 before and 5 after? CHECK WITH THE AUTHORS?? -->
+
+```{r}
+collocations <- collocations |>  
+  rownames_to_column("term") |>
+  as_tibble() |>
+  mutate(counts = map_int(counts, ~ if (length(.x) == 0) NA_integer_ 
+                          else as.integer(.x[[1]])),
+         dist   = map_dbl(dist,   ~ if (length(.x) == 0) NA_real_ 
+                          else as.numeric(.x[[1]])),
+         bdist  = map_dbl(bdist,  ~ if (length(.x) == 0) NA_real_ 
+                          else as.numeric(.x[[1]]))) |>
+  select(term, counts)
+collocations 
+```
+
+The most common terms next to "dame" are stop words (and punctuation symbols), as expected. 
+
+```{r}
+collocations |>
+  arrange(desc(counts))
+```
+
+We need to get rid of them. One way of doing this is by having a dictionary of Norwegian stop words that we could rely on. The function `get_stopwords()` from the `tidytext` package pulls stop words from different languages. Here we choose `"no"`. 
+
+```{r}
+library(tidytext)
+norsk_stop <- get_stopwords(language = "no")
+norsk_stop
+```
+
+The resulting data frame contains 176 Norwegian stopwords, such as "og", "i", "jeg", "det", etc. We can then remove them from the previous object using `anti_join()` and present the most common terms occurring next to "dame".
+
+```{r}
+collocations |>
+  anti_join(norsk_stop, by = c("term" = "word")) |>
+  arrange(desc(counts))
+```
+
+
+There are still some issues here. The most apparent is all those punctuation symbols but we can also see that upper- and lower-case letters might prevent identifying terms that are otherwise equal.^[Unless we want to distinguish those terms that are located at the beginning of a sentence is useful. Similarly, punctuation marks can also be informative. It all depends on what is our research question and which features of the corpus may help us better answer it.] Although invisible, there might also be blanks at the beginning or at the end of a string that also count as characters and complicate identifying the same terms. The code below therefore removes potential blank spaces, converts all characters into lower-case and filters out rows containing symbols instead of letters using a regular expression that allows one or more of the specified characters between the start and the end of a string. Notice also that we are removing the stop words last because that list is all in lower-case characters, so doing it before transforming *term* into lower-case would miss many stop words whose first character appears capitalised.
+
+```{r}
+collocations |>
+  mutate(term = str_trim(term),
+         term = str_to_lower(term)) |>
+  filter(str_detect(term, "^[A-Za-zæøåÆØÅ]+$")) |>
+  anti_join(norsk_stop, by = c("term" = "word")) |>  
+  arrange(desc(counts))
+```
+
+The results look much better and are very telling about the context in which the term dame is mentioned in this corpus. It seems that having a sense of women's ages was very important in those books published in 1930. 
+
+# Keywords in context
+
+As well as counting the terms appearing next to the word we are interested in, we may want to have a look at the overall context in which those words appear. The function `get_concordance()` does the job for you. It works as the previous functions: it requires providing the text identifiers (*pid*), indicating the term (or terms) we are interested in (*words*) and specifying the *window*, the number of characters before and after the matching word that will be retrieved (default is 20). The optional argument *limit* indicates the maximum number of results to be returned (default is 5000). You will want all but here, which it is just an illustration, we set it to 20.
+
+```{r}
+conc <- get_concordance(
+  pid = books$urn,
+  words = "dame",
+  window = 30,
+  limit = 20) 
+conc |> glimpse()
+```
+
+The function returns a data frame with two columns that identify the individual texts containing the target term and a column named *conc* with the text surrounding that keyword. As before, it needs a bit of tuning, so we have it in a more familiar format. You could now work on this data frame the same way you work with any other object we have been looking into. 
+
+```{r}
+conc |>
+  as_tibble() |>
+  mutate(docid = map_int(docid, 1),
+         urn   = map_chr(urn, 1),
+         conc  = map_chr(conc, 1)) |>
+  select(docid, conc)
+```
+
+----
+
+I am going to leave it here.^[The package `dhlabR` is still under development and scarcely documented. There are also other functions we have not explored such as `get_dispersion()`. If you are interested, you can find more details [here](https://github.com/NationalLibraryOfNorway/dhlabR/tree/main/R).] I hope that this offers a hint of the promises (and perils) of accessing the collection hosted by the Norwegian National Library. It is now your turn to find interesting stories behind this wealth of information. 
+
+
+
+
+
+
